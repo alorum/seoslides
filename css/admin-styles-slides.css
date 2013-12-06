@@ -207,7 +207,7 @@
       color: #BBB;
       text-align: right;
       counter-increment: code;
-      content: counter(code,decimal-leading-zero) "."; }
+      content: counter(code, decimal-leading-zero) "."; }
     .slide pre code:only-child:before {
       content: ''; }
   .slide pre mark {
