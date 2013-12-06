@@ -1,0 +1,215 @@
+.embed-button, .slide-button {
+	display: none;
+}
+.deck-container .embed-input {
+	display: block;
+	width: 94%;
+	padding: 5px;
+	line-height: 20px;
+	font-size: 14px;
+    border: 0;
+    margin: 0 2%;
+}
+
+.deck-container div.embed-container {
+	cursor: pointer;
+	@include opacity(0);
+	z-index: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	margin-left: 0;
+	margin-top: 0;
+	padding: {
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+	background-color: #4b4b4b;
+	background-color: rgba(75, 75, 75, 0.975);
+	color: #fff;
+	@include transition(opacity, 0.3s);
+
+	&.opened {
+        cursor: default;
+		@include opacity(1);
+		z-index: 110;
+	}
+
+	.closer,
+	.pseudolink {
+		color: red;
+		cursor:pointer;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.closer {
+		position: absolute;
+		right: 70px;
+		top: 10px;
+		font-size: 11px;
+	}
+
+	aside {
+		clear: both;
+		margin-left: 30px;
+		margin-right: 30px;
+	}
+
+	ul.embed-tabs {
+		list-style-type: none;
+		margin: 0 0 1em;
+        padding: 10px 20px 0 20px;
+		border-bottom: 1px solid #bbb;
+		height: 32px;
+
+		li {
+			display: inline-block;
+			font-size: 16px;
+			line-height: 21px;
+			height: 21px;
+			padding: 5px 10px;
+			cursor: pointer;
+			color: #bbb;
+			float: left;
+
+			.embeded & {
+				font-size: 12px;
+			}
+
+			&.current {
+				color: #ddd;
+				border: {
+					bottom: 1px solid #4b4b4b;
+					bottom: 1px solid rgba(75, 75, 75, 0.975);
+					left: 1px solid #bbb;
+					right: 1px solid #bbb;
+					top: 1px solid #bbb;
+				}
+			}
+		}
+	}
+
+	.embed-actions {
+		position: absolute;
+		top: 10px;
+		height: 32px;
+		right: 60px;
+
+		.action-icon {
+			width: 30px;
+			height: 30px;
+			margin-left: 20px;
+			float: left;
+			cursor: pointer;
+			@include opacity(0.5);
+			@include transition( opacity, 0.4s );
+
+			&:hover {
+				@include opacity(1);
+			}
+
+			&.overview {
+				margin-top: 4px;
+				height: 26px;
+				background: {
+					repeat: no-repeat;
+					image: url( ../img/overview.png )
+				};
+
+				@media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
+					background-image: url( ../img/overview-2x.png );
+					background-size: 30px auto;
+				}
+			}
+
+			&.full-screen {
+				display: none;
+				margin-top: 6px;
+				height: 18px;
+				background: {
+					repeat: no-repeat;
+					image: url( ../img/expand.png )
+				};
+
+				@media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
+					background-image: url( ../img/expand-2x.png );
+					background-size: 18px auto;
+				}
+
+				body.embeded & {
+					display: inline-block;
+				}
+			}
+		}
+	}
+
+	.hidden {
+		display: none;
+	}
+}
+
+.deck-container.overview div.embed-container {
+	ul {
+		padding: 20px 20px 5px 20px;
+	}
+}
+
+section.overview section.slide {
+	$embed_link_height: 36px;
+	.embed-button, .slide-button {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 48px;
+		height: $embed_link_height;
+		margin-top: -$embed_link_height/2;
+		line-height: $embed_link_height - 4;
+		font-size: $embed_link_height * 0.75;
+		font-weight: bold;
+		text-decoration: none;
+		text-align: center;
+		color: #fff;
+		display: block;
+		@include opacity(0);
+		background: #000;
+		z-index: 10;
+		@include transition(opacity, 0.3s);
+	}
+	&:hover {
+		.embed-button, .slide-button {
+			@include opacity(0.6);
+			&:hover {
+				@include opacity(1);
+			}
+		}
+		.embed-input.opened {
+			@include opacity(1);
+		}
+	}
+	.embed-button {
+		@include border-radius(0 5px 5px 0);
+		background: {
+			color: #000;
+			repeat: no-repeat;
+			image: url(../img/embed.png);
+			position: 50% -27px;
+		}
+
+		@media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
+			background-image: url(../img/embed-2x.png);
+			background-size: 30px auto;
+		}
+	}
+	.slide-button {
+		margin-left: -48px;
+		@include border-radius(5px 0 0 5px);
+		background: #000 url("../img/play.png") no-repeat 50% 50%;
+	}
+}

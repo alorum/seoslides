@@ -1,0 +1,55 @@
+#seo-analysis-page {
+	margin-top: 10px;
+	.column {
+		width: 49.5%;
+		margin-left: 1%;
+		float: left;
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+	.hndle {
+		cursor: default;
+	}
+	.handlediv {
+		display: none;
+	}
+	.right-column {
+		float:right;
+	}
+	.misc-pub-section:last-child {
+		border-bottom-width: 0px;
+	}
+	.meta-column {
+		width: 45%;
+		&.left-side-column {
+			float: left;
+		}
+		&.right-side-column {
+			float: right;
+		}
+		.sub {
+			padding: 0 0 8px;
+			color: #8f8f8f;
+			font-size: 14px;
+			margin-top: 0;
+			border-bottom: 1px solid #ececec;
+		}
+	}
+	.seoslides_slideset_referrer_count {
+		li {
+			.toggle-show-referrer {
+				margin-right: 5px;
+				display: none;
+			}
+			&:hover .toggle-show-referrer {
+				display: inline;
+			}
+		}
+	}
+	.seoslides_slideset_referrer_count, .seoslides_slideset_terms_count {
+		&.collapsed .below-the-fold {
+			display: none;
+		}
+	}
+}

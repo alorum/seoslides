@@ -1,0 +1,135 @@
+.seoslides {
+    position: relative;
+    margin: 10px auto;
+    border: 1px solid #666;
+	background: -webkit-linear-gradient(bottom,#6d6d6d,#808080);
+	background:    -moz-linear-gradient(bottom,#6d6d6d,#808080);
+	background:     -ms-linear-gradient(bottom,#6d6d6d,#808080);
+	background:      -o-linear-gradient(bottom,#6d6d6d,#808080);
+	background:         linear-gradient(to top,#6d6d6d,#808080);
+    /*background: url(../images/bucket-background.png) repeat;*/
+}
+.seoslides-bucket-controls {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 2px;
+    z-index: 100;
+}
+.seoslides-bucket-controls .button {
+    float: left;
+    display: inline;
+    margin: 0 0 0 5px;
+}
+.seoslides .bucket-slide {
+    position: absolute;
+    background-color: #fff;
+    -moz-box-shadow: 0 0 15px #353535;
+    -webkit-box-shadow: 0 0 15px #353535;
+    box-shadow: 0 0 15px #353535;
+}
+.seoslides .bucket-slide.left, .seoslides .bucket-slide.right {
+    cursor: pointer;
+}
+.seoslides .bucket-slide.left:hover, .seoslides .bucket-slide.right:hover {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)" !important;
+    -moz-opacity: 1.0 !important;
+    -khtml-opacity: 1.0 !important;
+    opacity: 1.0 !important;
+}
+.seoslides-context-menu {
+    border: 1px solid #ccc;
+    position: absolute;
+    z-index: 200000;
+    background-color: #f2f2f2;
+}
+.seoslides-context-menu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.seoslides-context-menu ul li {
+    padding: 8px 5px 5px 22px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: 5px 8px;
+    color: #333333;
+}
+body.admin-color-mp6 .seoslides-context-menu ul li {
+	background-position: 5px 10px;
+}
+
+.seoslides-context-menu ul li a {
+    color: #333333;
+    text-decoration: none;
+    margin: 5px;
+}
+.seoslides-context-menu ul li:hover {
+    background-color: #ccc;
+}
+.seoslides-context-menu ul li.context-menu-status {
+    padding: 8px 5px 5px 5px;
+}
+.seoslides-context-menu ul li.context-menu-status:hover {
+    background-color: inherit;
+    cursor: default;
+}
+.seoslides .bucket-slide .slide-object {
+    position: absolute;
+    padding: 1px;
+    z-index: 0;
+}
+.seoslides .bucket-slide .slide-object .slide-object-content {
+    position: relative;
+    background-color: rgba( 255, 255, 255, 0.2 );
+    height: 100%;
+    width: 100%;
+}
+.seoslides .bucket-slide .slide-object.selected .slide-object-content {
+	background-color: #fff;
+}
+.seoslides .bucket-slide .slide-object .resize-control {
+    cursor: se-resize;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 0 solid transparent;
+    border-right: 15px solid #666;
+    display: none;
+}
+.seoslides .bucket-slide .slide-object .drag-control {
+    cursor: move;
+    position: absolute;
+    top: 0;
+    left: -16px;
+	bottom: 0;
+    width: 15px;
+    display: none;
+    background-image: url(../images/drag-texture.png);
+	background-color: transparent;
+	background-size: 100% auto;
+}
+.seoslides .bucket-slide .slide-object .dismiss-control {
+	cursor: pointer;
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	height: 20px;
+	width: 20px;
+	display: none;
+	background-image: url(../images/closer.png);
+	background-color: transparent;
+	background-size: 100% auto;
+}
+.seoslides .bucket-slide .slide-object.selected {
+    background: url(../images/selection.gif) transparent;
+    z-index: 1;
+}
+.seoslides .bucket-slide .slide-object.can-resize.selected .resize-control,
+.seoslides .bucket-slide .slide-object.can-drag.selected .drag-control,
+.seoslides .bucket-slide .slide-object.selected .dismiss-control {
+    display: block;
+}

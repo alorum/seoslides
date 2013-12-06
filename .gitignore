@@ -1,0 +1,7 @@
+css/src/.sass-cache
+css/.sass-cache/
+.sass-cache/
+node_modules/
+.idea
+.DS_STORE
+release/

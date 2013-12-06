@@ -1,0 +1,12 @@
+.slide .slide-body .slide-object-content {
+	@import '_deck.core.slide.scss';
+
+	h1 {
+		padding: 0;
+		margin: .67em 0;
+	}
+
+	p {
+		margin: 1em 0;
+	}
+}

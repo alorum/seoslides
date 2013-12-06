@@ -1,0 +1,16 @@
+article.deck-container section.list,
+article.deck-container section.slide,
+article.deck-container a.deck-prev-link,
+article.deck-container a.deck-next-link,
+footer.deck-footer,
+article.seoslides-archive .slide,
+article.seoslides-archive ul.meta {
+	display: none;
+}
+
+section#noprint {
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	font-size: 1.2em;
+}

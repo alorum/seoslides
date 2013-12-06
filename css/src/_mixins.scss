@@ -1,0 +1,52 @@
+/* Default aspect ratio settings */
+$x_ratio:16;
+$y_ratio:9;
+
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio:2), (min-resolution:192dpi) {
+    @content;
+  }
+}
+@mixin tab-size($n) {
+  -moz-tab-size:$n;
+  -o-tab-size:$n;
+  tab-size:$n;
+}
+@mixin transform($n) {
+  -webkit-transform:$n;
+  -moz-transform:$n;
+  -ms-transform:$n;
+  -o-transform:$n;
+  transform:$n;
+}
+@mixin transform-origin($n) {
+  -webkit-transform-origin:$n;
+  -sand-transform:$n;
+  -moz-transform-origin:$n;
+  -ms-transform-origin:$n;
+  -o-transform-origin:$n;
+  transform-origin:$n;
+}
+@mixin transition($n) {
+  -webkit-transition:$n;
+  -moz-transition:$n;
+  -o-transition:$n;
+  transition:$n;
+}
+@mixin box-shadow($top, $left, $blur, $spread, $color, $inset:"") {
+  -webkit-box-shadow: $top $left $blur $spread $color #{$inset};
+  -mox-box-shadow: $top $left $blur $spread $color #{$inset};
+  box-shadow: $top $left $blur $spread $color #{$inset};
+}
+@mixin border-radius($r) {
+  -webkit-border-radius: $r;
+  -moz-border-radius: $r;
+  border-radius: $r;
+}
+
+@mixin opacity( $o ) {
+	-khtml-opacity: $o;
+	-moz-opacity: $o;
+	-ms-filter:   "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$o * 100})";
+	opacity:      $o;
+}

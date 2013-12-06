@@ -1,0 +1,34 @@
+{
+  "name": "seoslides",
+  "version": "1.1.1",
+  "author": {
+    "name": "Alorum",
+    "email": "sales@alorum.com",
+    "url": "http://alorum.com"
+  },
+  "licenses": [
+    {
+      "type": "GPLv2+",
+      "url": "http://www.gnu.org/licenses/gpl-2.0.html"
+    }
+  ],
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.7.2",
+    "grunt-contrib-nodeunit": "~0.2.2",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-sass": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-compress": "~0.5.3"
+  },
+  "keywords": []
+}

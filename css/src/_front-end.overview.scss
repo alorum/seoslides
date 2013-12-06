@@ -1,0 +1,137 @@
+article.overview {
+	padding: 50px 60px 40px 100px;
+	margin: 0;
+	min-height: 0px;
+	background: url(../img/wash.png) repeat fixed #333;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+
+    @media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
+      background-image: url(../img/wash-2x.png);
+      background-size: 420px 296px;
+    }
+
+	header {
+		color: #272727;
+		text-shadow: 0px 1px 1px #DDD;
+		font-family: sans-serif
+
+		h1 {
+			font-size: 36px;
+            line-height: 1.3em;
+            font-weight: 700;
+		}
+
+		a {
+			color: #000;
+            text-decoration: none;
+
+			&:hover {
+              color: #000;
+              text-decoration: underline;
+			}
+		}
+
+		p {
+			font-size: 1.2em;
+			line-height: 1.4em;
+		}
+	}
+
+	.details {
+        padding-top: 20px;
+		font-family: sans-serif;
+        color: #000;
+
+		&.short {
+			max-height: 120px;
+			overflow: hidden;
+		}
+
+        p {
+            line-height: 1.5em;
+            margin: 10px 0;
+        }
+	}
+
+	.detail-expander {
+		margin-top: 10px;
+		margin-bottom: 10px;
+
+		.button {
+			width: 120px;
+			padding-left: 20px;
+			padding-right: 20px;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			text-align: center;
+			font-size: 14px;
+			line-height: 22px;
+		}
+
+		.hidden {
+			display: none;
+		}
+	}
+
+	.extras {
+		.deck-prev-link,
+		.deck-next-link {
+			display: none;
+		}
+
+		.branding {
+			position: fixed;
+		}
+	}
+}
+
+.deck-container .thumbnails {
+    margin-top: 40px;
+
+	a {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	section.deck-thumb {
+		$thumb-width: 400px;
+		width: $thumb-width;
+		height: $thumb-width / 16 * 9;
+		margin-left: 0;
+		float: left;
+		margin-right: 40px;
+		margin-bottom: 60px;
+		padding: 0;
+        cursor: pointer;
+
+        @include transition(all, .3s);
+		@include box-shadow(0, 0, 30px, 5px, rgba(0, 0, 0, 0.55));
+
+		&:hover {
+			@include box-shadow(0, 0, 30px, 5px, rgba(0, 0, 0, 0.85));
+		}
+
+		aside {
+			display: none;
+		}
+
+		.seoslides_iframe {
+			display: none;
+		}
+
+		.seoslides_iframe_thumb {
+			height: 100%;
+			display: block;
+		}
+	}
+}
+
+footer.overview {
+	display: none;
+}
