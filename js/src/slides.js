@@ -679,14 +679,14 @@
 
 				if ( null !== document.getElementById( 'seoslides_slide_notes' ) ) {
 					var editor = window.CKEDITOR.replace( 'seoslides_slide_notes', {
-					'autoGrow':        true,
-					'extraPlugins':    'wordcount',
-					'baseFloatZIndex': 170000,
-					'wordcount':       {
-						'showCharCount': false,
-						'showWordCount': true
-					}
-				} );
+						'autoGrow':        true,
+						'extraPlugins':    'wordcount',
+						'baseFloatZIndex': 170000,
+						'wordcount':       {
+							'showCharCount': false,
+							'showWordCount': true
+						}
+					} );
 
 					editor.on( 'instanceReady', function ( e ) {
 						document.querySelector( '.cke_contents' ).style.height = $( '.seoslides-modal-frame-notes' ).height() - 75 + 'px';

@@ -10,7 +10,8 @@
 		var SELF = this,
 			CORE = window.SEO_Slides,
 			$MODAL = false,
-			$OVERLAY = false;
+			$OVERLAY = false,
+			clean = true;
 
 		var createOverlay = function() {
 			var overlay = CORE.createElement( 'div', {
@@ -308,6 +309,10 @@
 		};
 
 		SELF.close = function() {
+			if ( ! clean && ! window.confirm( I18N.close_modal_conf ) ) {
+				return;
+			}
+
 			removeModal();
 			removeOverlay();
 
@@ -345,6 +350,10 @@
 				}
 			}
 		};
+
+		window.SEO_Slides.Events.addAction( 'plugin.setData', function() {
+			clean = false;
+		} );
 
 		setDefaults();
 	};

@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= 1.2.1 =
+
+* Prevent loss of changes by prematurely closing the modal slide editor.
+
 = 1.2 =
 
 * Fix an issue where child theme stylesheets were not unenqueued on slideset pages.

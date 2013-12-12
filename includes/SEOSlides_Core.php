@@ -327,6 +327,7 @@ class SEOSlides_Core {
 			'tracking_no_button'  => __( 'Do not allow tracking', 'seoslides_translate' ),
 			'tracking_button'     => __( 'Allow tracking', 'seoslides_translate' ),
 			'tracking_nonce'      => wp_create_nonce( 'seoslides_tracking' ),
+			'close_modal_conf'    => __( 'You have unsaved changes on this slide. Are you sure you wish to close the window?', 'seoslides_translate' ),
 		);
 
 		wp_localize_script( $handle, 'seoslides_i18n', $strings );

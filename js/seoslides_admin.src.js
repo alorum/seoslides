@@ -1,4 +1,4 @@
-/*! seoslides - v1.2
+/*! seoslides - v1.2.0
  * https://seoslides.com
  * Copyright (c) 2013 Alroum; * Licensed GPLv2+ */
 ;(function ($, window, undefined) {
@@ -1742,6 +1742,8 @@
 			var instance = INSTANCES[ uuid ];
 			if ( undefined !== instance ) {
 				instance.settings[ key ] = value;
+
+				CORE.Events.doAction( 'plugin.setData', SELF, uuid, key, value );
 			}
 		};
 
@@ -2340,7 +2342,8 @@
 		var SELF = this,
 			CORE = window.SEO_Slides,
 			$MODAL = false,
-			$OVERLAY = false;
+			$OVERLAY = false,
+			clean = true;
 
 		var createOverlay = function() {
 			var overlay = CORE.createElement( 'div', {
@@ -2638,6 +2641,10 @@
 		};
 
 		SELF.close = function() {
+			if ( ! clean && ! window.confirm( I18N.close_modal_conf ) ) {
+				return;
+			}
+
 			removeModal();
 			removeOverlay();
 
@@ -2675,6 +2682,10 @@
 				}
 			}
 		};
+
+		window.SEO_Slides.Events.addAction( 'plugin.setData', function() {
+			clean = false;
+		} );
 
 		setDefaults();
 	};
@@ -4523,14 +4534,14 @@
 
 				if ( null !== document.getElementById( 'seoslides_slide_notes' ) ) {
 					var editor = window.CKEDITOR.replace( 'seoslides_slide_notes', {
-					'autoGrow':        true,
-					'extraPlugins':    'wordcount',
-					'baseFloatZIndex': 170000,
-					'wordcount':       {
-						'showCharCount': false,
-						'showWordCount': true
-					}
-				} );
+						'autoGrow':        true,
+						'extraPlugins':    'wordcount',
+						'baseFloatZIndex': 170000,
+						'wordcount':       {
+							'showCharCount': false,
+							'showWordCount': true
+						}
+					} );
 
 					editor.on( 'instanceReady', function ( e ) {
 						document.querySelector( '.cke_contents' ).style.height = $( '.seoslides-modal-frame-notes' ).height() - 75 + 'px';
