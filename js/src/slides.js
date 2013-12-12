@@ -87,14 +87,9 @@
 		var tbody = $( document.createElement( 'tbody' ) ).addClass( 'list' );
 
 		var master = CORE.slideBuilder.createSlide( INTERNALS.slide_default, rowTemplate );
-		master.find( '.editslide' ).attr( 'title', I18N.label_master ).prepend( '<strong>' + I18N.label_master + '</strong>' );
+		master.find( '.editslide' ).attr( 'title', I18N.label_master );
 
-		var title_text = INTERNALS.slideset_data.seo_title;
-		if ( title_text === '' ) {
-			title_text = I18N.no_title;
-		}
-
-		var title = '<div class="title">' + title_text + '</div>';
+		var title = '<div class="title"><strong>' + I18N.label_master + '</strong></div>';
 		title += '<div class="row-actions">';
 		title += '<span class="edit"><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_edit + '</a></span>';
 		title += '</div>';
@@ -133,7 +128,7 @@
 			slide.id = slide.ID;
 
 			var tbody = table.find( 'tbody' ),
-				rendered = CORE.slideBuilder.createSlide( slide, rowTemplate );
+				rendered = CORE.slideBuilder.createSlide( slide, rowTemplate, true );
 
 			var newRow = '<tr class="slide-' + slide.id + '">' + rendered.html() + '</tr>';
 
@@ -781,11 +776,14 @@
 					'default_color':   font_color,
 					'header_font':     document.getElementById( 'default_h1_font' ).value,
 					'header_size':     document.getElementById( 'default_h1_size' ).value,
-					'header_color':    h1_font_color
+					'header_color':    h1_font_color,
+					'seoslides_theme': document.getElementById( 'seoslides_theme' ).value
 				}
 			};
 
-			CORE.ajax( options );
+			CORE.ajax( options ).done( function( data ) {
+				INTERNALS.themes = data.themes;
+			} );
 		}
 
 		function createContent() {

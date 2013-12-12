@@ -95,6 +95,7 @@
 	function Footer( element ) {
 		var SELF = this,
 			enabled = true,
+			disabledForLastSlide = false,
 			$element = $( element );
 
 		var speed = CORE.Events.applyFilter( 'footer.fadeSpeed', 300 ),
@@ -216,7 +217,10 @@
 				width = $node.width(),
 				height = $node.height();
 
-			document.querySelector( '.branding' ).style.left = left + 'px';
+			var branding = document.querySelector( '.branding' );
+			if ( null !== branding ) {
+				branding.style.left = left + 'px';
+			}
 
 			// Resize iframes
 			var frames = document.querySelectorAll( '.seoslides_iframe' );

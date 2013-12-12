@@ -64,12 +64,19 @@ class SEOSlides_Ajax {
 			// Build an array containing each slide in a separate associative array
 			/** @var SEOSlides_Slide $slide */
 			foreach( $slideset->slides as $slide ) {
+				$bg_image = $slide->bg_image;
+				$bg_id = SEOSlides_Core::get_attachment_id_from_url( $bg_image );
+				if ( false !== $bg_id ) {
+					$bg_arr = wp_get_attachment_image_src( $bg_id, 'seoslides-thumb' );
+					$bg_image = $bg_arr[0];
+				}
+
 				$data = array(
 					'id'              => $slide->ID,
 					'title'           => stripslashes( $slide->title ),
 					'content'         => $slide->content,
 					'image'           => stripslashes( $slide->image ),
-					'bg-image'        => $slide->bg_image,
+					'bg_image'        => $bg_image,
 					'style'           => $slide->style,
 					'position'        => $slide->position,
 					'preview'         => $slide->preview,
@@ -77,7 +84,7 @@ class SEOSlides_Ajax {
 					'seo_title'       => $slide->seo_title,
 					'seo_description' => $slide->seo_description,
 					'seo_keywords'    => $slide->seo_keywords,
-					'presenter_notes' => $slide->presenter_notes,
+					'presenter_notes' => wp_trim_words( $slide->presenter_notes, 50, ' [&hellip;]' ),
 					'status'          => $slide->status,
 				);
 
@@ -217,6 +224,8 @@ class SEOSlides_Ajax {
 				$slide_number++;
 			}
 
+			$sections .= $slideset->last_slide();
+
 			$response['success'] = true;
 			$response['sections'] = $sections;
 		}
@@ -254,7 +263,11 @@ class SEOSlides_Ajax {
 					}
 				}
 
-				$response['success'] = add_post_meta( $slideset_id, '_default_slide', $default, true ) || update_post_meta( $slideset_id, '_default_slide', $default );
+				if ( false === add_post_meta( $slideset_id, '_default_slide', $default, true ) ) {
+					update_post_meta( $slideset_id, '_default_slide', $default );
+				}
+
+				$response['success'] = true;
 			} else {
 				$response['success'] = false;
 			}
@@ -346,13 +359,24 @@ class SEOSlides_Ajax {
 		$slideset->default_header_size = sanitize_text_field( $header_size );
 		$slideset->default_header_font_color = sanitize_text_field( $_POST['header_color'] );
 
+		// Update presentation theme
+		if ( isset( $_POST['seoslides_theme'] ) ) {
+			$theme = sanitize_text_field( $_POST['seoslides_theme'] );
+			update_post_meta( $slideset_id, '_slideset_theme', $theme );
+		}
+
 		// Persist changes
 		$updated = $slideset->update();
 
 		if ( is_wp_error( $updated ) ) {
 			$response['success'] = false;
 		} else {
+			/** @var SEOSlides_Core $core */
+			$core = SEOSlides_Module_Provider::get( 'SEOSlides Core' );
+			$themes = $core->presentation_theme( $slideset_id );
+
 			$response['success'] = $updated;
+			$response['data'] = array( 'themes' => $themes );
 		}
 
 		wp_send_json( $response );

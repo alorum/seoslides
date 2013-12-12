@@ -62,15 +62,15 @@
 				slide_link = $container.closest( 'a' ).attr( 'href' );
 			}
 
-			// If no anchor is wrapping the slide, we much be actually viewing a slide. Grab the current location.
+			// If no anchor is wrapping the slide, we must be actually viewing a slide. Grab the current location.
 			if ( undefined === slide_link ) {
 				slide_link = window.location.href;
 			}
 
 			embed_data = {
 				embed_id: input.getAttribute( 'id' ),
-				embed_url: slide_link.replace( /\/(slides|embeds)\//, '/embed-script/' ),
-				overview: window.location.href,
+				embed_url: slide_link.replace( /\/(slides|embeds)\//, '/embed-script/').replace( /\/share\//, '/'),
+				overview: window.location.href.replace( /\/share\//, '/'),
 				slide_title: input.getAttribute( 'data-title' ),
 				site_title: input.getAttribute( 'data-site' ),
 				site_url: input.getAttribute( 'data-siteurl' )

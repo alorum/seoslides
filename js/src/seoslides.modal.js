@@ -1,6 +1,7 @@
 /*global jQuery */
 ( function( window, $, undefined ) {
 	var document = window.document,
+		INTERNALS = window.seoslides,
 		I18N = window.seoslides_i18n;
 
 	window.SEO_Slides = window.SEO_Slides || {};
@@ -275,6 +276,20 @@
 
 						videoTimeout = window.setTimeout( validateVideo, 300 );
 					} );
+				}
+
+				// Transitions
+				{
+					var transitions = CORE.createElement( 'div', {
+						'class': 'seoslides-modal-transitions',
+						'appendTo': left_rail_content
+					} );
+
+					CORE.createElement( 'label', {
+						'appendTo': transitions
+					} ).innerHTML = I18N.transitions;
+
+					$( transitions ).append( INTERNALS.themes );
 				}
 			}
 

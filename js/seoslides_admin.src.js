@@ -1,4 +1,4 @@
-/*! seoslides - v1.1.1
+/*! seoslides - v1.2
  * https://seoslides.com
  * Copyright (c) 2013 Alroum; * Licensed GPLv2+ */
 ;(function ($, window, undefined) {
@@ -2331,6 +2331,7 @@
 } )( this, jQuery );
 ( function( window, $, undefined ) {
 	var document = window.document,
+		INTERNALS = window.seoslides,
 		I18N = window.seoslides_i18n;
 
 	window.SEO_Slides = window.SEO_Slides || {};
@@ -2605,6 +2606,20 @@
 
 						videoTimeout = window.setTimeout( validateVideo, 300 );
 					} );
+				}
+
+				// Transitions
+				{
+					var transitions = CORE.createElement( 'div', {
+						'class': 'seoslides-modal-transitions',
+						'appendTo': left_rail_content
+					} );
+
+					CORE.createElement( 'label', {
+						'appendTo': transitions
+					} ).innerHTML = I18N.transitions;
+
+					$( transitions ).append( INTERNALS.themes );
 				}
 			}
 
@@ -3042,11 +3057,14 @@
 		/**
 		 * Create a slide object (jQuery object) based on a given slide and specified template.
 		 *
-		 * @param {object} slide
-		 * @param {object} template
+		 * @param {object}  slide
+		 * @param {object}  template
+		 * @param {boolean} thumbnail
+		 *
 		 * @return {object}
 		 */
-		SELF.createSlide = function( slide, template ) {
+		SELF.createSlide = function( slide, template, thumbnail ) {
+			thumbnail = ( undefined === thumbnail ) ? false : thumbnail;
 			var row = template.clone();
 
 			// Render Slide
@@ -3058,14 +3076,20 @@
 			var slideDiv = renderSlideThumb( slide );
 			slideEl.appendChild( slideDiv );
 
-			if ( undefined !== slide['bg-image'] && typeof slide['bg-image'] === 'string' && '' !== slide['bg-image'].trim() ) {
-				slideEl.style.backgroundImage = 'url(' + slide['bg-image'] + ')';
+			if ( thumbnail ) {
+				if ( undefined !== slide['bg_thumb'] && typeof slide['bg_thumb'] === 'string' && '' !== slide['bg_thumb'].trim() ) {
+					slideEl.style.backgroundImage = 'url(' + slide['bg_thumb'] + ')';
+				}
+			} else {
+				if ( undefined !== slide['bg_image'] && typeof slide['bg_image'] === 'string' && '' !== slide['bg_image'].trim() ) {
+					slideEl.style.backgroundImage = 'url(' + slide['bg_image'] + ')';
+				}
 			}
 
 			slideEl.style.backgroundColor = slide.fill_color;
 
 			if ( slide.title === '' ) {
-				slide.title = '(no title)';
+				slide.title = I18N.label_notitle;
 			}
 
 			var title = '<div class="title">' + slide.title + '</div>';
@@ -3574,7 +3598,7 @@
 			inputs.dialog.on( 'wpdialogrefresh', linker.refresh );
 			inputs.search.on( 'keyup', linker.searchInternalLinks );
 			rivers.elements.on( 'river-select', linker.updateFields );
-			$( document.querySelector( '.seoslides_link' ) ).on( 'click', linker.open );
+			$( [] ).add( document.getElementById( 'seoslides_link' ) ).add( document.querySelector( '.seoslides_link' ) ).on( 'click', linker.open );
 
 			rivers.elements.on( 'river-select', linker.updateFields );
 
@@ -3907,14 +3931,9 @@
 		var tbody = $( document.createElement( 'tbody' ) ).addClass( 'list' );
 
 		var master = CORE.slideBuilder.createSlide( INTERNALS.slide_default, rowTemplate );
-		master.find( '.editslide' ).attr( 'title', I18N.label_master ).prepend( '<strong>' + I18N.label_master + '</strong>' );
+		master.find( '.editslide' ).attr( 'title', I18N.label_master );
 
-		var title_text = INTERNALS.slideset_data.seo_title;
-		if ( title_text === '' ) {
-			title_text = I18N.no_title;
-		}
-
-		var title = '<div class="title">' + title_text + '</div>';
+		var title = '<div class="title"><strong>' + I18N.label_master + '</strong></div>';
 		title += '<div class="row-actions">';
 		title += '<span class="edit"><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_edit + '</a></span>';
 		title += '</div>';
@@ -3953,7 +3972,7 @@
 			slide.id = slide.ID;
 
 			var tbody = table.find( 'tbody' ),
-				rendered = CORE.slideBuilder.createSlide( slide, rowTemplate );
+				rendered = CORE.slideBuilder.createSlide( slide, rowTemplate, true );
 
 			var newRow = '<tr class="slide-' + slide.id + '">' + rendered.html() + '</tr>';
 
@@ -4601,11 +4620,14 @@
 					'default_color':   font_color,
 					'header_font':     document.getElementById( 'default_h1_font' ).value,
 					'header_size':     document.getElementById( 'default_h1_size' ).value,
-					'header_color':    h1_font_color
+					'header_color':    h1_font_color,
+					'seoslides_theme': document.getElementById( 'seoslides_theme' ).value
 				}
 			};
 
-			CORE.ajax( options );
+			CORE.ajax( options ).done( function( data ) {
+				INTERNALS.themes = data.themes;
+			} );
 		}
 
 		function createContent() {

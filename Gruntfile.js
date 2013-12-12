@@ -246,7 +246,9 @@ module.exports = function ( grunt ) {
 			}
 		},
 		clean:    {
-			main:    ['release/<%= pkg.version %>']
+			main:    ['release/<%= pkg.version %>'],
+			modules: ['release/modules/<%= pkg.version %>'],
+			side:    ['release/side_plugins/<%= pkg.version %>']
 		},
 		copy:     {
 			// Copy the plugin to a versioned release directory
@@ -255,6 +257,8 @@ module.exports = function ( grunt ) {
 					'**',
 					'!developer_notes.md',
 					'!assets/**',
+					'!seoslides_modules/**',
+					'!side-plugins/**',
 					'!node_modules/**',
 					'!release/**',
 					'!.git/**',
@@ -268,6 +272,23 @@ module.exports = function ( grunt ) {
 					'!.gitmodules'
 				],
 				dest: 'release/<%= pkg.version %>/'
+			},
+			// Copy individual modules to a versioned release directory
+			modules: {
+				expand: true,
+				cwd:    'seoslides_modules/',
+				src:    [
+					'**'
+				],
+				dest:   'release/modules/<%= pkg.version %>/'
+			},
+			side:    {
+				expand: true,
+				cwd:    'side-plugins/',
+				src:    [
+					'**'
+				],
+				dest:   'release/side_plugins/<%= pkg.version %>/'
 			}
 		},
 		compress: {
@@ -280,6 +301,16 @@ module.exports = function ( grunt ) {
 				cwd: 'release/<%= pkg.version %>/',
 				src: ['**/*'],
 				dest: 'seoslides/'
+			},
+			whitelabel: {
+				options: {
+					mode: 'zip',
+					archive: './release/side_plugins/seoslides-whitelabel.<%= pkg.version %>.zip'
+				},
+				expand: true,
+				cwd: 'release/side_plugins/<%= pkg.version %>/seoslides-whitelabel/',
+				src: ['**/*'],
+				dest: 'seoslides-whitelabel/'
 			}
 		}
 	} );
@@ -298,7 +329,8 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass'] );
 
 	// Build task
-	grunt.registerTask( 'build', ['default', 'clean:main', 'copy:main', 'compress:main'] );
+	grunt.registerTask( 'compress:side', ['compress:whitelabel'] );
+	grunt.registerTask( 'build', ['default', 'clean:main', 'clean:modules', 'clean:side', 'copy:main', 'copy:modules', 'copy:side', 'compress:main', 'compress:side'] );
 
 	grunt.util.linefeed = '\n';
 

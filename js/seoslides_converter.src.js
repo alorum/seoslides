@@ -1,4 +1,4 @@
-/*! seoslides - v1.1.1
+/*! seoslides - v1.2
  * https://seoslides.com
  * Copyright (c) 2013 Alroum; * Licensed GPLv2+ */
 (function( window, $, undefined ) {
@@ -150,7 +150,7 @@
 						flush_status();
 						running = false;
 						window.onbeforeunload = null;
-						$import_button.prop( 'disabled', false );
+
 						return;
 					}
 
@@ -198,6 +198,14 @@
 
 		bind();
 	}
+
+	/**
+	 * Allow "More info" sections to be toggled open and closed.
+	 */
+	$( document.getElementsByClassName( 'wrap' ) ).on( 'click', '.seoslides-vistoggler', function() {
+		$( this ).find( '.seoslides-vistogglee' ).toggle( 'slow' );
+	});
+
 
 	CORE.importer = new Importer( document.getElementById( 'seoslides_process' ) );
 } )( this, jQuery );

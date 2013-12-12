@@ -1,10 +1,9 @@
 <?php
 /**
- * Created by JetBrains PhpStorm.
- * User: Eric
- * Date: 3/4/13
- * Time: 8:49 AM
- * To change this template use File | Settings | File Templates.
+ *
+ *
+ * @package SEOSlides
+ * @subpackage Objects
  */
 class SEOSlides_Slideset {
 	/**
@@ -351,5 +350,46 @@ class SEOSlides_Slideset {
 	 */
 	public function get_embed_id() {
 		return SEOSlides_Module_Provider::get( 'SEOSlides Embed' )->get_embed_unique_id( $this->ID, $this->first_slide()->slug );
+	}
+
+	/**
+	 * Get the markup of the last slide (for sharing the presentation).
+	 *
+	 * @return string
+	 */
+	public function last_slide() {
+		$last = '';
+
+		$icons = apply_filters( 'seoslides_social_icons', array() );
+
+		$social_slide = 'yes' === get_option( 'seoslides_add_social_slide', 'no' );
+
+		if ( $social_slide && count( $icons ) > 0 ) {
+			$last .= "<section class='slide' id='share' style='background-color:#3d6b85;'>";
+			$last .= "<div class='slide-body'>";
+			$last .= apply_filters( 'seoslides_social_icons_pre', '', $this->ID );
+			$last .= "<section class='share_items'>";
+
+			/** @var array $icon */
+			foreach( $icons as $name => $icon ) {
+				// Generate share link
+				$share_link = get_permalink( $this->ID );
+				$share_link = sprintf( $icon[3], urlencode( $share_link ), urlencode( $this->title ) );
+				$share_class = ( 'seoslides' == $name ) ? ' class="deck-actions"' : '';
+
+				$last .= '<span class="share_item seoslides_responsive">';
+				$last .= '<a href="' . $share_link . '"' . $share_class . '>';
+				$last .= '<img src="' . $icon[0] . '" title="' . $icon[1] . '" />';
+				$last .= '<p>' . sprintf( $icon[2], $share_link ) . '</p>';
+				$last .= '</a>';
+				$last .= '</span>';
+			}
+
+			$last .= "</section></div>";
+			$last .= $this->first_slide()->render_embed_overlay();
+			$last .= "</section>";
+		}
+
+		return $last;
 	}
 }

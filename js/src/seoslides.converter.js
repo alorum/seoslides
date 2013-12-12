@@ -148,7 +148,7 @@
 						flush_status();
 						running = false;
 						window.onbeforeunload = null;
-						$import_button.prop( 'disabled', false );
+
 						return;
 					}
 
@@ -196,6 +196,14 @@
 
 		bind();
 	}
+
+	/**
+	 * Allow "More info" sections to be toggled open and closed.
+	 */
+	$( document.getElementsByClassName( 'wrap' ) ).on( 'click', '.seoslides-vistoggler', function() {
+		$( this ).find( '.seoslides-vistogglee' ).toggle( 'slow' );
+	});
+
 
 	CORE.importer = new Importer( document.getElementById( 'seoslides_process' ) );
 } )( this, jQuery );

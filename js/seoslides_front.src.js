@@ -1,4 +1,4 @@
-/*! seoslides - v1.1.1
+/*! seoslides - v1.2
  * https://seoslides.com
  * Copyright (c) 2013 Alroum; * Licensed GPLv2+ */
 /*!
@@ -3071,11 +3071,14 @@ This module adds clickable previous and next links to the deck.
 		/**
 		 * Create a slide object (jQuery object) based on a given slide and specified template.
 		 *
-		 * @param {object} slide
-		 * @param {object} template
+		 * @param {object}  slide
+		 * @param {object}  template
+		 * @param {boolean} thumbnail
+		 *
 		 * @return {object}
 		 */
-		SELF.createSlide = function( slide, template ) {
+		SELF.createSlide = function( slide, template, thumbnail ) {
+			thumbnail = ( undefined === thumbnail ) ? false : thumbnail;
 			var row = template.clone();
 
 			// Render Slide
@@ -3087,14 +3090,20 @@ This module adds clickable previous and next links to the deck.
 			var slideDiv = renderSlideThumb( slide );
 			slideEl.appendChild( slideDiv );
 
-			if ( undefined !== slide['bg-image'] && typeof slide['bg-image'] === 'string' && '' !== slide['bg-image'].trim() ) {
-				slideEl.style.backgroundImage = 'url(' + slide['bg-image'] + ')';
+			if ( thumbnail ) {
+				if ( undefined !== slide['bg_thumb'] && typeof slide['bg_thumb'] === 'string' && '' !== slide['bg_thumb'].trim() ) {
+					slideEl.style.backgroundImage = 'url(' + slide['bg_thumb'] + ')';
+				}
+			} else {
+				if ( undefined !== slide['bg_image'] && typeof slide['bg_image'] === 'string' && '' !== slide['bg_image'].trim() ) {
+					slideEl.style.backgroundImage = 'url(' + slide['bg_image'] + ')';
+				}
 			}
 
 			slideEl.style.backgroundColor = slide.fill_color;
 
 			if ( slide.title === '' ) {
-				slide.title = '(no title)';
+				slide.title = I18N.label_notitle;
 			}
 
 			var title = '<div class="title">' + slide.title + '</div>';
@@ -5494,6 +5503,7 @@ This module adds clickable previous and next links to the deck.
 	function Footer( element ) {
 		var SELF = this,
 			enabled = true,
+			disabledForLastSlide = false,
 			$element = $( element );
 
 		var speed = CORE.Events.applyFilter( 'footer.fadeSpeed', 300 ),
@@ -5615,7 +5625,10 @@ This module adds clickable previous and next links to the deck.
 				width = $node.width(),
 				height = $node.height();
 
-			document.querySelector( '.branding' ).style.left = left + 'px';
+			var branding = document.querySelector( '.branding' );
+			if ( null !== branding ) {
+				branding.style.left = left + 'px';
+			}
 
 			// Resize iframes
 			var frames = document.querySelectorAll( '.seoslides_iframe' );
@@ -5705,15 +5718,15 @@ This module adds clickable previous and next links to the deck.
 				slide_link = $container.closest( 'a' ).attr( 'href' );
 			}
 
-			// If no anchor is wrapping the slide, we much be actually viewing a slide. Grab the current location.
+			// If no anchor is wrapping the slide, we must be actually viewing a slide. Grab the current location.
 			if ( undefined === slide_link ) {
 				slide_link = window.location.href;
 			}
 
 			embed_data = {
 				embed_id: input.getAttribute( 'id' ),
-				embed_url: slide_link.replace( /\/(slides|embeds)\//, '/embed-script/' ),
-				overview: window.location.href,
+				embed_url: slide_link.replace( /\/(slides|embeds)\//, '/embed-script/').replace( /\/share\//, '/'),
+				overview: window.location.href.replace( /\/share\//, '/'),
 				slide_title: input.getAttribute( 'data-title' ),
 				site_title: input.getAttribute( 'data-site' ),
 				site_url: input.getAttribute( 'data-siteurl' )
