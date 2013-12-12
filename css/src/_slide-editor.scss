@@ -40,7 +40,8 @@
 		}
 
 		.seoslides-modal-seo,
-		.seoslides-modal-notes {
+		.seoslides-modal-notes,
+		.seoslides-modal-transitions {
 			width: 269px;
 			padding: 0 15px;
 
@@ -54,6 +55,10 @@
 				font-weight: bold;
 				font-size: 1.1em;
 			}
+		}
+
+		.seoslides-modal-transitions {
+			margin-top: 15px;
 		}
 
 		#seoslides_video_oembed {
@@ -346,12 +351,12 @@
 }
 
 // Thickbox Overrides
-.admin-color-mp6 #TB_overlay,
+.flaticons #TB_overlay,
 #TB_overlay {
 	z-index: 170000;
 }
 
-.admin-color-mp6 #TB_window,
+.flaticons #TB_window,
 #TB_window {
 	z-index: 170001;
 }

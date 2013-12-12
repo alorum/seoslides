@@ -7,7 +7,8 @@
  */
 
 // Remove some known theme incompatibilities
-remove_filter( 'wp_title', 'genesis_default_title' );
+remove_filter( 'wp_title', 'genesis_doctitle_wrap', 20 );
+remove_filter( 'wp_title', 'genesis_default_title', 10, 3 );
 
 global $post;
 the_post();
@@ -102,7 +103,7 @@ if ( '' === $slide_slug ) {
 		}
 	</style>
 </head>
-<body class="home">
+<body class="home" style="background-color:<?php echo $slideset_bg; ?>;">
 
 <article class="deck-container <?php echo $scheme; ?>" style="background-color:<?php echo $slideset_bg; ?>;">
 	<?php if ( 'overview' === $scheme ) : ?>
@@ -162,7 +163,8 @@ if ( '' === $slide_slug ) {
 		<?php $branding = get_option( 'seoslides_logo', '' ); ?>
 		<?php $branding_url = get_option( 'seoslides_logo_url', '' ); ?>
 		<?php $branding_title = get_option( 'seoslides_logo_title', '' ); ?>
-		<?php if ( 'default' === $branding ) : ?>
+		<?php $enabled = 'yes' === get_option( 'seoslides_logo_enabled', 'no' ); ?>
+		<?php if ( 'default' === $branding || 'seoslides' === $branding ) : ?>
 			<?php $brand = '<span class="branding"><img src="' . SEOSLIDES_URL . '/img/seoslides-logo-trans-2x.png" style="height:100%;width:auto;"></span>'; ?>
 		<?php else : ?>
 			<?php $brand = '<span class="branding"><img src="' . esc_url( $branding ) . '" style="height:100%;width:auto;"></span>'; ?>
@@ -170,7 +172,7 @@ if ( '' === $slide_slug ) {
 		<?php if ( '' !== $branding_url ) : ?>
 			<?php $brand = '<a href="' . esc_url( $branding_url ) . '" title="' . esc_attr( $branding_title ) . '">' . $brand . '</a>'; ?>
 		<?php endif; ?>
-		<?php echo $brand; ?>
+		<?php echo $enabled ? $brand : ''; ?>
 
 		<?php if ( isset( $slide ) ) : ?>
 			<?php $prev = $slide->permalink( 'previous' ); ?>
@@ -189,9 +191,7 @@ if ( '' === $slide_slug ) {
 </section>
 
 <footer class="deck-footer <?php echo $scheme; ?>">
-	<p class="deck-actions">
-		&nbsp;
-	</p>
+	<p class="deck-actions"></p>
 </footer>
 <?php wp_footer(); ?>
 </body>

@@ -100,9 +100,9 @@ class SEOSlides_Multiplier {
 			'multiplier',
 			array(
 			     'ajaxurl'                => admin_url( 'admin-ajax.php' ),
-			     'label_auto_published'   => __( 'Auto-Published', 'seoslides_translate' ),
-			     'label_published'        => __( 'Published', 'seoslides_translate' ),
-			     'label_not_published'    => __( 'Not Published', 'seoslides_translate' ),
+			     'label_auto_published'   => __( 'Shared and Updating', 'seoslides_translate' ),
+			     'label_published'        => __( 'Shared', 'seoslides_translate' ),
+			     'label_not_published'    => __( 'Not Shared', 'seoslides_translate' ),
 			     'button_ok'              => __( 'Ok', 'seoslides_translate' ),
 			     'notice_free_subscriber' => '<div id="dialog-message" title="' . __( 'Upgrade Today', 'seoslides_translate' ) . '" style="padding:0 10px;">'
 			        . '<p>' . __( 'You can use a free license key for 3 imports and 3 embeds on <a href="http://seoslid.es">seoslid.es</a> (our presentation community).', 'seoslides_translate' ) . '</p>'
@@ -147,11 +147,11 @@ class SEOSlides_Multiplier {
 
 		if ( 'publish' == $post->post_status ) {
 			if ( $remote_id && $auto_checked )
-				$status = __( 'Auto-Published', 'seoslides_translate' );
+				$status = __( 'Shared and Updating', 'seoslides_translate' );
 			elseif ( $remote_id && ! $auto_checked )
-				$status = __( 'Published', 'seoslides_translate' );
+				$status = __( 'Shared', 'seoslides_translate' );
 			elseif ( ! $remote_id )
-				$status = __( 'Not Published', 'seoslides_translate' );
+				$status = __( 'Not Shared', 'seoslides_translate' );
 		} // Multiplier Stati
 
 		if ( 'publish' == $post->post_status ) {
@@ -165,7 +165,7 @@ class SEOSlides_Multiplier {
 				<input type="hidden" id="post_ID" value="<?php echo get_the_ID(); ?>" />
 				<fieldset style="margin-bottom:5px;">
 					<?php wp_nonce_field( 'seo-nonces', 'seoslides-multiplier-push-nonce' ); ?>
-					<input type="button" id="seoslides_multiplier_push" name="seoslides_multiplier_push" class="button" value="<?php _e( 'Publish to seoslid.es now', 'seoslides_translate' ); ?>" style="width:80%;<?php echo $hide_if_remote; ?>" />
+					<input type="button" id="seoslides_multiplier_push" name="seoslides_multiplier_push" class="button" value="<?php _e( 'Share on seoslid.es now', 'seoslides_translate' ); ?>" style="width:80%;<?php echo $hide_if_remote; ?>" />
 
 					<?php wp_nonce_field( 'seo-nonces', 'seoslides-multiplier-remove-nonce' ); ?>
 					<input type="button" id="seoslides_multiplier_delete" name="seoslides_multiplier_delete" class="button" value="<?php _e( 'Remove from seoslid.es now', 'seoslides_translate' ); ?>" style="<?php echo $show_if_remote; ?>width:80%;" />
@@ -327,11 +327,11 @@ class SEOSlides_Multiplier {
 					     )
 				     )
 			     ),
-			     $this->domain
+			     $this->domain,
 			)
 		);
 
-		do_action( 'seoslides_presstrends_event', 'Presentation Published to seoslid.es' );
+		do_action( 'seoslides_presstrends_event', 'Presentation shared on seoslid.es' );
 
 		if ( ! $this->client->isError() ) {
 			return $this->client->getResponse();
@@ -373,9 +373,9 @@ class SEOSlides_Multiplier {
 						     )
 					     )
 				     )
-			     )
-			),
-			$this->domain
+			     ),
+			     $this->domain,
+			)
 		);
 
 		if ( ! $this->client->isError() )
@@ -391,22 +391,27 @@ class SEOSlides_Multiplier {
 	 *
 	 * @param int $post_id The presentation id.
 	 * @param int $remote_id The remote Slideset id.
+	 *
+	 * @return array
 	 */
 	public function delete_remote_slideset( $post_id, $remote_id ) {
 		$this->client->query(
 			'seoslides.deleteSlideset',
 			array(
-			     1,
+			     0,
 			     $remote_id,
-			     $this->api_key
-			),
-			$this->domain
+			     $this->api_key,
+			     $this->domain,
+			)
 		);
 
 		if ( ! $this->client->isError() ) {
 			delete_post_meta( $post_id, '_seoslides_multiplier_auto' );
 			delete_post_meta( $post_id, '_seoslides_remote_id' );
 		}
+
+		$response = $this->client->getResponse();
+		return $response;
 	}
 
 	/**
@@ -441,17 +446,19 @@ class SEOSlides_Multiplier {
 	 */
 	public function delete_remote_now() {
 		if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'seo-nonces' ) )
-			die( -1 );
+			wp_send_json( 'nonce_error' );
 
 		if ( isset( $_REQUEST['post_id'] ) )
 			$post_id = $_REQUEST['post_id'];
 		else
-			die( -1 );
+			wp_send_json( 'post_id error' );
 
-		if ( $remote_id = get_post_meta( $post_id, '_seoslides_remote_id', true ) )
-			$this->delete_remote_slideset( $post_id, $remote_id );
+		if ( $remote_id = get_post_meta( $post_id, '_seoslides_remote_id', true ) ) {
+			$response = $this->delete_remote_slideset( $post_id, $remote_id );
+			wp_send_json( array( 'remote_response' => $response, 'post_id' => $post_id, 'remote_id' => $remote_id ) );
+		}
 
-		die();
+		wp_send_json( 'remote_id error' );
 	}
 
 } // SEOSlides_Multiplier

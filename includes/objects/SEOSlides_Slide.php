@@ -37,6 +37,11 @@ class SEOSlides_Slide {
 	public $bg_image;
 
 	/**
+	 * @var string
+	 */
+	public $bg_thumb = '';
+
+	/**
 	 * @var string;
 	 */
 	public $style;
@@ -168,6 +173,13 @@ class SEOSlides_Slide {
 		$this->content = isset( $slide_content['text'] ) ? $slide_content['text'] : '';
 		$this->image = isset( $slide_content['image'] ) ? $slide_content['image'] : '';
 		$this->bg_image = isset( $slide_content['bg-image'] ) ? $slide_content['bg-image'] : null;
+
+
+		$image_id = SEOSlides_Core::get_attachment_id_from_url( $this->bg_image );
+		if ( false !== $image_id ) {
+			$image_arr = wp_get_attachment_image_src( $image_id, 'seoslides-thumb' );
+			$this->bg_thumb = $image_arr[0];
+		}
 	}
 
 	/**
@@ -336,7 +348,7 @@ class SEOSlides_Slide {
 	 *
 	 * @return string Embed overlay markup
 	 */
-	protected function render_embed_overlay() {
+	public function render_embed_overlay() {
 		$tabs = array();
 		$asides = array();
 		$actions = array();

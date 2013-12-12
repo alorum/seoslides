@@ -1,10 +1,10 @@
 ﻿=== seoslides ===
 Contributors: alorum, 10up
 Donate link: http://alorum.com
-Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, caonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up
+Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up
 Requires at least: 3.5.1
-Tested up to: 3.6.1
-Stable tag: 1.1.1
+Tested up to: 3.7.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,8 +53,6 @@ WordPress: Pages, Posts and {now} Presentations
 Upgrade at [https://seoslides.com/paid-subscription/](https://seoslides.com/paid-subscription/) 
 
 
-
-
 == Installation ==
 
 = Easy Installation =
@@ -77,15 +75,30 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Screenshots ==
 
-1. Full Screen Presentations with HTML or Full Screen Background Images (full screen presentation img)
-1. Full Screen Movies Work Too (full screen video img)
-1. Notes Available for Every Slide (notes embed modal img)
-1. WordPress First Canvas Based Editor (slide editor img)
-1. Notes Editor (slide notes img)
-1. Presentation Manager (slide-list img)
-1. Publish to seoslid.es & Control Your Backlinks (publish-backlink img)
+1. Full Screen Presentations with HTML or Full Screen Background Images
+1. Full Screen Movies Work Too
+1. Notes Available for Every Slide
+1. WordPress First Canvas Based Editor
+1. Notes Editor
+1. Presentation Manager
+1. Publish to seoslid.es & Control Your Backlinks
 
 == Changelog ==
+
+= 1.2 =
+
+* Fix an issue where child theme stylesheets were not unenqueued on slideset pages.
+* Fix thumbnails on the presentation editor.
+* Fix a compatibility issue with the Genesis theme framework.
+* Streamline the Backlink editor modal.
+* Simplified importer page.
+* Update the presentation editor to make things more intuitive - Slide Master is a title, excerpt presenter notes, etc.
+* Update the presentation and slide list views to use thumbnail images for backgrounds to optimize performance.
+* Update front-end branding to be disabled by default. You can purchase a Pro package from https://seoslides.com to enable front-end white label branding.
+* Update the iframe background to match the slidemaster background.
+* Add multiple transition options to the Slide Master dialog.
+* Add optional slide to end of presentation with sharing and embedding options.
+* Future-proof admin styles such that seoslides is compatible with WordPress 3.7, 3.7 with MP6, and 3.8.
 
 = 1.1.1 =
 

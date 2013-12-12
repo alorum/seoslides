@@ -10,13 +10,13 @@
       background-image: url(../img/presentation-cpt-icon-32.png);
       background-size: 16px auto; } }
 
-body.admin-color-mp6 #menu-posts-seoslides-slideset .menu-icon-post div.wp-menu-image,
-body.admin-color-mp6 #toplevel_page_seoslides-slideset .menu-icon-generic div.wp-menu-image {
+body.flaticons #menu-posts-seoslides-slideset .menu-icon-post div.wp-menu-image,
+body.flaticons #toplevel_page_seoslides-slideset .menu-icon-generic div.wp-menu-image {
   background: none; }
-  body.admin-color-mp6 #menu-posts-seoslides-slideset .menu-icon-post div.wp-menu-image:before,
-  body.admin-color-mp6 #toplevel_page_seoslides-slideset .menu-icon-generic div.wp-menu-image:before {
+  body.flaticons #menu-posts-seoslides-slideset .menu-icon-post div.wp-menu-image:before,
+  body.flaticons #toplevel_page_seoslides-slideset .menu-icon-generic div.wp-menu-image:before {
     content: '\f181'; }
-body.admin-color-mp6 .tb-close-icon {
+body.flaticons .tb-close-icon {
   background: none; }
 
 .admin-color-classic #menu-posts-seoslides-slideset .menu-icon-post div.wp-menu-image,
@@ -227,11 +227,16 @@ body.admin-color-mp6 .tb-close-icon {
 .seoslides-modal .cke_ltr .cke_button__redo_icon:hover {
   background-position: -480px 0 !important; }
 
+.seoslides-modal-transitions {
+  display: none; }
+
 .seoslides-overview .seoslides-modal-bginfo {
   margin-top: 20px; }
 .seoslides-overview .seoslides-modal-seo,
 .seoslides-overview .youtube-vimeo {
   display: none; }
+.seoslides-overview .seoslides-modal-transitions {
+  display: block; }
 
 #poststuff .linkhint {
   color: #aaa;

@@ -50,6 +50,7 @@ class SEOSlides_Core {
 		add_action( 'admin_head-edit.php',                           array( $this, 'hide_view_switcher' ), 100 );
 		add_action( 'seoslides_presstrends_event',                   array( $this, 'track_event' ), 1, 1 );
 		add_action( 'wp_ajax_seoslides_track',                       array( $this, 'toggle_tracking' ) );
+		add_action( 'after_setup_theme',                             array( $this, 'add_thumbnail_sizes' ) );
 
 		// Wire filters
 		add_filter( 'manage_seoslides-slideset_posts_columns',         array( $this, 'filter_list_table_columns' ) );
@@ -63,6 +64,12 @@ class SEOSlides_Core {
 		add_filter( 'post_row_actions',                                array( $this, 'post_row_actions' ), 10, 2 );
 		add_filter( 'clean_url',                                       array( $this, 'disable_rocketloader' ) );
 		add_filter( 'post_type_link',                                  array( $this, 'slide_permalink' ), 10, 2 );
+		add_filter( 'admin_body_class',                                array( $this, 'body_class' ), 10, 1 );
+		add_filter( 'seoslides_social_icons',                          array( $this, 'social_icons' ), 10, 1 );
+
+		if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) {
+			add_filter( 'seoslides_frontend_themes', array( $this, 'alpha_themes' ), 10, 1 );
+		}
 
 		$this->install();
 		$this->_cache_bust = time();
@@ -78,9 +85,10 @@ class SEOSlides_Core {
 			case false:
 				// Plugin not previously installed.
 				add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
-				add_option( 'seoslides_logo', 'default', '', 'no' );
+				add_option( 'seoslides_logo', 'seoslides', '', 'no' );
 				add_option( 'seoslides_logo_url', 'https://seoslides.com', '', 'no' );
 				add_option( 'seoslides_logo_title', 'seoslides', '', 'no' );
+				add_option( 'seoslides_logo_enabled', 'no', '', 'no' );
 
 				// Remove default content filter and inject our template presenatation
 				remove_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
@@ -186,6 +194,13 @@ class SEOSlides_Core {
 	}
 
 	/**
+	 * Register custom image sizes.
+	 */
+	public function add_thumbnail_sizes() {
+		add_image_size( 'seoslides-thumb', 220, 124 );
+	}
+
+	/**
 	 * Add custom rewrite rules to make sure individual slide URLs direct to the appropriate slideset.
 	 */
 	public function custom_rewrites() {
@@ -255,6 +270,7 @@ class SEOSlides_Core {
 			'label_restore_slide' => __( 'Restore slide from trash', 'seoslides_translate' ),
 			'message_show_trash'  => __( 'Show Trashed Slides', 'seoslides_translate' ),
 			'label_master'        => __( 'Slide Master', 'seoslides_translate' ),
+			'label_notitle'       => __( '(no title', 'seoslides_translate' ),
 			'save_master'         => __( 'Save Slide Master', 'seoslides_translate' ),
 			'label_overview'      => __( 'Default Slide Layout', 'seoslides_translate' ),
 			'label_defaults'      => __( 'Text Editor Defaults', 'seoslides_translate' ),
@@ -286,6 +302,7 @@ class SEOSlides_Core {
 			'seo_description'     => __( 'Description:', 'seoslides_translate' ),
 			'seo_keywords'        => __( 'Keywords:', 'seoslides_translate' ),
 			'background'          => __( 'Background Settings', 'seoslides_translate' ),
+			'transitions'         => __( 'Slide Transition', 'seoslides_translate' ),
 			'hex_value'           => __( 'Hex Value', 'seoslides_translate' ),
 			'choose_media'        => __( 'Embed Image/Video', 'seoslides_translate' ),
 			'not_image'           => __( "Sorry, that file doesn't appear to be an image.", 'seoslides_translate' ),
@@ -362,7 +379,9 @@ class SEOSlides_Core {
 
 		if ( 'seoslides-slideset' === $current_screen->post_type ) {
 			wp_register_style( 'dashicons', SEOSLIDES_URL . 'css/dashicons.css', array(), SEOSLIDES_VERSION );
+			wp_register_style( 'seoslides-iconography', SEOSLIDES_URL . 'css/seoslides-iconography.css', array(), SEOSLIDES_VERSION );
 			wp_enqueue_style( 'dashicons' );
+			wp_enqueue_style( 'seoslides-iconography' );
 
 			if ( 'post' === $current_screen->base ) {
 				$admin_deps = array( 'utils', 'jquery', 'wp-mediaelement', 'wpdialogs', );
@@ -396,6 +415,7 @@ class SEOSlides_Core {
 					'thickbox_noimage' => esc_url( admin_url( 'images/no.png' ) ),
 					'thickbox_spinner' => esc_url( admin_url( 'images/wpspin_light.gif' ) ),
 					'thickbox_yes'     => esc_url( admin_url( 'images/yes.png' ) ),
+					'themes'           => $this->presentation_theme( get_the_ID() ),
 				);
 
 				wp_localize_script( 'seoslides_admin', 'seoslides', $js_variables );
@@ -415,6 +435,34 @@ class SEOSlides_Core {
 	}
 
 	/**
+	 * Get the markup for a specific presentation theme.
+	 *
+	 * @param int $post_id
+	 *
+	 * @return string
+	 */
+	public function presentation_theme( $post_id ) {
+		$theme = get_post_meta( $post_id, '_slideset_theme', true );
+
+		$theme = empty( $theme ) ? 'swiss-horizontal' : $theme;
+
+		$available_themes = SEOSlides_Module_Provider::get( 'SEOSlides Core' )->available_themes();
+
+		$output = '<div>';
+		$output .= '<p><select id="seoslides_theme" name="seoslides_theme">';
+
+		foreach( $available_themes as $name => $meta ) :
+			$output .= '<option value="' . esc_attr( $name ) . '" ' . selected( $theme, $name, false ) . '>' . esc_html( $meta['name'] ) . '</option>';
+		endforeach;
+
+		$output .= '</select></p>';
+		$output .= '</div>';
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
 	 * Enqueue scripts and styles only for the presentations.
 	 */
 	public function slideset_enqueue_scripts() {
@@ -422,7 +470,7 @@ class SEOSlides_Core {
 			return;
 		}
 
-		wp_register_script( 'modernizr', SEOSLIDES_URL . 'js/lib/modernizr.js', array(), '2.6.2' );
+		wp_register_script( 'seoslides-modernizr', SEOSLIDES_URL . 'js/lib/modernizr.js', array(), '2.6.2' );
 
 		// Get presentation theme
 		$theme = get_post_meta( get_the_ID(), '_slideset_theme', true );
@@ -434,13 +482,15 @@ class SEOSlides_Core {
 		wp_enqueue_style( 'seoslides-front', $theme['src'], array(), SEOSLIDES_VERSION, 'screen' );
 		wp_enqueue_style( 'seoslides-print', SEOSLIDES_URL . 'css/print.css', array(), SEOSLIDES_VERSION, 'print' );
 		wp_register_style( 'dashicons', SEOSLIDES_URL . 'css/dashicons.css', array(), SEOSLIDES_VERSION );
+		wp_register_style( 'seoslides-iconography', SEOSLIDES_URL . 'css/seoslides-iconography.css', array(), SEOSLIDES_VERSION );
 		wp_enqueue_style( 'dashicons' );
+		wp_enqueue_style( 'seoslides-iconography' );
 
 		// Video
 		$this->enqueue_mediaelement();
 
 		// Scripts
-		$this->enqueue_script( 'seoslides_front', array( 'jquery', 'modernizr', 'wp-mediaelement' ), true );
+		$this->enqueue_script( 'seoslides_front', array( 'jquery', 'seoslides-modernizr', 'wp-mediaelement' ), true );
 		$this->script_translations( 'seoslides_front' );
 
 		$embedID = '';
@@ -472,11 +522,12 @@ class SEOSlides_Core {
 		global $wp_styles;
 
 		$theme_ss_uri = get_stylesheet_directory_uri();
+		$child_ss_uri = get_template_directory_uri();
 
 		foreach( $wp_styles->queue as $queued ) {
 			$sheet = $wp_styles->registered[ $queued ];
 
-			if ( false !== strpos( $sheet->src, $theme_ss_uri ) ) {
+			if ( false !== strpos( $sheet->src, $theme_ss_uri ) || false !== strpos( $sheet->src, $child_ss_uri ) ) {
 				$wp_styles->dequeue( $queued );
 			}
 		}
@@ -547,7 +598,28 @@ class SEOSlides_Core {
 
 					if ( false === $cover->preview || 'false' === $cover->preview ) {
 						// There is no preview thumbnail for this image, so we'll try to create one instead
-						echo "<section class='slide'><div class='slide-body' {$cover->style}>";
+
+						// First, build out the inline style, using auto-generated thumbnail images
+						// Build out inline style
+						$style = ' style="';
+						if ( '' !== $cover->bg_image ) {
+							$image = $cover->bg_image;
+							$image_id = SEOSlides_Core::get_attachment_id_from_url( $cover->bg_image );
+
+							if ( false === $image_id ) {
+								if ( function_exists( 'jetpack_photon_url' ) ) {
+									$image = jetpack_photon_url( $cover->bg_image, array(), '//' );
+								}
+							} else {
+								$image_arr = wp_get_attachment_image_src( $image_id, 'seoslides-thumb' );
+								$image = $image_arr[0];
+							}
+
+							$style .= 'background-image:url(' . $image . ');';
+						}
+						$style .= 'background-color:' . $cover->fill_color . ';"';
+
+						echo "<section class='slide'><div class='slide-body' {$style}>";
 
 						if ( ! empty( $cover->oembed ) ) {
 							$embed_url = SEOSlides_Slide::get_embed_url( $cover->oembed );
@@ -983,6 +1055,7 @@ class SEOSlides_Core {
 		$api_key = get_option( 'seoslides_api_key', '' );
 		$options = get_option( 'seoslides_track', array() );
 		$can_track = isset( $options['tracking'] ) && 'yes' === $options['tracking'];
+		$social_slide = 'yes' === get_option( 'seoslides_add_social_slide', 'no' );
 
 		settings_errors( 'seoslides' );
 
@@ -1032,6 +1105,18 @@ class SEOSlides_Core {
 							<p class="description"><?php _e( 'Allow us to gather <em>anonymous</em> usage statistics so we can further improve seoslides.', 'seoslides_translate' ) ?></p>
 						</td>
 					</tr>
+
+					<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
+					<tr valign="top">
+						<th scope="row">
+							<label for="add_social_slide"><?php _e( 'Add Social Sharing Slide', 'seoslides_translate' ); ?></label>
+						</th>
+						<td>
+							<input name="add_social_slide" type="checkbox" id="add_social_slide" <?php checked( $social_slide, true, true ); ?> />
+							<p class="description"><?php _e( 'Add a slide to the end of each presentation with social share icons that will always point back to your site. Includes seoslides logo and link.', 'seolides_translate' ); ?></p>
+						</td>
+					</tr>
+					<?php endif; ?>
 
 					<?php do_action( 'seoslides_settings_form_bottom_rows' ); ?>
 
@@ -1172,12 +1257,15 @@ class SEOSlides_Core {
 			}
 		}
 
-		$can_track = isset( $_POST['tracking'] ) && 'on' === $_POST['tracking'] ? 'yes' : 'no';
+		$can_track = ( isset( $_POST['tracking'] ) && 'on' === $_POST['tracking'] ) ? 'yes' : 'no';
 
 		$options = get_option( 'seoslides_track', array() );
 		$options['tracking'] = $can_track;
 
 		update_option( 'seoslides_track', $options );
+
+		$social_slide = ( isset( $_POST['add_social_slide'] ) && 'on' === $_POST['add_social_slide'] ) ? 'yes' : 'no';
+		update_option( 'seoslides_add_social_slide', $social_slide );
 
 		do_action( 'seoslides_settings_postback' );
 	}
@@ -1278,16 +1366,16 @@ class SEOSlides_Core {
 				'content' => $css_help
 			) );
 
-			$multiplier_help  = '<p>' . __( 'Depending on your subscription level, you may have the option to publish your presentations remotely to <a href="http://seoslid.es">seoslide.es</a>. A copy of your presentation will be embedded there and will link back to your site.', 'seoslides_translate' ) . '</p>';
-			$multiplier_help .= '<p>' . __( 'seoslides Pro users may remotely publish an <strong>unlimited</strong> number of presentatations, while free users are limited to <strong>just one</strong> remote publication. If you&#8217;ve already exhausted your free allowance, <a href="https://seoslides.com/pro/" target="_blank">upgrade to Pro today!</a>', 'seoslides_translate' ) . '</p>';
-			$multiplier_help .= '<p>' . __( 'Publishing to the seoslid.es:', 'seoslides_translate' ) . '</p>';
+			$multiplier_help  = '<p>' . __( 'Depending on your subscription level, you may have the option to share your presentations remotely on <a href="http://seoslid.es">seoslide.es</a>. A copy of your presentation will be embedded there and will link back to your site.', 'seoslides_translate' ) . '</p>';
+			$multiplier_help .= '<p>' . __( 'seoslides Pro users may remotely share an <strong>unlimited</strong> number of presentatations, while free users are limited to <strong>just one</strong> remote publication. If you&#8217;ve already exhausted your free allowance, <a href="https://seoslides.com/pro/" target="_blank">upgrade to Pro today!</a>', 'seoslides_translate' ) . '</p>';
+			$multiplier_help .= '<p>' . __( 'Sharing on seoslid.es:', 'seoslides_translate' ) . '</p>';
 			$multiplier_help .= '<ol><li>' . __( 'First, publish your presentation on your site by <strong>clicking the blue Publish button</strong>', 'seoslides_translate' ) . '</li>';
 			$multiplier_help .= '<li>'     . __( 'In the Publish meta box, <strong>click the Edit link, next to &#8220;seoslid.es&#8221;</strong>', 'seoslides_translate' ) . '</li>';
-			$multiplier_help .= '<li>'     . __( '<strong>Click the &#8220;Publish to seoslid.es now&#8221; button</strong> to send your presentation to the remote server. That&#8217;s it!', 'seoslides_translate' ) . '</li></ol>';
+			$multiplier_help .= '<li>'     . __( '<strong>Click the &#8220;Share on seoslid.es now&#8221; button</strong> to send your presentation to the remote server. That&#8217;s it!', 'seoslides_translate' ) . '</li></ol>';
 			$multiplier_help .= '<p>' . __( 'Other Options:', 'seoslides_translate' ) . '</p>';
 			$multiplier_help .= '<ul><li>' . __( '<strong>Select the &#8220;Sync updates automatically&#8221; checkbox</strong> to auto-update the remote server whenever you update your presentation', 'seoslides_translate' ) . '</li>';
 			$multiplier_help .= '<li>'     . __( '<strong>Click the &#8220;Remove from seoslid.es now&#8221; button</strong> to remove your presentation from the remote server', 'seoslides_translate' ) . '</li>';
-			$multiplier_help .= '<li>'     . __( 'If your presentation has been published remotely, un-publishing it on your own site will also remove it from <a href="http://seoslid.es/">seoslid.es</a>', 'seoslides_translate' ) . '</li></ul>';
+			$multiplier_help .= '<li>'     . __( 'If your presentation has been shared remotely, removing it on your own site will also remove it from <a href="http://seoslid.es/">seoslid.es</a>', 'seoslides_translate' ) . '</li></ul>';
 
 			get_current_screen()->add_help_tab( array(
 				'id'      => 'seoslides-multiplier',
@@ -1570,81 +1658,116 @@ class SEOSlides_Core {
 	 * @return array
 	 */
 	public function available_themes() {
-		$themes = array(
-			// Neon styled theme
-			'neon-horizontal' => array(
-				'name' => __( 'Neon - Horizontal Slide', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.neon.horizontal.css',
-			),
-			'neon-vertical' => array(
-				'name' => __( 'Neon - Vertical Slide', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.neon.vertical.css',
-			),
-			'neon-fade' => array(
-				'name' => __( 'Neon - Fade', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.neon.fade.css',
-			),
-			'neon-none' => array(
-				'name' => __( 'Neon - No Transition', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.neon.none.css',
-			),
+		$themes = array();
 
-			// No styled theme
-			'none-horizontal' => array(
-				'name' => __( 'No Theme - Horizontal Slide', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.none.horizontal.css',
-			),
-			'none-vertical' => array(
-				'name' => __( 'No Theme - Vertical Slide', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.none.vertical.css',
-			),
-			'none-fade' => array(
-				'name' => __( 'No Theme - Fade', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.none.fade.css',
-			),
-			'none-none' => array(
-				'name' => __( 'No Theme - No Transition', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.none.none.css',
-			),
-
-			// Swiss styled theme
-			'swiss-horizontal' => array(
-				'name' => __( 'Swiss - Horizontal Slide (Default)', 'seoslides_translate' ),
+		// Swiss styled theme
+		$themes['swiss-horizontal'] = array(
+				'name' => __( 'Horizontal Slide (Default)', 'seoslides_translate' ),
 				'src'  => SEOSLIDES_URL . 'css/front-end.css',
-			),
-			'swiss-vertical'   => array(
-				'name' => __( 'Swiss - Vertical Slide', 'seoslides_translate' ),
+			);
+		$themes['swiss-vertical'] = array(
+				'name' => __( 'Vertical Slide', 'seoslides_translate' ),
 				'src'  => SEOSLIDES_URL . 'css/front-end.vertical.css',
-			),
-			'swiss-fade'       => array(
-				'name' => __( 'Swiss - Fade', 'seoslides_translate' ),
+			);
+		$themes['swiss-fade'] = array(
+				'name' => __( 'Fade', 'seoslides_translate' ),
 				'src'  => SEOSLIDES_URL . 'css/front-end.fade.css',
-			),
-			'swiss-none'       => array(
-				'name' => __( 'Swiss - No Transition', 'seoslides_translate' ),
+			);
+		$themes['swiss-none'] = array(
+				'name' => __( 'No Transition', 'seoslides_translate' ),
 				'src' => SEOSLIDES_URL . 'css/front-end.none.css',
-			),
-
-			// Web 2.0 styled theme
-			'web-horizontal' => array(
-				'name' => __( 'Web 2.0 - Horizontal Slide', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.web.horizontal.css',
-			),
-			'web-vertical' => array(
-				'name' => __( 'Web 2.0 - Vertical Slide', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.web.vertical.css',
-			),
-			'web-fade' => array(
-				'name' => __( 'Web 2.0 - Fade', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.web.fade.css',
-			),
-			'web-none' => array(
-				'name' => __( 'Web 2.0 - No Transition', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.web.none.css',
-			),
-		);
+			);
 
 		return apply_filters( 'seoslides_frontend_themes', $themes );
+	}
+
+	/**
+	 * Add some extra themes for alpha-level testers.
+	 *
+	 * @param array $themes
+	 *
+	 * @return array
+	 */
+	public function alpha_themes ( $themes ) {
+		// First, remove the old Swiss themes
+		unset( $themes['swiss-horizontal'] );
+		unset( $themes['swiss-vertical'] );
+		unset( $themes['swiss-fade'] );
+		unset( $themes['swiss-none'] );
+
+		// Neon styled theme
+		$themes['neon-horizontal'] = array (
+			'name' => __ ( 'Neon - Horizontal Slide', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.neon.horizontal.css',
+		);
+		$themes['neon-vertical']   = array (
+			'name' => __ ( 'Neon - Vertical Slide', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.neon.vertical.css',
+		);
+		$themes['neon-fade']       = array (
+			'name' => __ ( 'Neon - Fade', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.neon.fade.css',
+		);
+		$themes['neon-none']       = array (
+			'name' => __ ( 'Neon - No Transition', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.neon.none.css',
+		);
+
+		// Swiss styled theme
+		$themes['swiss-horizontal'] = array(
+			'name' => __( 'Swiss - Horizontal Slide (Default)', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.css',
+		);
+		$themes['swiss-vertical'] = array(
+			'name' => __( 'Swiss - Vertical Slide', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.vertical.css',
+		);
+		$themes['swiss-fade'] = array(
+			'name' => __( 'Swiss - Fade', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.fade.css',
+		);
+		$themes['swiss-none'] = array(
+			'name' => __( 'Swiss - No Transition', 'seoslides_translate' ),
+			'src' => SEOSLIDES_URL . 'css/front-end.none.css',
+		);
+
+		// No styled theme
+		$themes['none-horizontal'] = array (
+			'name' => __ ( 'No Theme - Horizontal Slide', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.none.horizontal.css',
+		);
+		$themes['none-vertical']   = array (
+			'name' => __ ( 'No Theme - Vertical Slide', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.none.vertical.css',
+		);
+		$themes['none-fade']       = array (
+			'name' => __ ( 'No Theme - Fade', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.none.fade.css',
+		);
+		$themes['none-none']       = array (
+			'name' => __ ( 'No Theme - No Transition', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.none.none.css',
+		);
+
+		// Web 2.0 styled theme
+		$themes['web-horizontal'] = array (
+			'name' => __ ( 'Web 2.0 - Horizontal Slide', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.web.horizontal.css',
+		);
+		$themes['web-vertical']   = array (
+			'name' => __ ( 'Web 2.0 - Vertical Slide', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.web.vertical.css',
+		);
+		$themes['web-fade']       = array (
+			'name' => __ ( 'Web 2.0 - Fade', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.web.fade.css',
+		);
+		$themes['web-none']       = array (
+			'name' => __ ( 'Web 2.0 - No Transition', 'seoslides_translate' ),
+			'src'  => SEOSLIDES_URL . 'css/front-end.web.none.css',
+		);
+
+		return $themes;
 	}
 
 	/**
@@ -1661,6 +1784,96 @@ class SEOSlides_Core {
 		$options['tracking'] = ( 'yes' === $_POST['allow_tracking'] ? 'yes' : 'no' );
 
 		update_option( 'seoslides_track', $options );
+	}
+
+	/**
+	 * Filter body classes to detect MP6 or WordPress 3.8 so we can substitute the correct styles.
+	 *
+	 * @param string $classes
+	 *
+	 * @global $wp_version
+	 *
+	 * @return array
+	 */
+	public function body_class( $classes ) {
+		global $wp_version;
+
+		$classes = explode( " ", $classes );
+
+		if ( in_array( 'mp6', $classes ) || version_compare( $wp_version, '3.8', '>=' ) ) {
+			$classes[] = 'flaticons';
+		}
+
+		return implode( " ", $classes );
+	}
+
+	/**
+	 * Add the default social sharing icons.
+	 *
+	 * All icons must be added as an array with the following elements:
+	 * - Icon reference
+	 * - Title to use in links
+	 * - Text for share link
+	 * - Actual share link
+	 *
+	 * For the share link, the ordered parameters will be:
+	 * 1. Presentation URL
+	 * 2. Share text (without URL)
+	 *
+	 * @param array $icons
+	 *
+	 * @return array
+	 */
+	public function social_icons( $icons ) {
+		// seoslides
+		$icons['seoslides'] = array(
+			SEOSLIDES_URL . 'img/social_seoslides_blue.png',       // Icon
+			__( 'Embed with seoslides', 'seoslides_translate' ),   // Link Title
+			__( 'embed', 'seoslides_translate' ),                  // Link Text
+			'#',                                                   // Share Link
+		);
+
+		// Facebook
+		$icons['facebook'] = array(
+			SEOSLIDES_URL . 'img/social_facebook.png',                        // Icon
+			__( 'Share on Facebook', 'seoslides_translate' ),                 // Link Title
+			__( 'share', 'seoslides_translate' ),                             // Link Text
+			'https://facebook.com/sharer.php?s=100&p[url]=%s&p[title]=%s',    // Share Link
+		);
+
+		// Google
+		$icons['google'] = array(
+			SEOSLIDES_URL . 'img/social_google.png',          // Icon
+			__( 'Share on Google+', 'seoslides_translate' ),  // Link Title
+			__( '+1', 'seoslides_translate' ),                // Link Text
+			'https://plus.google.com/share?url=%s',           // Share Link
+		);
+
+		// Twitter
+		$icons['twitter'] = array(
+			SEOSLIDES_URL . 'img/social_twitter.jpg',                            // Icon
+			__( 'Tweet on Twitter', 'seoslides_translate' ),                     // Link Title
+			__( 'tweet', 'seoslides_translate' ),                                // Link Text
+			'https://twitter.com/intent/tweet?&url=%s&text=%s&via=seoslides',    // Share Link
+		);
+
+		// LinkedIn
+		$icons['linkedin'] = array(
+			SEOSLIDES_URL . 'img/social_linkedin.jpg',                          // Icon
+			__( 'Share on LinkedIn', 'seoslides_translate' ),                   // Link Title
+			__( 'share', 'seoslides_translate' ),                               // Link Text
+			'http://www.linkedin.com/shareArticle?mini=true&url=%s&title=%s',   // Share Link
+		);
+
+		// Pinterest
+		/*$icons['pinterest'] = array(
+			'', // Icon
+			__( 'Pin on Pinterest', 'seoslides_translate' ),                               // Link Title
+			__( 'pin presentation on <a href="%s">pinterest</a>', 'seoslides_translate' ), // Link Text
+			'http://pinterest.com/pin/create/button/?url=%s$1&media={URI-encoded URL of the image to pin}&description=%s2$', // Share Link
+		);*/
+
+		return $icons;
 	}
 
 	/****************************************************************/
@@ -1703,5 +1916,43 @@ class SEOSlides_Core {
 		$event_string = $api_string . 'name/' . urlencode( $event_name ) . '/url/' . $site_url . '/';
 
 		wp_remote_get( $event_string );
+	}
+
+	/**
+	 * Get the ID for a given attachment.
+	 *
+	 * @param string $attachment_url
+	 *
+	 * @global wpdb $wpdb
+	 *
+	 * @return bool|int
+	 */
+	public static function get_attachment_id_from_url( $attachment_url = '' ) {
+		global $wpdb;
+		$attachment_id = false;
+
+		// If there is no url, return.
+		if ( '' == $attachment_url ) {
+			return $attachment_id;
+		}
+
+		// Get the upload directory paths
+		$upload_dir_paths = wp_upload_dir();
+
+		// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
+		if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
+
+			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
+			$attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
+
+			// Remove the upload path base directory from the attachment URL
+			$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
+
+			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
+			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url ) );
+
+		}
+
+		return $attachment_id;
 	}
 }

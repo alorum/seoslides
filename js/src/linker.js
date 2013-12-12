@@ -232,7 +232,7 @@
 			inputs.dialog.on( 'wpdialogrefresh', linker.refresh );
 			inputs.search.on( 'keyup', linker.searchInternalLinks );
 			rivers.elements.on( 'river-select', linker.updateFields );
-			$( document.querySelector( '.seoslides_link' ) ).on( 'click', linker.open );
+			$( [] ).add( document.getElementById( 'seoslides_link' ) ).add( document.querySelector( '.seoslides_link' ) ).on( 'click', linker.open );
 
 			rivers.elements.on( 'river-select', linker.updateFields );
 

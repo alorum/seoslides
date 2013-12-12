@@ -17,11 +17,14 @@
 		/**
 		 * Create a slide object (jQuery object) based on a given slide and specified template.
 		 *
-		 * @param {object} slide
-		 * @param {object} template
+		 * @param {object}  slide
+		 * @param {object}  template
+		 * @param {boolean} thumbnail
+		 *
 		 * @return {object}
 		 */
-		SELF.createSlide = function( slide, template ) {
+		SELF.createSlide = function( slide, template, thumbnail ) {
+			thumbnail = ( undefined === thumbnail ) ? false : thumbnail;
 			var row = template.clone();
 
 			// Render Slide
@@ -33,14 +36,20 @@
 			var slideDiv = renderSlideThumb( slide );
 			slideEl.appendChild( slideDiv );
 
-			if ( undefined !== slide['bg-image'] && typeof slide['bg-image'] === 'string' && '' !== slide['bg-image'].trim() ) {
-				slideEl.style.backgroundImage = 'url(' + slide['bg-image'] + ')';
+			if ( thumbnail ) {
+				if ( undefined !== slide['bg_thumb'] && typeof slide['bg_thumb'] === 'string' && '' !== slide['bg_thumb'].trim() ) {
+					slideEl.style.backgroundImage = 'url(' + slide['bg_thumb'] + ')';
+				}
+			} else {
+				if ( undefined !== slide['bg_image'] && typeof slide['bg_image'] === 'string' && '' !== slide['bg_image'].trim() ) {
+					slideEl.style.backgroundImage = 'url(' + slide['bg_image'] + ')';
+				}
 			}
 
 			slideEl.style.backgroundColor = slide.fill_color;
 
 			if ( slide.title === '' ) {
-				slide.title = '(no title)';
+				slide.title = I18N.label_notitle;
 			}
 
 			var title = '<div class="title">' + slide.title + '</div>';

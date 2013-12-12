@@ -1,0 +1,12 @@
+
+@font-face {
+  font-family: "seoslides-iconography";
+  src:url("../fonts/seoslides-iconography.eot");
+  src:url("../fonts/seoslides-iconography.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/seoslides-iconography.woff") format("woff"),
+    url("../fonts/seoslides-iconography.ttf") format("truetype"),
+    url("../fonts/seoslides-iconography.svg#seoslides-iconography") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}

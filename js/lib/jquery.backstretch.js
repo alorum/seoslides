@@ -398,7 +398,9 @@
 					path = path + query_string;
 
 					// Replace the image path
-					this.$img.attr( 'src', path );
+					if ( orig !== path ) {
+						this.$img.attr( 'src', path );
+					}
 				}
 			} catch(err) {
 				// IE7 seems to trigger resize before the image is loaded.

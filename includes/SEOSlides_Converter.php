@@ -167,11 +167,11 @@ class SEOSlides_Converter {
 		// If no API key is set, then show an admin notice because we can't actually do anything!
 		if ( false === $api_key || empty( $api_key ) ) :
 			$upload_enabled = false;
-?>
-		<div class="error">
-			<p><?php _e( 'The slide importer requires a license key.', 'seoslides_translate' ); ?>
-				<?php _e( 'Please sign-up for a license key on the <a href="edit.php?post_type=seoslides-slideset&amp;page=settings">settings page</a> to proceed.', 'seoslides_translate' ); ?></p>
-		</div>
+			?>
+			<div class="error">
+				<p><?php _e( 'The slide importer requires a license key.', 'seoslides_translate' ); ?>
+					<?php _e( 'Please sign-up for a license key on the <a href="edit.php?post_type=seoslides-slideset&amp;page=settings">settings page</a> to proceed.', 'seoslides_translate' ); ?></p>
+			</div>
 		<?php endif; ?>
 
 		<?php if ( $core->get_subscription_level() < 20 ) : ?>
@@ -191,20 +191,24 @@ class SEOSlides_Converter {
 			</h2>
 
 			<?php
-			$intro  = __( 'The seoslides Import tool makes simple work of importing PowerPoint, Keynote, or other presentations that have been exported to PDF format. Each PDF page is imported as a slide-sized image. ', 'seoslides_translate' );
+			$intro  = __( 'Import PowerPoint, Keynote, or other exported to PDF format. Each PDF page is imported as a slide-sized background image. ', 'seoslides_translate' );
 			$intro .= sprintf( __( 'Watch a video on <a href="%1$s" target="_new">importing</a>, or view the full <a href="%2$s" target="_new">getting started</a> presentation.', 'seoslides_translate' ),
 				esc_url( 'https://seoslides.com/slides/getting-started-seoslides/uploading-video/' ),
 				esc_url( 'https://seoslides.com/slides/getting-started-seoslides/seoslides-intro-videos/' )
 			);
 			?>
-			<p><em><?php echo $intro; ?></em></p>
-			<h3 class="title"><?php _e( 'Step 1: Export slides as a PDF, or use an existing PDF', 'seoslides_translate' ); ?></h3>
-			<div class="narrow">
-				<p><?php printf( __( '<a href="%s" target="_new">Instructions for exporting a PDF from Keynote</a>', 'seoslides_translate' ),esc_url( 'http://support.apple.com/kb/HT3697' ) ); ?></p>
-				<p><?php printf( __( '<a href="%s" target="_new">Instructions for exporting a PDF from Powerpoint</a>', 'seoslides_translate' ), esc_url( 'http://office.microsoft.com/en-us/powerpoint-help/save-as-pdf-HA010064992.aspx' ) ); ?></p>
+			<p style="margin-bottom: 40px;"><em><?php echo $intro; ?></em></p>
+			<div class="seoslides-vistoggler">
+				<h3 class="title"><?php _e( 'Step 1: Upload PDF file to seoslides for conversion' ); ?>
+					<a style="font-weight:normal;font-size:.9em;"> (more info)</a>
+				</h3>
+				<div class="seoslides-vistogglee" style="padding:10px;border:1px solid #ccc;display:none;border-radius:3px;">
+					<ul>
+						<li><?php printf( __( '<a href="%s" target="_new">Instructions for exporting a PDF from Keynote</a>', 'seoslides_translate' ),esc_url( 'http://support.apple.com/kb/HT3697' ) ); ?></li>
+						<li><?php printf( __( '<a href="%s" target="_new">Instructions for exporting a PDF from Powerpoint</a>', 'seoslides_translate' ), esc_url( 'http://office.microsoft.com/en-us/powerpoint-help/save-as-pdf-HA010064992.aspx' ) ); ?></li>
+					</ul>
+				</div>
 			</div>
-
-			<h3 class="title"><?php _e( 'Step 2: Send PDF to seoslides for conversion to slide images' ); ?></h3>
 			<div class="narrow">
 				<?php if ( false === $api_key || empty( $api_key ) ) :
 					$settings_url = add_query_arg( array(
@@ -221,13 +225,19 @@ class SEOSlides_Converter {
 				<form enctype="multipart/form-data" id="import-upload-form" method="post" class="wp-upload-form" action="<?php echo $this->api_root; ?>/wp-admin/admin-post.php">
 
 					<p>
-						<label for="email-notification"><?php _e( 'Optional: We can send you an email when the conversion is complete:', 'seoslides_translate' ); ?></label>
+						<label for="email-notification"><?php _e( 'Email:', 'seoslides_translate' ); ?></label>
 						<?php $current_user = wp_get_current_user(); ?>
 						<input id="email-notification" name="email-notification" type="text" class="regular-text ltr" value="<?php echo esc_attr( $current_user->user_email ); ?>" />
+						<span class="seoslides-vistoggler">
+							<a><?php _e( '(optional)', 'seoslides_translate' ); ?></a>
+							<span class="seoslides-vistogglee" style="display:none">
+								<?php _e( 'Your email address will only be used to send you an email when import processing is complete.', 'seoslides_translate' ); ?>
+							</span>
+						</span>
 					</p>
 
 					<p>
-						<label for="upload"><?php _e( 'Choose a PDF file from your computer:', 'seoslides_translate' ); ?></label>
+						<label for="upload"><?php _e( 'PDF file:', 'seoslides_translate' ); ?></label>
 						<input type="file" id="upload" name="import" size="25"<?php echo $upload_enabled ? '' : ' disabled="disabled"'; ?> />
 						<input id="seoslides-api_key" name="seoslides-api_key" type="hidden" value="<?php echo esc_attr( $api_key ); ?>" />
 						<input id="seoslides-redirect" name="seoslides-redirect" type="hidden" value="<?php echo esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=import&step=1' ) ); ?>" />
@@ -235,53 +245,59 @@ class SEOSlides_Converter {
 						<input id="action" name="action" type="hidden" value="pdf-import" />
 					</p>
 
-					<?php submit_button( __( 'Upload for Conversion', 'seoslides_translate' ), 'button' ); ?>
+					<?php submit_button( __( 'Upload for Conversion', 'seoslides_translate' ), 'button', 'submit', false ); ?>
 				</form>
 			</div>
 
-			<h3 class="title"><?php _e( 'Step 3: seoslides servers process your imports', 'seoslides_translate' ); ?></h3>
-			<div class="narrow">
-				<p><?php _e( 'Kick back, relax, and let the seoslides servers do the heavy lifting to convert your presentation.', 'seoslides_translate' ); ?></p>
-				<p>
-					<?php $pending_count = count( get_posts( array( 'post_type' => 'seoslides-import', 'post_status' => 'draft' ) ) ) - $this->count_imports(); ?>
-					<?php echo sprintf(
-						_n(
-							'Right now you have %s presentation pending on the seoslides server. Click the button below to see if it\'s done yet.',
-							'Right now you have %s presentations pending on the seoslides server. Click the button below to see if they\'re done yet.',
-							$pending_count, 
-							'seoslides_translate'
-						), $pending_count ); ?>
-				</p>
-				<?php
-				$check_imports = sprintf( __( '<a ' . ( 0 !== $pending_count ? '' : 'disabled="disabled"' ) . ' class="button button-primary" href="%s">Check for new imports</a>', 'seoslides_translate' ),
-					add_query_arg(
-						array(
-						     'post_type' => 'seoslides-slideset',
-						     'page'      => 'import'
-						),
-						admin_url( 'edit.php' )
-					)
-				);
-
-				echo $check_imports;
-				?>
+			<div class="seoslides-vistoggler">
+				<h3 class="title"><?php _e( 'Step 2: Import to your site', 'seoslides_translate' ); ?>
+					<a style="font-weight:normal;font-size:.9em;"> (more info)</a>
+				</h3>
+				<div class="seoslides-vistogglee" style="padding:10px;border:1px solid #ccc;display:none;border-radius: 3px;">
+					<p><?php _e( 'Processing can take a while. Kick back, relax, and let the seoslides servers do the heavy lifting to convert your presentation.', 'seoslides_translate' ); ?></p>
+				</div>
 			</div>
 
-			<h3 class="title"><?php _e( 'Step 4: Import to your site', 'seoslides_translate' ); ?></h3>
+
+			<?php $pending_count = count( get_posts( array( 'post_type' => 'seoslides-import', 'post_status' => 'draft' ) ) ) - $this->count_imports(); ?>
 			<div class="narrow">
-				<p><?php _e( 'After your pdf is converted, click the <strong>&#8220;Process Imports&#8221; button</strong>.', 'seoslides_translate' ); ?></p>
-				<div id="seoslides_import_status" style="max-height: 200px;overflow-y: scroll;">
-					<p><?php echo $this->get_status( true ); ?></p>
-				</div><!-- #seoslides_import_status -->
+				<?php if ( 0 < $pending_count ) : ?>
+					<p>
+						<?php echo sprintf(
+							_n(
+								'You currently have %s presentation being processed on the seoslides server.',
+								'You currently have %s presentations being processed on the seoslides server.',
+								$pending_count,
+								'seoslides_translate'
+							), $pending_count ); ?>
+					</p>
+					<?php
+					$check_imports = sprintf( __( '<a ' . ( 0 !== $pending_count ? '' : 'disabled="disabled"' ) . ' class="button" href="%s">Check for completed conversions</a>', 'seoslides_translate' ),
+						add_query_arg(
+							array(
+								'post_type' => 'seoslides-slideset',
+								'page'      => 'import'
+							),
+							admin_url( 'edit.php' )
+						)
+					);
 
-				<p><?php _e( '<strong>Please Note</strong>: To prevent errors, you should avoid navigating away from this page while the processor is running.', 'seoslides_translate' ); ?></p>
+					echo $check_imports;
+					?>
+				<?php endif; ?>
 
-				<input id="seoslides_process" name="seoslides_process" type="submit" class="button button-primary" value="<?php _e( 'Process Imports', 'seoslides_translate' ); ?>" <?php disabled( 0 === $this->count_imports() ); ?> />
+				<?php if( 0 === $pending_count || 0 < $this->count_imports() ) : ?>
+					<div id="seoslides_import_status" style="max-height: 200px;overflow-y: scroll;">
+						<p><?php echo $this->get_status( true ); ?></p>
+					</div><!-- #seoslides_import_status -->
+
+					<input id="seoslides_process" name="seoslides_process" type="submit" class="button" value="<?php _e( 'Process Imports', 'seoslides_translate' ); ?>" <?php disabled( 0 === $this->count_imports() ); ?> />
+				<?php endif; ?>
 			</div>
 
-			<h3><?php _e( 'Step 5: Add slide titles and notes, then publish', 'seoslides_translate' ); ?></h3>
+			<h3><?php _e( 'Step 3: Add slide titles and notes, then publish', 'seoslides_translate' ); ?></h3>
 			<div class="narrow">
-				<p><?php _e( 'Your new presentation is now a draft under &#8220;All Presentations&#8221;.', 'seoslides_translate' ); ?></p>
+				<p><?php _e( 'New presentations can be found under &#8220;All Presentations&#8221; as drafts.', 'seoslides_translate' ); ?></p>
 
 				<?php $drafts_url = add_query_arg( array( 'post_type' => 'seoslides-slideset', 'post_status' => 'draft' ), admin_url( 'edit.php' ) ); ?>
 				<a href="<?php echo esc_url( $drafts_url ); ?>" class="button"><?php _e( 'View Draft Presentations', 'seoslides_translate' ); ?></a>
@@ -306,7 +322,7 @@ class SEOSlides_Converter {
 				</div>
 			<?php endif; ?>
 		</div><!-- .wrap -->
-<?php
+	<?php
 	}
 
 	/**
@@ -342,13 +358,7 @@ class SEOSlides_Converter {
 			return false;
 		}
 
-		$post_url = $this->api_root . '/import/' . $import->post_content;
-		$post_url = add_query_arg(
-			array(
-			     'bust' => rand()
-			),
-			$post_url
-		);
+		$post_url = $this->api_root . '/import/' . $import->post_content . '/' . rand();
 
 		$query = wp_remote_get( $post_url );
 
@@ -596,12 +606,12 @@ class SEOSlides_Converter {
 
 		if ( 0 === $this->count_imports() ) { // 0 imports ready
 			$message  = __( 'You currently have 0 presentations converted and ready to import.', 'seoslides_translate' );
-			$message .= '&nbsp;&nbsp;' . $check_imports;
+			$message .= '&nbsp;&nbsp;'; // . $check_imports;
 		} else { // 1+ imports ready
 			$message  = sprintf( _n( 'You currently have 1 presentation converted and ready for import.', 'You currently have %s presentations converted and ready for import.', (int) $this->count_imports(), 'seoslides_translate' ),
 				$this->count_imports()
 			);
-			$message .= '&nbsp;&nbsp;' . $check_imports;
+			$message .= '&nbsp;&nbsp;'; // . $check_imports;
 		}
 
 		ob_start();

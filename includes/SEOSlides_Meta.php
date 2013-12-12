@@ -63,12 +63,6 @@ class SEOSlides_Meta {
 
 		// Keep calm and carry on ...
 
-		// Slideset theme
-		if ( isset( $_POST['seoslides_theme'] ) ) {
-			$theme = sanitize_text_field( $_POST['seoslides_theme'] );
-			update_post_meta( $slideset_id, '_slideset_theme', $theme );
-		}
-
 		// Slideset link
 		$oldlink = get_post_meta( $slideset_id, '_slideset_link' );
 		$link = sanitize_text_field( $_POST['seoslides_link'] );
@@ -99,17 +93,6 @@ class SEOSlides_Meta {
 
 		// Now add other meta boxes as needed.
 
-		if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) {
-			add_meta_box(
-				'slideset-theme',
-				__( 'Presentation Theme Options', 'seoslides_translate' ),
-				array( $this, 'presentation_theme' ),
-				'seoslides-slideset',
-				'side',
-				'high'
-			);
-		}
-
 		add_meta_box(
 			'slideset-link',
 			__( 'Embed Backlink', 'seoslides_translate' ),
@@ -118,35 +101,6 @@ class SEOSlides_Meta {
 			'side',
 			'high'
 		);
-	}
-
-	/**
-	 * Enable selecting a theme/slide transition from a meta box.
-	 *
-	 * @param WP_Post $post
-	 *
-	 * @since 1.1
-	 */
-	public function presentation_theme( $post ) {
-		$theme = get_post_meta( $post->ID, '_slideset_theme', true );
-
-		$theme = empty( $theme ) ? 'swiss-horizontal' : $theme;
-
-		$available_themes = SEOSlides_Module_Provider::get( 'SEOSlides Core' )->available_themes();
-		?>
-		<div>
-			<label class="screen-reader-text" for="seoslides_theme"><?php _e( 'Presentation Theme', 'seoslides_translate' ); ?></label>
-			<div class="linkhint" style=""><?php _e( 'Adjust Presentation Theme', 'seoslides_translate' ); ?></div>
-			<p class="description"><?php _e( 'Select a front-end display theme from the dropdown below', 'seoslides_translate' ); ?></p>
-			<p>
-				<select id="seoslides_theme" name="seoslides_theme">
-					<?php foreach( $available_themes as $name => $meta ) : ?>
-						<option value="<?php echo esc_attr( $name ); ?>" <?php selected( $theme, $name ); ?>><?php echo esc_html( $meta['name'] ); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</p>
-		</div>
-		<?php
 	}
 
 	/**

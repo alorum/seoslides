@@ -1,5 +1,6 @@
 .seoslides {
     position: relative;
+	overflow: hidden;
     margin: 10px auto;
     border: 1px solid #666;
 	background: -webkit-linear-gradient(bottom,#6d6d6d,#808080);
@@ -7,7 +8,6 @@
 	background:     -ms-linear-gradient(bottom,#6d6d6d,#808080);
 	background:      -o-linear-gradient(bottom,#6d6d6d,#808080);
 	background:         linear-gradient(to top,#6d6d6d,#808080);
-    /*background: url(../images/bucket-background.png) repeat;*/
 }
 .seoslides-bucket-controls {
     position: absolute;
