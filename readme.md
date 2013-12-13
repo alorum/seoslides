@@ -1,6 +1,4 @@
-Add embeddable presentations to WordPress
-
-== Description ==
+# Add embeddable presentations to WordPress #
 
 WordPress: Pages, Posts and {now} Presentations
 
