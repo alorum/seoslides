@@ -207,7 +207,7 @@
       color: #BBB;
       text-align: right;
       counter-increment: code;
-      content: counter(code,decimal-leading-zero) "."; }
+      content: counter(code, decimal-leading-zero) "."; }
     .slide pre code:only-child:before {
       content: ''; }
   .slide pre mark {
@@ -492,7 +492,7 @@ body.flaticons .slideset-toggle-trash-icon {
     padding: 16px 0;
     border-right: 1px solid #d9d9d9;
     -webkit-box-shadow: -6px 0 6px -6px rgba(0, 0, 0, 0.2) inset;
-    -mox-box-shadow: -6px 0 6px -6px rgba(0, 0, 0, 0.2) inset;
+    -moz-box-shadow: -6px 0 6px -6px rgba(0, 0, 0, 0.2) inset;
     box-shadow: -6px 0 6px -6px rgba(0, 0, 0, 0.2) inset; }
   .seoslides-modal .seoslides-left-rail .seoslides-modal-seo,
   .seoslides-modal .seoslides-left-rail .seoslides-modal-notes,
@@ -560,7 +560,7 @@ body.flaticons .slideset-toggle-trash-icon {
   right: 0;
   top: 15px;
   -webkit-box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.1) ;
-  -mox-box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.1) ;
+  -moz-box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.1) ;
   box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.1) ; }
   .seoslides-modal .seoslides-modal-tabs a {
     position: relative;
@@ -587,7 +587,7 @@ body.flaticons .slideset-toggle-trash-icon {
       height: 7px;
       background: #fff;
       -webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2) ;
-      -mox-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2) ;
+      -moz-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2) ;
       box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2) ;
       -webkit-transform: rotate(45deg) translate(75px, 75px);
       -moz-transform: rotate(45deg) translate(75px, 75px);
@@ -724,7 +724,7 @@ body.flaticons .slideset-toggle-trash-icon {
   border: 0 solid #dfdfdf;
   border-width: 1px 0 0 0;
   -webkit-box-shadow: 0 -4px 4px -4px rgba(0, 0, 0, 0.1) ;
-  -mox-box-shadow: 0 -4px 4px -4px rgba(0, 0, 0, 0.1) ;
+  -moz-box-shadow: 0 -4px 4px -4px rgba(0, 0, 0, 0.1) ;
   box-shadow: 0 -4px 4px -4px rgba(0, 0, 0, 0.1) ; }
   .seoslides-modal .seoslides-modal-toolbar .seoslides-toolbar-content {
     position: absolute;

@@ -35,7 +35,7 @@ $y_ratio:9;
 }
 @mixin box-shadow($top, $left, $blur, $spread, $color, $inset:"") {
   -webkit-box-shadow: $top $left $blur $spread $color #{$inset};
-  -mox-box-shadow: $top $left $blur $spread $color #{$inset};
+  -moz-box-shadow: $top $left $blur $spread $color #{$inset};
   box-shadow: $top $left $blur $spread $color #{$inset};
 }
 @mixin border-radius($r) {
