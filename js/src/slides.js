@@ -29,7 +29,7 @@
 
 			return container.sortable( {
 				items: "tr:not('.slide-master')",
-				helper: helper,
+				helper: "clone",
 				containment: "parent",
 				cursor: "move",
 				update: function ( evt, ui ) {
@@ -60,7 +60,10 @@
 					};
 
 					CORE.ajax( options );
-				}
+				},
+				start: function( evt, ui ){
+					ui.placeholder.height( ui.helper.outerHeight() );
+				},
 			} ).disableSelection();
 		};
 
