@@ -35,6 +35,7 @@ class SEOSlides_Core {
 		// Wire actions
 		add_action( 'init',                                          array( $this, 'custom_image_sizes' ) );
 		add_action( 'init',                                          array( $this, 'custom_rewrites' ) );
+		add_action( 'init',                                          array( $this, 'register_flags' ) );
 		add_action( 'seoslides_register_cpts',                       array( $this, 'custom_rewrites' ), 11 );
 		add_action( 'seoslides_register_cpts',                       array( $this, 'register_cpts' ) );
 		add_action( 'admin_enqueue_scripts',                         array( $this, 'admin_enqueue_scripts' ) );
@@ -191,6 +192,39 @@ class SEOSlides_Core {
 		);
 
 		register_post_type( 'seoslides-slide', $args );
+	}
+
+	/**
+	 * Register a custom flag taxonomy.
+	 *
+	 * This taxonomy can be used to tag any post types to help with filtering.
+	 */
+	public function register_flags() {
+		// Add new taxonomy, make it hierarchical (like categories)
+		$labels = array(
+			'name'              => __( 'Flags',         'seoslides_translate' ),
+			'singular_name'     => __( 'Flag',          'seoslides_translate' ),
+			'search_items'      => __( 'Search Flags',  'seoslides_translate' ),
+			'all_items'         => __( 'All Flags',     'seoslides_translate' ),
+			'parent_item'       => __( 'Parent Flag',   'seoslides_translate' ),
+			'parent_item_colon' => __( 'Parent Flag:',  'seoslides_translate' ),
+			'edit_item'         => __( 'Edit Flag',     'seoslides_translate' ),
+			'update_item'       => __( 'Update Flag',   'seoslides_translate' ),
+			'add_new_item'      => __( 'Add New Flag',  'seoslides_translate' ),
+			'new_item_name'     => __( 'New Flag Name', 'seoslides_translate' ),
+			'menu_name'         => __( 'Flag',          'seoslides_translate' ),
+		);
+
+		$args = array(
+			'hierarchical'      => false,
+			'labels'            => $labels,
+			'show_ui'           => false,
+			'show_admin_column' => false,
+			'query_var'         => false,
+			'rewrite'           => false,
+		);
+
+		register_taxonomy( 'seoslides-flag', array( 'attachment' ), $args );
 	}
 
 	/**
