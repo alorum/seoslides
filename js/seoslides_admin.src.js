@@ -293,7 +293,8 @@
 			this.$container.css({
 				position: position === 'static' ? 'relative' : position
 				, zIndex: zIndex === 'auto' ? 0 : zIndex
-				, background: 'none'
+				//, background: 'none'
+				, backgroundImage: 'none'
 			});
 
 			// Needs a higher z-index
@@ -3918,7 +3919,7 @@
 				},
 				start: function( evt, ui ){
 					ui.placeholder.height( ui.helper.outerHeight() );
-				},
+				}
 			} ).disableSelection();
 		};
 

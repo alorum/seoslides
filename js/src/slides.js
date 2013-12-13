@@ -63,7 +63,7 @@
 				},
 				start: function( evt, ui ){
 					ui.placeholder.height( ui.helper.outerHeight() );
-				},
+				}
 			} ).disableSelection();
 		};
 

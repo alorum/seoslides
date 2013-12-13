@@ -1502,7 +1502,8 @@ This module adds clickable previous and next links to the deck.
 			this.$container.css({
 				position: position === 'static' ? 'relative' : position
 				, zIndex: zIndex === 'auto' ? 0 : zIndex
-				, background: 'none'
+				//, background: 'none'
+				, backgroundImage: 'none'
 			});
 
 			// Needs a higher z-index
