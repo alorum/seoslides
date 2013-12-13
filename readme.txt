@@ -88,6 +88,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 = 1.2.1 =
 
 * Prevent loss of changes by prematurely closing the modal slide editor.
+* Fix a focus issue that caused opening the embed overlay to disable keyboard navigation.
 
 = 1.2 =
 

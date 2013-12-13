@@ -5513,7 +5513,9 @@ This module adds clickable previous and next links to the deck.
 
 		SELF.hide = function() {
 			window.clearTimeout( timeout );
-			$element.fadeOut( speed * 4 );
+			$element.fadeOut( speed * 4, function() {
+				$d.focus();
+			} );
 		};
 
 		SELF.show = function() {
@@ -5743,7 +5745,6 @@ This module adds clickable previous and next links to the deck.
 			}
 
 			$input.val( code );
-			$input.select();
 		}
 
 		SELF.open_footer_embed = function ( event ) {
@@ -5863,6 +5864,17 @@ This module adds clickable previous and next links to the deck.
 	}
 
 	embed_code = new Embed_Code();
+
+	/**
+	 * Make sure the embed input field is selected when we open the overlay to facilitate copy-paste.
+	 *
+	 * Do this in an action callback, though, so we aren't changing the browser focus away from the document element
+	 * and thus disabling keyboard navigation.
+	 */
+	CORE.Events.addAction( 'embed.open', function( container ) {
+		var input = container.querySelector( '.embed-input' ), $input = $( input );
+		$input.select();
+	} );
 
 	$d.off( 'click.embed-code' ).on( 'click.embed-code', '#deck-embed-link', embed_code.open_footer_embed );
 	$d.off( 'click.embed-code' ).on( 'click.embed-code', '.deck-actions', embed_code.open_footer_embed );

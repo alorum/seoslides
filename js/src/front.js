@@ -103,7 +103,9 @@
 
 		SELF.hide = function() {
 			window.clearTimeout( timeout );
-			$element.fadeOut( speed * 4 );
+			$element.fadeOut( speed * 4, function() {
+				$d.focus();
+			} );
 		};
 
 		SELF.show = function() {
