@@ -1089,6 +1089,7 @@ class SEOSlides_Core {
 		$this->process_postback();
 		$api_key = get_option( 'seoslides_api_key', '' );
 		$options = get_option( 'seoslides_track', array() );
+		$hideimports = 'yes' === get_option( 'seoslides_hideimports', 'yes' );
 		$can_track = isset( $options['tracking'] ) && 'yes' === $options['tracking'];
 		$social_slide = 'yes' === get_option( 'seoslides_add_social_slide', 'no' );
 
@@ -1138,6 +1139,16 @@ class SEOSlides_Core {
 						<td>
 							<input name="tracking" type="checkbox" id="tracking" <?php checked( $can_track, true, true ); ?>/>
 							<p class="description"><?php _e( 'Allow us to gather <em>anonymous</em> usage statistics so we can further improve seoslides.', 'seoslides_translate' ) ?></p>
+						</td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row">
+							<label for="hideimports"><?php _e( 'Hide Imported Slide Backgrounds', 'seoslides_translate' ); ?></label>
+						</th>
+						<td>
+							<input name="hideimports" type="checkbox" id="hideimports" <?php checked( $hideimports, true, true ); ?>/>
+							<p class="description"><?php _e( 'Hide imported slide backgrounds from the media library.', 'seoslides_translate' ); ?></p>
 						</td>
 					</tr>
 
@@ -1298,6 +1309,9 @@ class SEOSlides_Core {
 		$options['tracking'] = $can_track;
 
 		update_option( 'seoslides_track', $options );
+
+		$hideimports = ( isset( $_POST['hideimports'] ) && 'on' === $_POST['hideimports'] ) ? 'yes' : 'no';
+		update_option( 'seoslides_hideimports', $hideimports );
 
 		$social_slide = ( isset( $_POST['add_social_slide'] ) && 'on' === $_POST['add_social_slide'] ) ? 'yes' : 'no';
 		update_option( 'seoslides_add_social_slide', $social_slide );
