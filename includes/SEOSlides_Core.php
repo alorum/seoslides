@@ -67,6 +67,7 @@ class SEOSlides_Core {
 		add_filter( 'post_type_link',                                  array( $this, 'slide_permalink' ), 10, 2 );
 		add_filter( 'admin_body_class',                                array( $this, 'body_class' ), 10, 1 );
 		add_filter( 'seoslides_social_icons',                          array( $this, 'social_icons' ), 10, 1 );
+		add_filter( 'pre_get_posts',                                   array( $this, 'hide_imports' ), 10, 1 );
 
 		if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) {
 			add_filter( 'seoslides_frontend_themes', array( $this, 'alpha_themes' ), 10, 1 );
@@ -1923,6 +1924,40 @@ class SEOSlides_Core {
 		);*/
 
 		return $icons;
+	}
+
+	/**
+	 * Filter the post query on the attachment page so we can hide imports.
+	 *
+	 * @param WP_Query $query
+	 *
+	 * @return WP_Query
+	 */
+	public function hide_imports( $query ) {
+		// If we're not in the admin, bail.
+		if ( ! is_admin() || 'attachment' !== $query->query['post_type'] ) {
+			return $query;
+		}
+
+		// If we're not hiding imports, bail.
+		if ( 'yes' !== get_option( 'seoslides_hideimports', 'yes' ) ) {
+			return $query;
+		}
+
+		// Create the new tax query
+		$query->set(
+			'tax_query',
+			array(
+			     array(
+				     'taxonomy' => 'seoslides-flag',
+				     'terms'    => array( 'imported' ),
+				     'field'    => 'slug',
+				     'operator' => 'NOT IN',
+			     ),
+			)
+		);
+
+		return $query;
 	}
 
 	/****************************************************************/
