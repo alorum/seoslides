@@ -265,14 +265,16 @@ body {
 	}
 
 	.deck-actions {
-		background-color: #333;
+		background-image: url("../img/plus_button_logo.png");
+		background-size: 100% 100%;
 		bottom: 0;
 		position: absolute;
 		cursor: pointer;
 		font-family: 'dashicons';
 
-		&:before {
-			content: '\f132';
+		&:hover:before {
+			content: 'embed + notes';
+			margin-left: -145px;
 		}
 	}
 
@@ -282,9 +284,11 @@ body {
 
 	&.opened {
 		.deck-actions {
+			background-image: none;
 			background-color: #8B0000;
 
 			&:before {
+				margin-left: 0;
 				content: '\f158';
 			}
 		}

@@ -737,18 +737,22 @@ body {
     line-height: 30px;
     font-weight: bold; }
   .deck-footer .deck-actions {
-    background-color: #333;
+    background-image: url("../img/plus_button_logo.png");
+    background-size: 100% 100%;
     bottom: 0;
     position: absolute;
     cursor: pointer;
     font-family: 'dashicons'; }
-    .deck-footer .deck-actions:before {
-      content: '\f132'; }
+    .deck-footer .deck-actions:hover:before {
+      content: 'embed + notes';
+      margin-left: -145px; }
   .deck-footer .hidden {
     display: none; }
   .deck-footer.opened .deck-actions {
+    background-image: none;
     background-color: #8B0000; }
     .deck-footer.opened .deck-actions:before {
+      margin-left: 0;
       content: '\f158'; }
 
 /* larger button may be needed again when switching to image
