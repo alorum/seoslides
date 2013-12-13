@@ -89,6 +89,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 * Prevent loss of changes by prematurely closing the modal slide editor.
 * Fix a focus issue that caused opening the embed overlay to disable keyboard navigation.
+* Allow editors to hide imported backgrounds from the media library - only applies to _new_ imports.
 
 = 1.2 =
 
