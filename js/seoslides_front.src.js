@@ -5513,9 +5513,7 @@ This module adds clickable previous and next links to the deck.
 
 		SELF.hide = function() {
 			window.clearTimeout( timeout );
-			$element.fadeOut( speed * 4, function() {
-				$d.focus();
-			} );
+			$element.fadeOut( speed * 4 );
 		};
 
 		SELF.show = function() {
