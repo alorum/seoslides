@@ -1,6 +1,5 @@
 # Add embeddable presentations to WordPress #
-
-WordPress: Pages, Posts and {now} Presentations
+### WordPress: Pages, Posts and {now} Presentations ###
 
 **Why add presentations?**
 
@@ -38,4 +37,4 @@ WordPress: Pages, Posts and {now} Presentations
  - priority access to new features
  - a chance to help fund the next phase of this plugin (50+ features & improvements in the backlog)
 
-Upgrade at [https://seoslides.com/paid-subscription/](https://seoslides.com/paid-subscription/) 
+Upgrade at [https://seoslides.com/sign-up/](https://seoslides.com/sign-up/) 
