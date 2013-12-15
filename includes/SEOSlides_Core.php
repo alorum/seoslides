@@ -68,6 +68,7 @@ class SEOSlides_Core {
 		add_filter( 'admin_body_class',                                array( $this, 'body_class' ), 10, 1 );
 		add_filter( 'seoslides_social_icons',                          array( $this, 'social_icons' ), 10, 1 );
 		add_filter( 'pre_get_posts',                                   array( $this, 'hide_imports' ), 10, 1 );
+		add_filter( 'wp_count_attachments',                            array( $this, 'hide_imports_from_count' ), 10, 2 );
 
 		if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) {
 			add_filter( 'seoslides_frontend_themes', array( $this, 'alpha_themes' ), 10, 1 );
@@ -1958,6 +1959,46 @@ class SEOSlides_Core {
 		);
 
 		return $query;
+	}
+
+	/**
+	 * Filter out hidden attachments from the UI where we count attachments.
+	 *
+	 * @param stdClass $counts
+	 * @param string   $mime_type
+	 *
+	 * @return stdClass
+	 */
+	public function hide_imports_from_count( $counts, $mime_type ) {
+
+		// If we're not hiding imports, bail.
+		if ( 'yes' !== get_option( 'seoslides_hideimports', 'yes' ) ) {
+			return $counts;
+		}
+
+		// We're hiding posts, so let's figure out how many attachments we really have in each status
+		// The following logic is drawn directly from wp_count_attachments() in WordPress core.
+		global $wpdb;
+
+		// Get the term ID for the 'imported' taxonomy term
+		$imported = get_term_by( 'name', 'imported', 'seoslides-flag' );
+		if ( false === $imported ) {
+			return $counts;
+		}
+
+		$imported = $imported->term_taxonomy_id;
+
+		$and = wp_post_mime_type_where( $mime_type );
+		$hide_and = "AND ( wp_posts.ID NOT IN ( SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id IN ({$imported}) ) )";
+		$count = $wpdb->get_results( "SELECT post_mime_type, COUNT( * ) AS num_posts FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' $hide_and $and GROUP BY post_mime_type", ARRAY_A );
+
+		$counts = array();
+		foreach( (array) $count as $row ) {
+			$counts[ $row['post_mime_type'] ] = $row['num_posts'];
+		}
+		$counts['trash'] = $wpdb->get_var( "SELECT COUNT( * ) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status = 'trash' $hide_and $and");
+
+		return $counts;
 	}
 
 	/****************************************************************/
