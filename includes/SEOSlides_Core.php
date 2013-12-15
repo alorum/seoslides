@@ -1989,7 +1989,7 @@ class SEOSlides_Core {
 		$imported = $imported->term_taxonomy_id;
 
 		$and = wp_post_mime_type_where( $mime_type );
-		$hide_and = "AND ( wp_posts.ID NOT IN ( SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id IN ({$imported}) ) )";
+		$hide_and = $wpdb->prepare( "AND ( {$wpdb->posts}.ID NOT IN ( SELECT object_id FROM {$wpdb->term_relationships} WHERE term_taxonomy_id IN (%d) ) )", $imported );
 		$count = $wpdb->get_results( "SELECT post_mime_type, COUNT( * ) AS num_posts FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' $hide_and $and GROUP BY post_mime_type", ARRAY_A );
 
 		$counts = array();
