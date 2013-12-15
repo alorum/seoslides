@@ -33,6 +33,7 @@ class SEOSlides_Ajax {
 		add_action( 'wp_ajax_restore-slide',             array( $this, 'restore_slide' ) );
 		add_action( 'wp_ajax_check_omebed',              array( $this, 'check_oembed' ) );
 		add_action( 'wp_ajax_post-from-presentation',    array( $this, 'post_from_slideset' ) );
+		add_action( 'wp_ajax_seoslides_upgrade_batch',   array( $this, 'upgrade_batch' ) );
 	}
 
 	/**
@@ -656,6 +657,65 @@ class SEOSlides_Ajax {
 			'permalink' => get_permalink( $post ),
 			'edit_url'  => $edit_url
 		);
+
+		wp_send_json( $response );
+	}
+
+	/**
+	 * Upgrade a batch of images by tagging them with our new 'imported' flag.
+	 */
+	public function upgrade_batch() {
+		$response = array();
+		$response['success'] = true;
+		$response['data'] = array();
+		$response['data']['remaining'] = false;
+
+		$offset = (int) $_POST['offset'];
+
+		// Get a list of all slides
+		$all_slides = get_transient( 'seoslides.all_slides' );
+		if ( false === $all_slides ) {
+			$slide_query = new WP_Query(
+				array(
+				     'post_type' => 'seoslides-slideset',
+				     'numberposts' => -1,
+				     'fields' => 'ids',
+				)
+			);
+
+			$all_slides = $slide_query->posts;
+			$all_slides = array_map( 'intval', $all_slides );
+
+			// Cache our slide array for 10 minutes.
+			set_transient( 'seoslides.all_slides', $all_slides, 10 * 60 );
+		}
+
+		$total = count( $all_slides );
+
+		if ( $offset < $total ) {
+			$response['data']['processed'] = 0;
+
+			$children = get_children(
+				array(
+				     'post_parent' => $all_slides[ $offset ],
+				     'post_type' => 'attachment'
+				)
+			);
+			$children = array_keys( $children );
+
+			foreach( $children as $child ) {
+				// Flag the image as being attached
+				$flags = wp_get_post_terms( $child, 'seoslides-flag', array( 'fields' => 'names' ) );
+				$flags = array_merge( $flags, array( 'imported' ) );
+				wp_set_post_terms( $child, $flags, 'seoslides-flag', false );
+
+				$response['data']['processed'] += 1;
+			}
+		}
+
+		if ( $offset !== $total - 1 ) {
+			$response['data']['remaining'] = true;
+		}
 
 		wp_send_json( $response );
 	}
