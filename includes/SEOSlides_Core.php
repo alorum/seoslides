@@ -94,6 +94,7 @@ class SEOSlides_Core {
 			case '1.0.2':
 			case '1.0.1':
 			case '1.0':
+			case '0.1.0':
 				// Flag that we need to upgrade the plugin's data storage so we can alert the administrator.
 				add_option( 'seoslides_upgrade_required', 'yes', '', 'no' );
 
