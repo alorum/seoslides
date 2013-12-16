@@ -2684,9 +2684,12 @@
 			}
 		};
 
-		window.SEO_Slides.Events.addAction( 'plugin.setData', function() {
+		function contaminate() {
 			clean = false;
-		} );
+		}
+
+		window.SEO_Slides.Events.addAction( 'plugin.setData', contaminate );
+		window.SEO_Slides.Events.addAction( 'wysiwyg.key', contaminate );
 
 		window.SEO_Slides.Events.addAction( 'modal.saved', function() {
 			clean = true;
@@ -3045,6 +3048,9 @@
 							var content = this.getData();
 
 							plugin.setData( uuid, 'content', content );
+						},
+						key: function () {
+							SEO_Slides.Events.doAction( 'wysiwyg.key' );
 						}
 					}
 				}
