@@ -275,6 +275,10 @@ body {
 		&:hover:before {
 			content: 'embed + notes';
 			margin-left: -145px;
+			background: #fff;
+			color: #000;
+			padding: 0 5px 5px;
+			border-radius: 8px;
 		}
 	}
 
@@ -290,6 +294,9 @@ body {
 			&:before {
 				margin-left: 0;
 				content: '\f158';
+				background: none;
+				color: #fff;
+				padding: 0;
 			}
 		}
 	}
