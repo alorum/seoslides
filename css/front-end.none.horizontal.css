@@ -734,8 +734,8 @@ body {
     height: 30px;
     bottom: 10px;
     right: 0;
-    font-size: 0.8em;
-    line-height: 30px;
+    font-size: 0.7em;
+    line-height: 27px;
     font-weight: bold; }
   .deck-footer .deck-actions {
     background-image: url("../img/plus_button_logo.png");
@@ -755,7 +755,9 @@ body {
     display: none; }
   .deck-footer.opened .deck-actions {
     background-image: none;
-    background-color: #8B0000; }
+    background-color: #8B0000;
+    font-size: 0.8em;
+    line-height: 30px; }
     .deck-footer.opened .deck-actions:before {
       margin-left: 0;
       content: '\f158';
