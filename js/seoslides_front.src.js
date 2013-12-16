@@ -3046,6 +3046,9 @@ This module adds clickable previous and next links to the deck.
 							var content = this.getData();
 
 							plugin.setData( uuid, 'content', content );
+						},
+						key: function () {
+							SEO_Slides.Events.doAction( 'wysiwyg.key' );
 						}
 					}
 				}

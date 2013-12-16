@@ -668,6 +668,9 @@
 					}
 
 					saveData();
+
+					CORE.Events.doAction( 'modal.saved' );
+
 					modal.close();
 				} );
 			}

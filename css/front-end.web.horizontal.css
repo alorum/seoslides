@@ -1,3 +1,4 @@
+@charset "IBM437";
 /* Default aspect ratio settings */
 html, body {
   height: 100%;
@@ -916,8 +917,8 @@ body {
     height: 30px;
     bottom: 10px;
     right: 0;
-    font-size: 0.8em;
-    line-height: 30px;
+    font-size: 0.7em;
+    line-height: 27px;
     font-weight: bold; }
   .deck-footer .deck-actions {
     background-image: url("../img/plus_button_logo.png");
@@ -928,15 +929,24 @@ body {
     font-family: 'dashicons'; }
     .deck-footer .deck-actions:hover:before {
       content: 'embed + notes';
-      margin-left: -145px; }
+      margin-left: -145px;
+      background: #fff;
+      color: #000;
+      padding: 0 5px 5px;
+      border-radius: 8px; }
   .deck-footer .hidden {
     display: none; }
   .deck-footer.opened .deck-actions {
     background-image: none;
-    background-color: #8B0000; }
+    background-color: #8B0000;
+    font-size: 0.8em;
+    line-height: 30px; }
     .deck-footer.opened .deck-actions:before {
       margin-left: 0;
-      content: '\f158'; }
+      content: '\f158';
+      background: none;
+      color: #fff;
+      padding: 0; }
 
 /* larger button may be needed again when switching to image
 @media screen and (min-width: 640px) {

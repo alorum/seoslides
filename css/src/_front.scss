@@ -259,8 +259,8 @@ body {
 		height: 30px;
 		bottom: 10px;
 		right: 0;
-		font-size: 0.8em;
-		line-height: 30px;
+		font-size: 0.7em;
+		line-height: 27px;
 		font-weight: bold;
 	}
 
@@ -275,6 +275,10 @@ body {
 		&:hover:before {
 			content: 'embed + notes';
 			margin-left: -145px;
+			background: #fff;
+			color: #000;
+			padding: 0 5px 5px;
+			border-radius: 8px;
 		}
 	}
 
@@ -286,10 +290,15 @@ body {
 		.deck-actions {
 			background-image: none;
 			background-color: #8B0000;
+			font-size: 0.8em;
+			line-height: 30px;
 
 			&:before {
 				margin-left: 0;
 				content: '\f158';
+				background: none;
+				color: #fff;
+				padding: 0;
 			}
 		}
 	}

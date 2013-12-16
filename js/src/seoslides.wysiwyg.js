@@ -110,6 +110,9 @@
 							var content = this.getData();
 
 							plugin.setData( uuid, 'content', content );
+						},
+						key: function () {
+							SEO_Slides.Events.doAction( 'wysiwyg.key' );
 						}
 					}
 				}
