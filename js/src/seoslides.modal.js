@@ -355,6 +355,10 @@
 			clean = false;
 		} );
 
+		window.SEO_Slides.Events.addAction( 'modal.saved', function() {
+			clean = true;
+		} );
+
 		setDefaults();
 	};
 } )( this, jQuery );
