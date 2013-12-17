@@ -492,7 +492,7 @@ class SEOSlides_Converter {
 			return;
 		}
 
-		// Flag the image as being attached
+		// Flag the image as being imported
 		$flags = wp_get_post_terms( $id, 'seoslides-flag', array( 'fields' => 'names' ) );
 		$flags = array_merge( $flags, array( 'imported' ) );
 		wp_set_post_terms( $id, $flags, 'seoslides-flag', false );
