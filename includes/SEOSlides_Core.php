@@ -425,7 +425,7 @@ class SEOSlides_Core {
 			'indicator1'          => __( 'Upgrading your seoslides data ..', 'seoslides_translate' ),
 			'indicator2'          => __( 'Upgrading your seoslides data ...', 'seoslides_translate' ),
 			'indicatorDone'       => __( 'Your seoslides data has been successfully upgraded!', 'seoslides_translate' ),
-			'confirm_upgrade_nav' => __( 'Leaving the page will cancel the data upgrad in progress. Are you sure you wish to leave this page?', 'seoslides_translate' ),
+			'confirm_upgrade_nav' => __( 'Leaving the page will cancel the data upgrade in progress. Are you sure you wish to leave this page?', 'seoslides_translate' ),
 		);
 
 		wp_localize_script( $handle, 'seoslides_i18n', $strings );
