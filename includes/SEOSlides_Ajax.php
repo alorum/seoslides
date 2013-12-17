@@ -677,9 +677,10 @@ class SEOSlides_Ajax {
 		if ( false === $all_slides ) {
 			$slide_query = new WP_Query(
 				array(
-				     'post_type' => 'seoslides-slideset',
-				     'numberposts' => -1,
-				     'fields' => 'ids',
+				     'post_type'      => 'seoslides-slideset',
+				     'posts_per_page' => -1,
+				     'fields'         => 'ids',
+				     'post_status'    => 'any',
 				)
 			);
 
@@ -715,6 +716,9 @@ class SEOSlides_Ajax {
 
 		if ( $offset !== $total - 1 ) {
 			$response['data']['remaining'] = true;
+		} else {
+			delete_option( 'seoslides_upgrade_required' );
+			delete_option( 'seoslides_upgrading' );
 		}
 
 		wp_send_json( $response );

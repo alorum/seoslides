@@ -126,6 +126,7 @@ class SEOSlides_Core {
 		$screen = get_current_screen();
 
 		$show_notice = get_option( 'seoslides_upgrade_required', 'no' );
+		$interrupted = get_option( 'seoslides_upgrading', 'no' );
 
 		// If we don't need a notice, skip.
 		if ( 'yes' !== $show_notice ) {
@@ -136,7 +137,11 @@ class SEOSlides_Core {
 			$this->upgrading();
 		else : ?>
 		<div class="updated">
-			<p><?php echo sprintf( __( 'Your seoslides data needs to be upgraded. Please <a href="%s">visit the settings page</a> to upgrade your installation.', 'seoslides_translate' ), admin_url( 'edit.php?post_type=seoslides-slideset&page=settings&upgrade=1' ) ); ?></p>
+			<?php if ( 'yes' === $interrupted ) : ?>
+				<p><?php echo sprintf( __( 'Your seoslides data upgrade is not yet finished. Please <a href="%s">visit the settings page</a> to complete the upgrade.', 'seoslides_translate' ), admin_url( 'edit.php?post_type=seoslides-slideset&page=settings&upgrade=1' ) ); ?></p>
+			<?php else : ?>
+				<p><?php echo sprintf( __( 'Your seoslides data needs to be upgraded. Please <a href="%s">visit the settings page</a> to upgrade your installation.', 'seoslides_translate' ), admin_url( 'edit.php?post_type=seoslides-slideset&page=settings&upgrade=1' ) ); ?></p>
+			<?php endif; ?>
 		</div>
 		<?php endif;
 	}
@@ -145,7 +150,7 @@ class SEOSlides_Core {
 	 * Include our upgrader in an admin notice and use AJAX to update it.
 	 */
 	public function upgrading() {
-		delete_option( 'seoslides_upgrade_required' );
+		add_option( 'seoslides_upgrading', 'yes', '', 'no' );
 		?>
 		<div class="updated">
 			<p id="seoslides_indicator"><?php _e( 'Upgrading your seoslides data .', 'seoslides_translate' ); ?></p>
