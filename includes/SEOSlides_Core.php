@@ -1204,22 +1204,14 @@ class SEOSlides_Core {
 				<input id="seoslides-redirect" name="seoslides-redirect" type="hidden" value="<?php echo esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=support&step=1' ) ); ?>" />
 				<input id="action" name="action" type="hidden" value="support-request" />
 
-				<p><?php echo sprintf( __( 'Need help with something?  Please check our <a href="%s">comprehensive list of FAQs</a>.', 'seoslides_translate' ), 'https://seoslides.com/faq/'); ?></p>
-				<p><?php _e( 'Still need help? Get in touch with our team by submitting the form below:', 'seoslides_translate' ); ?></p>
+				<p><?php echo sprintf( __( 'Please check our <a href="%s">comprehensive list of FAQs</a>.', 'seoslides_translate' ), 'https://seoslides.com/faq/'); ?></p>
+				<p><?php _e( 'Still need help?', 'seoslides_translate' ); ?></p>
 				<table class="form-table">
 					<tbody>
 						<?php do_action( 'seoslides_support_form_top_rows' ); ?>
 						<tr valign="top">
 							<th scope="row">
-								<label for="subject"><?php _e( 'Please enter a subject in the form of a short question:', 'seoslides_translate' ); ?></label>
-							</th>
-							<td>
-								<input id="subject" name="subject" type="text" class="large-text ltr" />
-							</td>
-						</tr>
-						<tr valign="top">
-							<th scope="row">
-								<label for="message"><?php _e( 'Please describe the problem you\'re having', 'seoslides_translate' ); ?></label>
+								<label for="message"><?php _e( 'Problem description', 'seoslides_translate' ); ?></label>
 							</th>
 							<td>
 								<textarea id="message" name="message" rows="6" cols="45" class="large-text ltr"></textarea>
@@ -1233,7 +1225,7 @@ class SEOSlides_Core {
 								<label for="name"><?php _e( 'Name', 'seoslides_translate' ); ?></label>
 							</th>
 							<td>
-								<input id="name" name="name" type="text" class="regular-text ltr" value="<?php echo esc_attr( $current_user->display_name ); ?>" />
+								<input id="name" name="name" type="text" class="regular-text ltr" value="<?php echo esc_attr( $current_user->user_firstname ); ?>" />
 							</td>
 						</tr>
 						<tr valign="top">
