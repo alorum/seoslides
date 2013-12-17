@@ -8,6 +8,7 @@
 
 	// Variables just needed for the updater
 	var indicator = 0,
+		upgrading = false,
 		indicatorInterval,
 		indicator_element = document.getElementById( 'seoslides_indicator' ),
 		batchOffset = 0;
@@ -21,7 +22,6 @@
 
 		indicator = 2 === indicator ? 0 : indicator += 1;
 	}
-	indicatorInterval = window.setInterval( update_indicator, 1000 );
 
 	/**
 	 * Once we're done updating, make sure we let the editor know. Also, clear the itnerval we set earlier so that
@@ -30,6 +30,7 @@
 	 * Make sure we set a timer to get rid of the update window.
 	 */
 	function finished() {
+		upgrading = false;
 		indicator_element.innerHTML = I18N.indicatorDone;
 		window.clearInterval( indicatorInterval );
 
@@ -60,6 +61,34 @@
 		} );
 	}
 
+	/**
+	 * Confirm navigation when the upgrade is already in progress.
+	 *
+	 * @param {Event} e
+	 * @returns {*}
+	 */
+	function confirm_navigation( e ) {
+		// If we're not upgrading, just exit
+		if ( ! upgrading ) {
+			return;
+		}
+
+		// Make sure we have the navigation event
+		e = e || window.event;
+
+		// For old IE
+		if ( e ) {
+			e.returnValue = I18N.confirm_upgrade_nav;
+		}
+
+		return I18N.confirm_upgrade_nav;
+	}
+
 	// Run the upgrade
-	upgrade_batch();
+	if ( null !== indicator_element ) {
+		window.onbeforeunload = confirm_navigation;
+		upgrading = true;
+		indicatorInterval = window.setInterval( update_indicator, 1000 );
+		upgrade_batch();
+	}
 } )( this, jQuery );
