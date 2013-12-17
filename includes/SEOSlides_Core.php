@@ -1203,32 +1203,38 @@ class SEOSlides_Core {
 
 					<tr valign="top">
 						<th scope="row">
-							<label for="tracking"><?php _e( 'Allow Statistics Tracking', 'seoslides_translate' ); ?></label>
+							<?php _e( 'Allow Statistics Tracking', 'seoslides_translate' ); ?>
 						</th>
 						<td>
-							<input name="tracking" type="checkbox" id="tracking" <?php checked( $can_track, true, true ); ?>/>
-							<p class="description"><?php _e( 'Allow us to gather <em>anonymous</em> usage statistics so we can further improve seoslides.', 'seoslides_translate' ) ?></p>
+							<label for="tracking">
+								<input name="tracking" type="checkbox" id="tracking" <?php checked( $can_track, true, true ); ?>/>
+								<?php _e( 'Allow us to gather <em>anonymous</em> usage statistics so we can further improve seoslides.', 'seoslides_translate' ) ?>
+							</label>
 						</td>
 					</tr>
 
 					<tr valign="top">
 						<th scope="row">
-							<label for="hideimports"><?php _e( 'Hide Imported Slide Backgrounds', 'seoslides_translate' ); ?></label>
+							<?php _e( 'Hide Imported Slide Backgrounds', 'seoslides_translate' ); ?>
 						</th>
 						<td>
-							<input name="hideimports" type="checkbox" id="hideimports" <?php checked( $hideimports, true, true ); ?>/>
-							<p class="description"><?php _e( 'Hide imported slide backgrounds from the media library.', 'seoslides_translate' ); ?></p>
+							<label for="hideimports">
+								<input name="hideimports" type="checkbox" id="hideimports" <?php checked( $hideimports, true, true ); ?>/>
+								<?php _e( 'Hide imported slide backgrounds from the media library.', 'seoslides_translate' ); ?>
+							</label>
 						</td>
 					</tr>
 
-					<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
+					<?php if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) : ?>
 					<tr valign="top">
 						<th scope="row">
-							<label for="add_social_slide"><?php _e( 'Add Social Sharing Slide', 'seoslides_translate' ); ?></label>
+							<?php _e( 'Add Social Sharing Slide', 'seoslides_translate' ); ?>
 						</th>
 						<td>
-							<input name="add_social_slide" type="checkbox" id="add_social_slide" <?php checked( $social_slide, true, true ); ?> />
-							<p class="description"><?php _e( 'Add a slide to the end of each presentation with social share icons that will always point back to your site. Includes seoslides logo and link.', 'seolides_translate' ); ?></p>
+							<label for="add_social_slide">
+								<input name="add_social_slide" type="checkbox" id="add_social_slide" <?php checked( $social_slide, true, true ); ?> />
+								<?php _e( 'Add a social sharing slide to the end of each presentation. Includes seoslides logo and link.', 'seolides_translate' ); ?>
+							</label>
 						</td>
 					</tr>
 					<?php endif; ?>
