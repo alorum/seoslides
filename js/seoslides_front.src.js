@@ -1,4 +1,4 @@
-/*! seoslides - v1.2
+/*! seoslides - v1.2.0
  * https://seoslides.com
  * Copyright (c) 2013 Alroum; * Licensed GPLv2+ */
 /*!
@@ -1502,7 +1502,8 @@ This module adds clickable previous and next links to the deck.
 			this.$container.css({
 				position: position === 'static' ? 'relative' : position
 				, zIndex: zIndex === 'auto' ? 0 : zIndex
-				, background: 'none'
+				//, background: 'none'
+				, backgroundImage: 'none'
 			});
 
 			// Needs a higher z-index
@@ -2472,6 +2473,8 @@ This module adds clickable previous and next links to the deck.
 			var instance = INSTANCES[ uuid ];
 			if ( undefined !== instance ) {
 				instance.settings[ key ] = value;
+
+				CORE.Events.doAction( 'plugin.setData', SELF, uuid, key, value );
 			}
 		};
 
@@ -3043,6 +3046,9 @@ This module adds clickable previous and next links to the deck.
 							var content = this.getData();
 
 							plugin.setData( uuid, 'content', content );
+						},
+						key: function () {
+							SEO_Slides.Events.doAction( 'wysiwyg.key' );
 						}
 					}
 				}
@@ -5741,7 +5747,6 @@ This module adds clickable previous and next links to the deck.
 			}
 
 			$input.val( code );
-			$input.select();
 		}
 
 		SELF.open_footer_embed = function ( event ) {
@@ -5861,6 +5866,17 @@ This module adds clickable previous and next links to the deck.
 	}
 
 	embed_code = new Embed_Code();
+
+	/**
+	 * Make sure the embed input field is selected when we open the overlay to facilitate copy-paste.
+	 *
+	 * Do this in an action callback, though, so we aren't changing the browser focus away from the document element
+	 * and thus disabling keyboard navigation.
+	 */
+	CORE.Events.addAction( 'embed.open', function( container ) {
+		var input = container.querySelector( '.embed-input' ), $input = $( input );
+		$input.select();
+	} );
 
 	$d.off( 'click.embed-code' ).on( 'click.embed-code', '#deck-embed-link', embed_code.open_footer_embed );
 	$d.off( 'click.embed-code' ).on( 'click.embed-code', '.deck-actions', embed_code.open_footer_embed );

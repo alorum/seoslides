@@ -85,6 +85,12 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= 1.2.1 =
+
+* Prevent loss of changes by prematurely closing the modal slide editor.
+* Fix a focus issue that caused opening the embed overlay to disable keyboard navigation.
+* Allow editors to hide imported backgrounds from the media library - only applies to _new_ imports.
+
 = 1.2 =
 
 * Fix an issue where child theme stylesheets were not unenqueued on slideset pages.

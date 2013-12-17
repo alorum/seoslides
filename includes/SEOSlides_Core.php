@@ -35,6 +35,7 @@ class SEOSlides_Core {
 		// Wire actions
 		add_action( 'init',                                          array( $this, 'custom_image_sizes' ) );
 		add_action( 'init',                                          array( $this, 'custom_rewrites' ) );
+		add_action( 'init',                                          array( $this, 'register_flags' ) );
 		add_action( 'seoslides_register_cpts',                       array( $this, 'custom_rewrites' ), 11 );
 		add_action( 'seoslides_register_cpts',                       array( $this, 'register_cpts' ) );
 		add_action( 'admin_enqueue_scripts',                         array( $this, 'admin_enqueue_scripts' ) );
@@ -51,6 +52,7 @@ class SEOSlides_Core {
 		add_action( 'seoslides_presstrends_event',                   array( $this, 'track_event' ), 1, 1 );
 		add_action( 'wp_ajax_seoslides_track',                       array( $this, 'toggle_tracking' ) );
 		add_action( 'after_setup_theme',                             array( $this, 'add_thumbnail_sizes' ) );
+		add_action( 'admin_notices',                                 array( $this, 'upgrade_notice' ) );
 
 		// Wire filters
 		add_filter( 'manage_seoslides-slideset_posts_columns',         array( $this, 'filter_list_table_columns' ) );
@@ -66,6 +68,8 @@ class SEOSlides_Core {
 		add_filter( 'post_type_link',                                  array( $this, 'slide_permalink' ), 10, 2 );
 		add_filter( 'admin_body_class',                                array( $this, 'body_class' ), 10, 1 );
 		add_filter( 'seoslides_social_icons',                          array( $this, 'social_icons' ), 10, 1 );
+		add_filter( 'pre_get_posts',                                   array( $this, 'hide_imports' ), 10, 1 );
+		add_filter( 'wp_count_attachments',                            array( $this, 'hide_imports_from_count' ), 10, 2 );
 
 		if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) {
 			add_filter( 'seoslides_frontend_themes', array( $this, 'alpha_themes' ), 10, 1 );
@@ -82,6 +86,23 @@ class SEOSlides_Core {
 		$installed = get_option( 'seoslides_version' );
 
 		switch( $installed ) {
+			//case '1.2':
+			case '1.1.1':
+			case '1.1':
+			case '1.0.5':
+			case '1.0.4':
+			case '1.0.3':
+			case '1.0.2':
+			case '1.0.1':
+			case '1.0':
+			case '0.1.0':
+				// Flag that we need to upgrade the plugin's data storage so we can alert the administrator.
+				add_option( 'seoslides_upgrade_required', 'yes', '', 'no' );
+
+				// Upgrade the option
+				delete_option( 'seoslides_version' );
+				add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
+				break;
 			case false:
 				// Plugin not previously installed.
 				add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
@@ -96,6 +117,45 @@ class SEOSlides_Core {
 				add_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
 				break;
 		}
+	}
+
+	/**
+	 * Show an upgrade alert if we need one.
+	 */
+	public function upgrade_notice() {
+		$screen = get_current_screen();
+
+		$show_notice = get_option( 'seoslides_upgrade_required', 'no' );
+		$interrupted = get_option( 'seoslides_upgrading', 'no' );
+
+		// If we don't need a notice, skip.
+		if ( 'yes' !== $show_notice ) {
+			return;
+		}
+
+		if ( 'seoslides-slideset_page_settings' === $screen->base ) :
+			$this->upgrading();
+		else : ?>
+		<div class="updated">
+			<?php if ( 'yes' === $interrupted ) : ?>
+				<p><?php echo sprintf( __( 'Your seoslides data upgrade is not yet finished. Please <a href="%s">visit the settings page</a> to complete the upgrade.', 'seoslides_translate' ), admin_url( 'edit.php?post_type=seoslides-slideset&page=settings&upgrade=1' ) ); ?></p>
+			<?php else : ?>
+				<p><?php echo sprintf( __( 'Your seoslides data needs to be upgraded. Please <a href="%s">visit the settings page</a> to upgrade your installation.', 'seoslides_translate' ), admin_url( 'edit.php?post_type=seoslides-slideset&page=settings&upgrade=1' ) ); ?></p>
+			<?php endif; ?>
+		</div>
+		<?php endif;
+	}
+
+	/**
+	 * Include our upgrader in an admin notice and use AJAX to update it.
+	 */
+	public function upgrading() {
+		add_option( 'seoslides_upgrading', 'yes', '', 'no' );
+		?>
+		<div class="updated">
+			<p id="seoslides_indicator"><?php _e( 'Upgrading your seoslides data .', 'seoslides_translate' ); ?></p>
+		</div>
+		<?php
 	}
 
 	/**
@@ -191,6 +251,39 @@ class SEOSlides_Core {
 		);
 
 		register_post_type( 'seoslides-slide', $args );
+	}
+
+	/**
+	 * Register a custom flag taxonomy.
+	 *
+	 * This taxonomy can be used to tag any post types to help with filtering.
+	 */
+	public function register_flags() {
+		// Add new taxonomy, make it hierarchical (like categories)
+		$labels = array(
+			'name'              => __( 'Flags',         'seoslides_translate' ),
+			'singular_name'     => __( 'Flag',          'seoslides_translate' ),
+			'search_items'      => __( 'Search Flags',  'seoslides_translate' ),
+			'all_items'         => __( 'All Flags',     'seoslides_translate' ),
+			'parent_item'       => __( 'Parent Flag',   'seoslides_translate' ),
+			'parent_item_colon' => __( 'Parent Flag:',  'seoslides_translate' ),
+			'edit_item'         => __( 'Edit Flag',     'seoslides_translate' ),
+			'update_item'       => __( 'Update Flag',   'seoslides_translate' ),
+			'add_new_item'      => __( 'Add New Flag',  'seoslides_translate' ),
+			'new_item_name'     => __( 'New Flag Name', 'seoslides_translate' ),
+			'menu_name'         => __( 'Flag',          'seoslides_translate' ),
+		);
+
+		$args = array(
+			'hierarchical'      => false,
+			'labels'            => $labels,
+			'show_ui'           => false,
+			'show_admin_column' => false,
+			'query_var'         => false,
+			'rewrite'           => false,
+		);
+
+		register_taxonomy( 'seoslides-flag', array( 'attachment' ), $args );
 	}
 
 	/**
@@ -327,6 +420,12 @@ class SEOSlides_Core {
 			'tracking_no_button'  => __( 'Do not allow tracking', 'seoslides_translate' ),
 			'tracking_button'     => __( 'Allow tracking', 'seoslides_translate' ),
 			'tracking_nonce'      => wp_create_nonce( 'seoslides_tracking' ),
+			'close_modal_conf'    => __( 'You have unsaved changes on this slide. Are you sure you wish to close the window?', 'seoslides_translate' ),
+			'indicator0'          => __( 'Upgrading your seoslides data .', 'seoslides_translate' ),
+			'indicator1'          => __( 'Upgrading your seoslides data ..', 'seoslides_translate' ),
+			'indicator2'          => __( 'Upgrading your seoslides data ...', 'seoslides_translate' ),
+			'indicatorDone'       => __( 'Your seoslides data has been successfully upgraded!', 'seoslides_translate' ),
+			'confirm_upgrade_nav' => __( 'Leaving the page will cancel the data upgrade in progress. Are you sure you wish to leave this page?', 'seoslides_translate' ),
 		);
 
 		wp_localize_script( $handle, 'seoslides_i18n', $strings );
@@ -424,7 +523,12 @@ class SEOSlides_Core {
 
 				wp_enqueue_script( 'ckeditor', SEOSLIDES_URL . 'js/lib/ckeditor/ckeditor.js', null, SEOSLIDES_VERSION, true );
 			} else {
+				$js_variables = array(
+					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				);
+
 				$this->enqueue_script( 'seoslides_list', array( 'jquery' ), true );
+				wp_localize_script( 'seoslides_list', 'seoslides', $js_variables );
 				$this->script_translations( 'seoslides_list' );
 			}
 
@@ -1054,6 +1158,7 @@ class SEOSlides_Core {
 		$this->process_postback();
 		$api_key = get_option( 'seoslides_api_key', '' );
 		$options = get_option( 'seoslides_track', array() );
+		$hideimports = 'yes' === get_option( 'seoslides_hideimports', 'yes' );
 		$can_track = isset( $options['tracking'] ) && 'yes' === $options['tracking'];
 		$social_slide = 'yes' === get_option( 'seoslides_add_social_slide', 'no' );
 
@@ -1103,6 +1208,16 @@ class SEOSlides_Core {
 						<td>
 							<input name="tracking" type="checkbox" id="tracking" <?php checked( $can_track, true, true ); ?>/>
 							<p class="description"><?php _e( 'Allow us to gather <em>anonymous</em> usage statistics so we can further improve seoslides.', 'seoslides_translate' ) ?></p>
+						</td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row">
+							<label for="hideimports"><?php _e( 'Hide Imported Slide Backgrounds', 'seoslides_translate' ); ?></label>
+						</th>
+						<td>
+							<input name="hideimports" type="checkbox" id="hideimports" <?php checked( $hideimports, true, true ); ?>/>
+							<p class="description"><?php _e( 'Hide imported slide backgrounds from the media library.', 'seoslides_translate' ); ?></p>
 						</td>
 					</tr>
 
@@ -1156,22 +1271,14 @@ class SEOSlides_Core {
 				<input id="seoslides-redirect" name="seoslides-redirect" type="hidden" value="<?php echo esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=support&step=1' ) ); ?>" />
 				<input id="action" name="action" type="hidden" value="support-request" />
 
-				<p><?php echo sprintf( __( 'Need help with something?  Please check our <a href="%s">comprehensive list of FAQs</a>.', 'seoslides_translate' ), 'https://seoslides.com/faq/'); ?></p>
-				<p><?php _e( 'Still need help? Get in touch with our team by submitting the form below:', 'seoslides_translate' ); ?></p>
+				<p><?php echo sprintf( __( 'Please check our <a href="%s">comprehensive list of FAQs</a>.', 'seoslides_translate' ), 'https://seoslides.com/faq/'); ?></p>
+				<p><?php _e( 'Still need help?', 'seoslides_translate' ); ?></p>
 				<table class="form-table">
 					<tbody>
 						<?php do_action( 'seoslides_support_form_top_rows' ); ?>
 						<tr valign="top">
 							<th scope="row">
-								<label for="subject"><?php _e( 'Please enter a subject in the form of a short question:', 'seoslides_translate' ); ?></label>
-							</th>
-							<td>
-								<input id="subject" name="subject" type="text" class="large-text ltr" />
-							</td>
-						</tr>
-						<tr valign="top">
-							<th scope="row">
-								<label for="message"><?php _e( 'Please describe the problem you\'re having', 'seoslides_translate' ); ?></label>
+								<label for="message"><?php _e( 'Problem description', 'seoslides_translate' ); ?></label>
 							</th>
 							<td>
 								<textarea id="message" name="message" rows="6" cols="45" class="large-text ltr"></textarea>
@@ -1185,7 +1292,7 @@ class SEOSlides_Core {
 								<label for="name"><?php _e( 'Name', 'seoslides_translate' ); ?></label>
 							</th>
 							<td>
-								<input id="name" name="name" type="text" class="regular-text ltr" value="<?php echo esc_attr( $current_user->display_name ); ?>" />
+								<input id="name" name="name" type="text" class="regular-text ltr" value="<?php echo esc_attr( $current_user->user_firstname ); ?>" />
 							</td>
 						</tr>
 						<tr valign="top">
@@ -1263,6 +1370,9 @@ class SEOSlides_Core {
 		$options['tracking'] = $can_track;
 
 		update_option( 'seoslides_track', $options );
+
+		$hideimports = ( isset( $_POST['hideimports'] ) && 'on' === $_POST['hideimports'] ) ? 'yes' : 'no';
+		update_option( 'seoslides_hideimports', $hideimports );
 
 		$social_slide = ( isset( $_POST['add_social_slide'] ) && 'on' === $_POST['add_social_slide'] ) ? 'yes' : 'no';
 		update_option( 'seoslides_add_social_slide', $social_slide );
@@ -1874,6 +1984,80 @@ class SEOSlides_Core {
 		);*/
 
 		return $icons;
+	}
+
+	/**
+	 * Filter the post query on the attachment page so we can hide imports.
+	 *
+	 * @param WP_Query $query
+	 *
+	 * @return WP_Query
+	 */
+	public function hide_imports( $query ) {
+		// If we're not in the admin, bail.
+		if ( ! is_admin() || 'attachment' !== $query->query['post_type'] ) {
+			return $query;
+		}
+
+		// If we're not hiding imports, bail.
+		if ( 'yes' !== get_option( 'seoslides_hideimports', 'yes' ) ) {
+			return $query;
+		}
+
+		// Create the new tax query
+		$query->set(
+			'tax_query',
+			array(
+			     array(
+				     'taxonomy' => 'seoslides-flag',
+				     'terms'    => array( 'imported' ),
+				     'field'    => 'slug',
+				     'operator' => 'NOT IN',
+			     ),
+			)
+		);
+
+		return $query;
+	}
+
+	/**
+	 * Filter out hidden attachments from the UI where we count attachments.
+	 *
+	 * @param stdClass $counts
+	 * @param string   $mime_type
+	 *
+	 * @return stdClass
+	 */
+	public function hide_imports_from_count( $counts, $mime_type ) {
+
+		// If we're not hiding imports, bail.
+		if ( 'yes' !== get_option( 'seoslides_hideimports', 'yes' ) ) {
+			return $counts;
+		}
+
+		// We're hiding posts, so let's figure out how many attachments we really have in each status
+		// The following logic is drawn directly from wp_count_attachments() in WordPress core.
+		global $wpdb;
+
+		// Get the term ID for the 'imported' taxonomy term
+		$imported = get_term_by( 'name', 'imported', 'seoslides-flag' );
+		if ( false === $imported ) {
+			return $counts;
+		}
+
+		$imported = $imported->term_taxonomy_id;
+
+		$and = wp_post_mime_type_where( $mime_type );
+		$hide_and = $wpdb->prepare( "AND ( {$wpdb->posts}.ID NOT IN ( SELECT object_id FROM {$wpdb->term_relationships} WHERE term_taxonomy_id IN (%d) ) )", $imported );
+		$count = $wpdb->get_results( "SELECT post_mime_type, COUNT( * ) AS num_posts FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' $hide_and $and GROUP BY post_mime_type", ARRAY_A );
+
+		$counts = array();
+		foreach( (array) $count as $row ) {
+			$counts[ $row['post_mime_type'] ] = $row['num_posts'];
+		}
+		$counts['trash'] = $wpdb->get_var( "SELECT COUNT( * ) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status = 'trash' $hide_and $and");
+
+		return $counts;
 	}
 
 	/****************************************************************/

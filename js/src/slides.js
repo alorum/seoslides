@@ -29,7 +29,7 @@
 
 			return container.sortable( {
 				items: "tr:not('.slide-master')",
-				helper: helper,
+				helper: "clone",
 				containment: "parent",
 				cursor: "move",
 				update: function ( evt, ui ) {
@@ -60,6 +60,9 @@
 					};
 
 					CORE.ajax( options );
+				},
+				start: function( evt, ui ){
+					ui.placeholder.height( ui.helper.outerHeight() );
 				}
 			} ).disableSelection();
 		};
@@ -665,6 +668,9 @@
 					}
 
 					saveData();
+
+					CORE.Events.doAction( 'modal.saved' );
+
 					modal.close();
 				} );
 			}
@@ -679,14 +685,14 @@
 
 				if ( null !== document.getElementById( 'seoslides_slide_notes' ) ) {
 					var editor = window.CKEDITOR.replace( 'seoslides_slide_notes', {
-					'autoGrow':        true,
-					'extraPlugins':    'wordcount',
-					'baseFloatZIndex': 170000,
-					'wordcount':       {
-						'showCharCount': false,
-						'showWordCount': true
-					}
-				} );
+						'autoGrow':        true,
+						'extraPlugins':    'wordcount',
+						'baseFloatZIndex': 170000,
+						'wordcount':       {
+							'showCharCount': false,
+							'showWordCount': true
+						}
+					} );
 
 					editor.on( 'instanceReady', function ( e ) {
 						document.querySelector( '.cke_contents' ).style.height = $( '.seoslides-modal-frame-notes' ).height() - 75 + 'px';

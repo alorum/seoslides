@@ -164,6 +164,8 @@
 			var instance = INSTANCES[ uuid ];
 			if ( undefined !== instance ) {
 				instance.settings[ key ] = value;
+
+				CORE.Events.doAction( 'plugin.setData', SELF, uuid, key, value );
 			}
 		};
 
