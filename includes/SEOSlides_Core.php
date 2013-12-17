@@ -1278,7 +1278,7 @@ class SEOSlides_Core {
 						<?php do_action( 'seoslides_support_form_top_rows' ); ?>
 						<tr valign="top">
 							<th scope="row">
-								<label for="message"><?php _e( 'Problem description', 'seoslides_translate' ); ?></label>
+								<label for="message"><?php _e( 'How can we assist you?', 'seoslides_translate' ); ?></label>
 							</th>
 							<td>
 								<textarea id="message" name="message" rows="6" cols="45" class="large-text ltr"></textarea>
