@@ -52,7 +52,6 @@ class SEOSlides_Core {
 		add_action( 'seoslides_presstrends_event',                   array( $this, 'track_event' ), 1, 1 );
 		add_action( 'wp_ajax_seoslides_track',                       array( $this, 'toggle_tracking' ) );
 		add_action( 'after_setup_theme',                             array( $this, 'add_thumbnail_sizes' ) );
-		add_action( 'admin_notices',                                 array( $this, 'upgrade_notice' ) );
 
 		// Wire filters
 		add_filter( 'manage_seoslides-slideset_posts_columns',         array( $this, 'filter_list_table_columns' ) );
@@ -86,7 +85,7 @@ class SEOSlides_Core {
 		$installed = get_option( 'seoslides_version' );
 
 		switch( $installed ) {
-			//case '1.2':
+			case '1.2':
 			case '1.1.1':
 			case '1.1':
 			case '1.0.5':
@@ -96,12 +95,12 @@ class SEOSlides_Core {
 			case '1.0.1':
 			case '1.0':
 			case '0.1.0':
-				// Flag that we need to upgrade the plugin's data storage so we can alert the administrator.
-				add_option( 'seoslides_upgrade_required', 'yes', '', 'no' );
-
 				// Upgrade the option
 				delete_option( 'seoslides_version' );
 				add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
+
+				// Add new options that didn't exist in legacy systems
+				add_option( 'seoslides_hideimports', 'yes', '', 'no' );
 				break;
 			case false:
 				// Plugin not previously installed.
@@ -110,6 +109,7 @@ class SEOSlides_Core {
 				add_option( 'seoslides_logo_url', 'https://seoslides.com', '', 'no' );
 				add_option( 'seoslides_logo_title', 'seoslides', '', 'no' );
 				add_option( 'seoslides_logo_enabled', 'no', '', 'no' );
+				add_option( 'seoslides_hideimports', 'yes', '', 'no' );
 
 				// Remove default content filter and inject our template presenatation
 				remove_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
@@ -117,45 +117,6 @@ class SEOSlides_Core {
 				add_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
 				break;
 		}
-	}
-
-	/**
-	 * Show an upgrade alert if we need one.
-	 */
-	public function upgrade_notice() {
-		$screen = get_current_screen();
-
-		$show_notice = get_option( 'seoslides_upgrade_required', 'no' );
-		$interrupted = get_option( 'seoslides_upgrading', 'no' );
-
-		// If we don't need a notice, skip.
-		if ( 'yes' !== $show_notice ) {
-			return;
-		}
-
-		if ( 'seoslides-slideset_page_settings' === $screen->base ) :
-			$this->upgrading();
-		else : ?>
-		<div class="updated">
-			<?php if ( 'yes' === $interrupted ) : ?>
-				<p><?php echo sprintf( __( 'Your seoslides data upgrade is not yet finished. Please <a href="%s">visit the settings page</a> to complete the upgrade.', 'seoslides_translate' ), admin_url( 'edit.php?post_type=seoslides-slideset&page=settings&upgrade=1' ) ); ?></p>
-			<?php else : ?>
-				<p><?php echo sprintf( __( 'Your seoslides data needs to be upgraded. Please <a href="%s">visit the settings page</a> to upgrade your installation.', 'seoslides_translate' ), admin_url( 'edit.php?post_type=seoslides-slideset&page=settings&upgrade=1' ) ); ?></p>
-			<?php endif; ?>
-		</div>
-		<?php endif;
-	}
-
-	/**
-	 * Include our upgrader in an admin notice and use AJAX to update it.
-	 */
-	public function upgrading() {
-		add_option( 'seoslides_upgrading', 'yes', '', 'no' );
-		?>
-		<div class="updated">
-			<p id="seoslides_indicator"><?php _e( 'Upgrading your seoslides data .', 'seoslides_translate' ); ?></p>
-		</div>
-		<?php
 	}
 
 	/**
@@ -421,11 +382,6 @@ class SEOSlides_Core {
 			'tracking_button'     => __( 'Allow tracking', 'seoslides_translate' ),
 			'tracking_nonce'      => wp_create_nonce( 'seoslides_tracking' ),
 			'close_modal_conf'    => __( 'You have unsaved changes on this slide. Are you sure you wish to close the window?', 'seoslides_translate' ),
-			'indicator0'          => __( 'Upgrading your seoslides data .', 'seoslides_translate' ),
-			'indicator1'          => __( 'Upgrading your seoslides data ..', 'seoslides_translate' ),
-			'indicator2'          => __( 'Upgrading your seoslides data ...', 'seoslides_translate' ),
-			'indicatorDone'       => __( 'Your seoslides data has been successfully upgraded!', 'seoslides_translate' ),
-			'confirm_upgrade_nav' => __( 'Leaving the page will cancel the data upgrade in progress. Are you sure you wish to leave this page?', 'seoslides_translate' ),
 		);
 
 		wp_localize_script( $handle, 'seoslides_i18n', $strings );
@@ -1203,32 +1159,38 @@ class SEOSlides_Core {
 
 					<tr valign="top">
 						<th scope="row">
-							<label for="tracking"><?php _e( 'Allow Statistics Tracking', 'seoslides_translate' ); ?></label>
+							<?php _e( 'Allow Statistics Tracking', 'seoslides_translate' ); ?>
 						</th>
 						<td>
-							<input name="tracking" type="checkbox" id="tracking" <?php checked( $can_track, true, true ); ?>/>
-							<p class="description"><?php _e( 'Allow us to gather <em>anonymous</em> usage statistics so we can further improve seoslides.', 'seoslides_translate' ) ?></p>
+							<label for="tracking">
+								<input name="tracking" type="checkbox" id="tracking" <?php checked( $can_track, true, true ); ?>/>
+								<?php _e( 'Allow us to gather <em>anonymous</em> usage statistics so we can further improve seoslides.', 'seoslides_translate' ) ?>
+							</label>
 						</td>
 					</tr>
 
 					<tr valign="top">
 						<th scope="row">
-							<label for="hideimports"><?php _e( 'Hide Imported Slide Backgrounds', 'seoslides_translate' ); ?></label>
+							<?php _e( 'Show Imported Slide Backgrounds', 'seoslides_translate' ); ?>
 						</th>
 						<td>
-							<input name="hideimports" type="checkbox" id="hideimports" <?php checked( $hideimports, true, true ); ?>/>
-							<p class="description"><?php _e( 'Hide imported slide backgrounds from the media library.', 'seoslides_translate' ); ?></p>
+							<label for="showimports">
+								<input name="showimports" type="checkbox" id="showimports" <?php checked( $hideimports, false, true ); ?>/>
+								<?php _e( 'Show imported slide backgrounds in the media library.', 'seoslides_translate' ); ?>
+							</label>
 						</td>
 					</tr>
 
-					<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
+					<?php if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) : ?>
 					<tr valign="top">
 						<th scope="row">
-							<label for="add_social_slide"><?php _e( 'Add Social Sharing Slide', 'seoslides_translate' ); ?></label>
+							<?php _e( 'Add Social Sharing Slide', 'seoslides_translate' ); ?>
 						</th>
 						<td>
-							<input name="add_social_slide" type="checkbox" id="add_social_slide" <?php checked( $social_slide, true, true ); ?> />
-							<p class="description"><?php _e( 'Add a slide to the end of each presentation with social share icons that will always point back to your site. Includes seoslides logo and link.', 'seolides_translate' ); ?></p>
+							<label for="add_social_slide">
+								<input name="add_social_slide" type="checkbox" id="add_social_slide" <?php checked( $social_slide, true, true ); ?> />
+								<?php _e( 'Add a social sharing slide to the end of each presentation. Includes seoslides logo and link.', 'seolides_translate' ); ?>
+							</label>
 						</td>
 					</tr>
 					<?php endif; ?>
@@ -1278,7 +1240,7 @@ class SEOSlides_Core {
 						<?php do_action( 'seoslides_support_form_top_rows' ); ?>
 						<tr valign="top">
 							<th scope="row">
-								<label for="message"><?php _e( 'Problem description', 'seoslides_translate' ); ?></label>
+								<label for="message"><?php _e( 'How can we assist you?', 'seoslides_translate' ); ?></label>
 							</th>
 							<td>
 								<textarea id="message" name="message" rows="6" cols="45" class="large-text ltr"></textarea>
@@ -1371,7 +1333,7 @@ class SEOSlides_Core {
 
 		update_option( 'seoslides_track', $options );
 
-		$hideimports = ( isset( $_POST['hideimports'] ) && 'on' === $_POST['hideimports'] ) ? 'yes' : 'no';
+		$hideimports = ( isset( $_POST['showimports'] ) && 'on' === $_POST['showimports'] ) ? 'no' : 'yes';
 		update_option( 'seoslides_hideimports', $hideimports );
 
 		$social_slide = ( isset( $_POST['add_social_slide'] ) && 'on' === $_POST['add_social_slide'] ) ? 'yes' : 'no';
