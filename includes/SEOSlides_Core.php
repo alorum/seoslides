@@ -98,6 +98,9 @@ class SEOSlides_Core {
 				// Upgrade the option
 				delete_option( 'seoslides_version' );
 				add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
+
+				// Add new options that didn't exist in legacy systems
+				add_option( 'seoslides_hideimports', 'yes', '', 'no' );
 				break;
 			case false:
 				// Plugin not previously installed.
@@ -106,6 +109,7 @@ class SEOSlides_Core {
 				add_option( 'seoslides_logo_url', 'https://seoslides.com', '', 'no' );
 				add_option( 'seoslides_logo_title', 'seoslides', '', 'no' );
 				add_option( 'seoslides_logo_enabled', 'no', '', 'no' );
+				add_option( 'seoslides_hideimports', 'yes', '', 'no' );
 
 				// Remove default content filter and inject our template presenatation
 				remove_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
@@ -1167,12 +1171,12 @@ class SEOSlides_Core {
 
 					<tr valign="top">
 						<th scope="row">
-							<?php _e( 'Hide Imported Slide Backgrounds', 'seoslides_translate' ); ?>
+							<?php _e( 'Show Imported Slide Backgrounds', 'seoslides_translate' ); ?>
 						</th>
 						<td>
-							<label for="hideimports">
-								<input name="hideimports" type="checkbox" id="hideimports" <?php checked( $hideimports, true, true ); ?>/>
-								<?php _e( 'Hide imported slide backgrounds from the media library.', 'seoslides_translate' ); ?>
+							<label for="showimports">
+								<input name="showimports" type="checkbox" id="showimports" <?php checked( $hideimports, false, true ); ?>/>
+								<?php _e( 'Show imported slide backgrounds in the media library.', 'seoslides_translate' ); ?>
 							</label>
 						</td>
 					</tr>
@@ -1329,7 +1333,7 @@ class SEOSlides_Core {
 
 		update_option( 'seoslides_track', $options );
 
-		$hideimports = ( isset( $_POST['hideimports'] ) && 'on' === $_POST['hideimports'] ) ? 'yes' : 'no';
+		$hideimports = ( isset( $_POST['showimports'] ) && 'on' === $_POST['showimports'] ) ? 'no' : 'yes';
 		update_option( 'seoslides_hideimports', $hideimports );
 
 		$social_slide = ( isset( $_POST['add_social_slide'] ) && 'on' === $_POST['add_social_slide'] ) ? 'yes' : 'no';
