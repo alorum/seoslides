@@ -52,7 +52,6 @@ class SEOSlides_Core {
 		add_action( 'seoslides_presstrends_event',                   array( $this, 'track_event' ), 1, 1 );
 		add_action( 'wp_ajax_seoslides_track',                       array( $this, 'toggle_tracking' ) );
 		add_action( 'after_setup_theme',                             array( $this, 'add_thumbnail_sizes' ) );
-		add_action( 'admin_notices',                                 array( $this, 'upgrade_notice' ) );
 
 		// Wire filters
 		add_filter( 'manage_seoslides-slideset_posts_columns',         array( $this, 'filter_list_table_columns' ) );
@@ -86,7 +85,7 @@ class SEOSlides_Core {
 		$installed = get_option( 'seoslides_version' );
 
 		switch( $installed ) {
-			//case '1.2':
+			case '1.2':
 			case '1.1.1':
 			case '1.1':
 			case '1.0.5':
@@ -96,9 +95,6 @@ class SEOSlides_Core {
 			case '1.0.1':
 			case '1.0':
 			case '0.1.0':
-				// Flag that we need to upgrade the plugin's data storage so we can alert the administrator.
-				add_option( 'seoslides_upgrade_required', 'yes', '', 'no' );
-
 				// Upgrade the option
 				delete_option( 'seoslides_version' );
 				add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
@@ -117,45 +113,6 @@ class SEOSlides_Core {
 				add_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
 				break;
 		}
-	}
-
-	/**
-	 * Show an upgrade alert if we need one.
-	 */
-	public function upgrade_notice() {
-		$screen = get_current_screen();
-
-		$show_notice = get_option( 'seoslides_upgrade_required', 'no' );
-		$interrupted = get_option( 'seoslides_upgrading', 'no' );
-
-		// If we don't need a notice, skip.
-		if ( 'yes' !== $show_notice ) {
-			return;
-		}
-
-		if ( 'seoslides-slideset_page_settings' === $screen->base ) :
-			$this->upgrading();
-		else : ?>
-		<div class="updated">
-			<?php if ( 'yes' === $interrupted ) : ?>
-				<p><?php echo sprintf( __( 'Your seoslides data upgrade is not yet finished. Please <a href="%s">visit the settings page</a> to complete the upgrade.', 'seoslides_translate' ), admin_url( 'edit.php?post_type=seoslides-slideset&page=settings&upgrade=1' ) ); ?></p>
-			<?php else : ?>
-				<p><?php echo sprintf( __( 'Your seoslides data needs to be upgraded. Please <a href="%s">visit the settings page</a> to upgrade your installation.', 'seoslides_translate' ), admin_url( 'edit.php?post_type=seoslides-slideset&page=settings&upgrade=1' ) ); ?></p>
-			<?php endif; ?>
-		</div>
-		<?php endif;
-	}
-
-	/**
-	 * Include our upgrader in an admin notice and use AJAX to update it.
-	 */
-	public function upgrading() {
-		add_option( 'seoslides_upgrading', 'yes', '', 'no' );
-		?>
-		<div class="updated">
-			<p id="seoslides_indicator"><?php _e( 'Upgrading your seoslides data .', 'seoslides_translate' ); ?></p>
-		</div>
-		<?php
 	}
 
 	/**
@@ -421,11 +378,6 @@ class SEOSlides_Core {
 			'tracking_button'     => __( 'Allow tracking', 'seoslides_translate' ),
 			'tracking_nonce'      => wp_create_nonce( 'seoslides_tracking' ),
 			'close_modal_conf'    => __( 'You have unsaved changes on this slide. Are you sure you wish to close the window?', 'seoslides_translate' ),
-			'indicator0'          => __( 'Upgrading your seoslides data .', 'seoslides_translate' ),
-			'indicator1'          => __( 'Upgrading your seoslides data ..', 'seoslides_translate' ),
-			'indicator2'          => __( 'Upgrading your seoslides data ...', 'seoslides_translate' ),
-			'indicatorDone'       => __( 'Your seoslides data has been successfully upgraded!', 'seoslides_translate' ),
-			'confirm_upgrade_nav' => __( 'Leaving the page will cancel the data upgrade in progress. Are you sure you wish to leave this page?', 'seoslides_translate' ),
 		);
 
 		wp_localize_script( $handle, 'seoslides_i18n', $strings );

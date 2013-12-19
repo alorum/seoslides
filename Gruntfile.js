@@ -83,7 +83,6 @@ module.exports = function ( grunt ) {
 					'js/src/seoslides.wysiwyg.js',
 					'js/src/front-end-plugins.js',
 					'js/src/slide-builder.js',
-					'js/src/seoslides.updater.js',
 					'js/src/list.js',
 					'js/src/popup.js'
 				],
