@@ -2398,6 +2398,11 @@
 					'appendTo': left_rail
 				} );
 
+				$( '.seoslides-rail-content' ).on( 'keydown', function() {
+					window.alert('key');
+					CORE.Events.doAction( 'seoslides.slideEdited' );
+				} );
+
 				// SEO Meta
 				{
 					var seo = CORE.createElement( 'div', {
@@ -2690,6 +2695,8 @@
 
 		window.SEO_Slides.Events.addAction( 'plugin.setData', contaminate );
 		window.SEO_Slides.Events.addAction( 'wysiwyg.key', contaminate );
+		window.SEO_Slides.Events.addAction( 'slide.tabsToggled', contaminate );
+		window.SEO_Slides.Events.addAction( 'seoslides.slideEdited', contaminate );
 
 		window.SEO_Slides.Events.addAction( 'modal.saved', function() {
 			clean = true;
@@ -4491,6 +4498,7 @@
 			$tabs.on( 'click', function( e ) {
 				e.preventDefault();
 
+				CORE.Events.doAction( 'slide.tabsToggled' );
 				$tabs.toggleClass( 'active' );
 				$frames.toggleClass( 'hidden' );
 			} );

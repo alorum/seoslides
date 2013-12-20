@@ -625,6 +625,7 @@
 			$tabs.on( 'click', function( e ) {
 				e.preventDefault();
 
+				CORE.Events.doAction( 'slide.tabsToggled' );
 				$tabs.toggleClass( 'active' );
 				$frames.toggleClass( 'hidden' );
 			} );
