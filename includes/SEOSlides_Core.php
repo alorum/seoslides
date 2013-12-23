@@ -69,6 +69,7 @@ class SEOSlides_Core {
 		add_filter( 'seoslides_social_icons',                          array( $this, 'social_icons' ), 10, 1 );
 		add_filter( 'pre_get_posts',                                   array( $this, 'hide_imports' ), 10, 1 );
 		add_filter( 'wp_count_attachments',                            array( $this, 'hide_imports_from_count' ), 10, 2 );
+		add_filter( 'post_type_link',                                  array( $this, 'post_type_link' ), 10, 4);
 
 		if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) {
 			add_filter( 'seoslides_frontend_themes', array( $this, 'alpha_themes' ), 10, 1 );
@@ -2020,6 +2021,36 @@ class SEOSlides_Core {
 		$counts['trash'] = $wpdb->get_var( "SELECT COUNT( * ) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status = 'trash' $hide_and $and");
 
 		return $counts;
+	}
+
+	/**
+	 * Filter the sample Presentation permalink so it's usable on unpublished presentations.
+	 *
+	 * @param string  $uri
+	 * @param WP_Post $post
+	 * @param bool    $leavename
+	 * @param bool    $sample
+	 *
+	 * @global $wp_rewrite
+	 *
+	 * @return string
+	 */
+	public function post_type_link( $uri, $post, $leavename = false, $sample = false ) {
+		if ( 'seoslides-slideset' === $post->post_type && get_option( 'permalink_structure', false ) ) {
+			global $wp_rewrite;
+
+			$post_link = $wp_rewrite->get_extra_permastruct($post->post_type);
+			$slug = $post->post_name;
+
+			if ( ! empty( $post_link ) && ! $sample ) {
+				if ( ! $leavename ) {
+					$post_link = str_replace( "%{$post->post_type}%", $slug, $post_link );
+				}
+				$uri = home_url( user_trailingslashit( $post_link ) );
+			}
+		}
+
+		return $uri;
 	}
 
 	/****************************************************************/
