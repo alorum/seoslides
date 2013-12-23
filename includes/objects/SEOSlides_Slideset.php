@@ -392,4 +392,24 @@ class SEOSlides_Slideset {
 
 		return $last;
 	}
+
+	/**
+	 * Generate the presentation's permalink
+	 *
+	 * @return string
+	 */
+	public function get_permalink() {
+		global $wp_rewrite;
+
+		$post_link = $wp_rewrite->get_extra_permastruct( 'seoslides-slideset' );
+		$slug = $this->post->post_name;
+
+		if ( empty( $slug ) ) {
+			$slug = sanitize_title( $this->post->post_title );
+		}
+
+		$post_link = str_replace( "%seoslides-slideset%", $slug, $post_link );
+
+		return home_url( user_trailingslashit( $post_link ) );
+	}
 }

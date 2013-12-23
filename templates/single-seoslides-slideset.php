@@ -42,7 +42,7 @@ if ( '' === $slide_slug ) {
 		$first = $slides[ $first_id ];
 
 		header( "HTTP/1.1 307 Temporary Redirect" );
-		header( "Location: " . trailingslashit( trailingslashit( get_permalink() ) . $first->slug ) );
+		header( "Location: " . trailingslashit( trailingslashit( $slideset->get_permalink() ) . $first->slug ) );
 		die;
 	}
 

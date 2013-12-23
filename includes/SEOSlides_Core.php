@@ -2039,17 +2039,9 @@ class SEOSlides_Core {
 	 */
 	public function post_type_link( $uri, $post, $leavename = false, $sample = false ) {
 		if ( 'seoslides-slideset' === $post->post_type && get_option( 'permalink_structure', false ) ) {
-			global $wp_rewrite;
+			$slideset = SEOSlides_Module_Provider::get( 'SEOSlides Core' )->get_slideset( $post->ID );
 
-			$post_link = $wp_rewrite->get_extra_permastruct($post->post_type);
-			$slug = $post->post_name;
-
-			if ( ! empty( $post_link ) && ! $sample ) {
-				if ( ! $leavename ) {
-					$post_link = str_replace( "%{$post->post_type}%", $slug, $post_link );
-				}
-				$uri = home_url( user_trailingslashit( $post_link ) );
-			}
+			return $slideset->get_permalink();
 		}
 
 		return $uri;
