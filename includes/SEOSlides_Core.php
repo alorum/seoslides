@@ -284,7 +284,7 @@ class SEOSlides_Core {
 		$sets = get_posts(
 			array(
 				'post_type'   => 'seoslides-slideset',
-			    'post_status' => 'any',
+			    'post_status' => 'publish',
 			    'numberposts' => 1,
 			)
 		);
