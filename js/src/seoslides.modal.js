@@ -66,7 +66,6 @@
 				} );
 
 				$( '.seoslides-rail-content' ).on( 'keydown', function() {
-					window.alert('key');
 					CORE.Events.doAction( 'seoslides.slideEdited' );
 				} );
 
