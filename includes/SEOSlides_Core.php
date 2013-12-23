@@ -52,6 +52,7 @@ class SEOSlides_Core {
 		add_action( 'seoslides_presstrends_event',                   array( $this, 'track_event' ), 1, 1 );
 		add_action( 'wp_ajax_seoslides_track',                       array( $this, 'toggle_tracking' ) );
 		add_action( 'after_setup_theme',                             array( $this, 'add_thumbnail_sizes' ) );
+		add_action( 'pre_get_posts',                                 array( $this, 'query_drafts' ) );
 
 		// Wire filters
 		add_filter( 'manage_seoslides-slideset_posts_columns',         array( $this, 'filter_list_table_columns' ) );
@@ -70,6 +71,7 @@ class SEOSlides_Core {
 		add_filter( 'pre_get_posts',                                   array( $this, 'hide_imports' ), 10, 1 );
 		add_filter( 'wp_count_attachments',                            array( $this, 'hide_imports_from_count' ), 10, 2 );
 		add_filter( 'post_type_link',                                  array( $this, 'post_type_link' ), 10, 4);
+		add_filter( 'posts_request',                                   array( $this, 'adjust_request' ), 10, 2 );
 
 		if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) {
 			add_filter( 'seoslides_frontend_themes', array( $this, 'alpha_themes' ), 10, 1 );
@@ -282,7 +284,7 @@ class SEOSlides_Core {
 		$sets = get_posts(
 			array(
 				'post_type'   => 'seoslides-slideset',
-			    'post_status' => 'publish',
+			    'post_status' => 'any',
 			    'numberposts' => 1,
 			)
 		);
@@ -2051,6 +2053,37 @@ class SEOSlides_Core {
 		}
 
 		return $uri;
+	}
+
+	/**
+	 * Filter the main query so that draft publications can show up on the front-end.
+	 *
+	 * @param WP_Query $query
+	 */
+	public function query_drafts( $query ) {
+		if ( 'seoslides-slideset' === $query->query_vars['post_type'] && $query->is_single && is_user_logged_in() ) {
+			$query->set( 'post_status', array( 'any' ) );
+		}
+	}
+
+	/**
+	 * Replace the post_name query with a post_title query.
+	 *
+	 * @param string   $request
+	 * @param WP_Query $query
+	 *
+	 * @global wpdb $wpdb
+	 *
+	 * @return string
+	 */
+	public function adjust_request( $request, $query ) {
+		if ( 'seoslides-slideset' === $query->query_vars['post_type'] && $query->is_single && is_user_logged_in() ) {
+			global $wpdb;
+
+			$request = str_replace( "{$wpdb->posts}.post_name", "REPLACE( LOWER( {$wpdb->posts}.post_title ), ' ', '-' )", $request );
+		}
+
+		return $request;
 	}
 
 	/****************************************************************/
