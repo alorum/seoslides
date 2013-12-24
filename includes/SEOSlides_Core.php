@@ -2039,9 +2039,13 @@ class SEOSlides_Core {
 	 */
 	public function post_type_link( $uri, $post, $leavename = false, $sample = false ) {
 		if ( 'seoslides-slideset' === $post->post_type && get_option( 'permalink_structure', false ) ) {
-			$slideset = SEOSlides_Module_Provider::get( 'SEOSlides Core' )->get_slideset( $post->ID );
+			// prevent recursion
+			remove_filter ( 'post_type_link', array( $this, 'post_type_link' ) );
 
-			return $slideset->get_permalink();
+			$slideset = SEOSlides_Module_Provider::get( 'SEOSlides Core' )->get_slideset( $post->ID );
+			$uri = $slideset->get_permalink();
+
+			add_filter( 'post_type_link', array( $this, 'post_type_link' ), 10, 4);
 		}
 
 		return $uri;
