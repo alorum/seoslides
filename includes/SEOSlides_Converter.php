@@ -176,11 +176,7 @@ class SEOSlides_Converter {
 
 		<?php if ( $core->get_subscription_level() < 20 ) : ?>
 			<div class="updated">
-				<p><?php _e( 'You can use a free license key for 3 imports and 3 embeds on <a href="http://seoslid.es">seoslid.es</a> (our presentation community).', 'seoslides_translate' ); ?></p>
-				<p>
-					<?php _e( 'Upgrade to the <a href="https://seoslides.com/pro">pro version</a> for unlimited imports during the beta and unlimited embeds to <a href="http://seoslid.es">seoslid.es</a>.', 'seoslides_translate' ); ?>
-					<?php _e( 'The pro version also includes the ability to replace our logo and link with your own in every one of your presentations and embeds (free backlinks!).', 'seoslides_translate' ); ?>
-				</p>
+				<p><?php _e( 'You can use a free license key for 3 imports. Upgrade to the <a href="https://seoslides.com/pro">pro version</a> for unlimited imports during the beta.', 'seoslides_translate' ); ?></p>
 			</div>
 		<?php endif; ?>
 
