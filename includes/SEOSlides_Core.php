@@ -1288,7 +1288,7 @@ class SEOSlides_Core {
 	}
 
 	/**
-	 * Process data from the posted form
+	 * Process data from the posted form on settings page
 	 */
 	protected function process_postback() {
 		if ( ! isset( $_POST['submit'] ) ) {
@@ -2057,7 +2057,7 @@ class SEOSlides_Core {
 	 * @param WP_Query $query
 	 */
 	public function query_drafts( $query ) {
-		if ( 'seoslides-slideset' === $query->query_vars['post_type'] && $query->is_single && is_user_logged_in() ) {
+		if ( isset( $query->query_vars['post_type'] ) && 'seoslides-slideset' === $query->query_vars['post_type'] && $query->is_single && is_user_logged_in() ) {
 			$query->set( 'post_status', array( 'any' ) );
 		}
 	}
