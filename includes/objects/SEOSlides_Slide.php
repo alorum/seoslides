@@ -155,6 +155,9 @@ class SEOSlides_Slide {
 			}
 
 			$style .= 'background-image:url(' . $image . ');';
+		} elseif ( 'noimage' === $this->bg_image ) {
+			// Pull out the background image from the presentation if it exists.
+			// @TODO Get presentation BG image
 		}
 		$style .= 'background-color:' . $this->fill_color . ';"';
 		$this->style = $style;
@@ -194,10 +197,16 @@ class SEOSlides_Slide {
 		$notes = get_post_meta( $this->ID, 'seoslides_notes', true );
 
 		$this->preview = empty( $preview ) ? false : $preview;
-		$this->fill_color = empty( $fill_color ) ? '#ffffff' : $fill_color;
 		$this->presenter_notes = $notes;
 		$this->objects = $objects;
 		$this->oembed = get_post_meta( $this->ID, 'seoslides_oembed', true );
+
+		if ( empty( $fill_color ) ) {
+			// Get presentation fill color
+			// @TODO Presentation fill
+		} else {
+			$this->fill_color = $fill_color;
+		}
 	}
 
 	/**
