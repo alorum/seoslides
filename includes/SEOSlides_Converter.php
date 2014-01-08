@@ -498,12 +498,15 @@ class SEOSlides_Converter {
 
 		$slideset = new SEOSlides_Slideset( $slideset );
 
+		// Get slide position
+		$position = count( $slideset->slides );
+
 		// Slide content
 		$content = array(
-			'title'    => $slideset->title,
+			'title'    => sprintf( __( 'Slide %d', 'seoslides_translate' ), ( $position + 1 ) ),
 			'content'  => '',
 			'image'    => '',
-			'bg-image' => $src
+			'bg-image' => $src,
 		);
 
 		// Create the slide
@@ -511,7 +514,7 @@ class SEOSlides_Converter {
 			array(
 			     'post_parent'  => $slideset->ID,
 			     'post_type'    => 'seoslides-slide',
-			     'menu_order'   => count( $slideset->slides ), // Insert at the end of the presentation
+			     'menu_order'   => $position, // Insert at the end of the presentation
 			     'post_status'  => 'publish',
 			     'post_content' => serialize( $content )
 			)
