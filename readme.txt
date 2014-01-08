@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= 1.2.2 =
+
+* Remove the CSS Customizer since it's not necessary and causing a few problems.
+
 = 1.2.1 =
 
 * Prevent loss of changes by prematurely closing the modal slide editor.

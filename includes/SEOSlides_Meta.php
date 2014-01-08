@@ -7,8 +7,6 @@
  * Author:      10up
  */
 
-require_once 'css-customizer/TenUp_CSS_Customizer.php';
-
 /**
  * Core meta boxes for presentation creation/editing.
  *
@@ -29,15 +27,6 @@ class SEOSlides_Meta {
 		add_action( 'edit_form_after_editor', array( $this, 'slide_list_metabox' ) );
 
 		// Wire filters
-
-		new TenUp_CSS_Customizer(
-			'seoslides_custom_css',
-			'meta',
-			array(
-			     'metabox-label'      => __( 'Custom Presentation CSS', 'seoslides_translate' ),
-			     'metabox-post-types' => array( 'seoslides-slideset' )
-			)
-		);
 	}
 
 	/**

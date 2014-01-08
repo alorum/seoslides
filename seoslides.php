@@ -46,7 +46,6 @@ function seoslides_init() {
 	load_plugin_textdomain( 'seoslides_translate', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 
 	do_action( 'seoslides_register_cpts' );
-	do_action( 'tenup_css_register_rewrites' );
 }
 
 /**
