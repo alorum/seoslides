@@ -88,6 +88,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 = 1.2.2 =
 
 * Remove the CSS Customizer since it's not necessary and causing a few problems.
+* Fix a minor PHP notice that was interfering with Jetpack-delivered images.
 
 = 1.2.1 =
 

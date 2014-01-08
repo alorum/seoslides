@@ -88,7 +88,7 @@ class SEOSlides_Ajax {
 					'status'          => $slide->status,
 				);
 
-				if ( function_exists( 'jetpack_photon_url' ) ) {
+				if ( isset( $data['bg-image'] ) && function_exists( 'jetpack_photon_url' ) ) {
 					$data['bg-image'] = jetpack_photon_url( $data['bg-image'], array(), '//' );
 				}
 
