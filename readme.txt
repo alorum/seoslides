@@ -87,6 +87,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 = 1.2.2 =
 
+* Allow imported slides to "inherit" the background of the default/master slide rather than be set individually.
 * Remove the CSS Customizer since it's not necessary and causing a few problems.
 * Fix a minor PHP notice that was interfering with Jetpack-delivered images.
 * Auto-number slides as they come in via the importer.
