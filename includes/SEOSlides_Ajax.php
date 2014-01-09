@@ -401,7 +401,7 @@ class SEOSlides_Ajax {
 			'title'    => $defaults->title,
 			'content'  => '',
 			'image'    => '',
-			'bg-image' => $defaults->bg_image
+			'bg-image' => 'noimage',
 		);
 
 		// Create the slide
@@ -416,7 +416,7 @@ class SEOSlides_Ajax {
 		);
 
 		if ( 0 !== $slide && ! is_wp_error( $slide ) ) {
-			update_post_meta( $slide, 'seoslides_fillcolor', $defaults->fill_color );
+			update_post_meta( $slide, 'seoslides_fillcolor', '' );
 			update_post_meta( $slide, 'seoslides_oembed', $defaults->oembed );
 
 			// Update SEO
