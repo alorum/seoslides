@@ -157,7 +157,9 @@ class SEOSlides_Slide {
 			$style .= 'background-image:url(' . $image . ');';
 		} elseif ( 'noimage' === $this->bg_image ) {
 			// Pull out the background image from the presentation if it exists.
-			// @TODO Get presentation BG image
+			// Get presentation fill color
+			$default = get_post_meta( $this->slideset, '_default_slide', true );
+			$this->fill_color = $default->bg_image;
 		}
 		$style .= 'background-color:' . $this->fill_color . ';"';
 		$this->style = $style;
@@ -203,7 +205,8 @@ class SEOSlides_Slide {
 
 		if ( empty( $fill_color ) ) {
 			// Get presentation fill color
-			// @TODO Presentation fill
+			$default = get_post_meta( $this->slideset, '_default_slide', true );
+			$this->fill_color = $default->fill_color;
 		} else {
 			$this->fill_color = $fill_color;
 		}
