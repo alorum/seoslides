@@ -286,7 +286,8 @@ class SEOSlides_Ajax {
 			$slide->oembed = esc_url_raw( $_POST['oembed'] );
 
 			// Background information
-			$slide->fill_color = sanitize_text_field( $_POST['fill_color'] );
+			$fill_color = sanitize_text_field( $_POST['fill_color'] );
+			$slide->fill_color = ( $fill_color === $slide->fill_color ) ? '' : $fill_color;
 			$slide->bg_image = sanitize_text_field( $_POST['bg_image'] );
 
 			// Update SEO
