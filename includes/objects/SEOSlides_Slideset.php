@@ -252,8 +252,8 @@ class SEOSlides_Slideset {
 			$default->title = ! empty( $this->seo_title ) ? $this->seo_title : $this->title;
 			$default->seo_description = $this->seo_description;
 			$default->seo_keywords = $this->seo_keywords;
-			$default->fill_color = $this->default_fill_color;
-			$default->bg_image = $this->default_bg_image;
+			$default->fill_color = '';
+			$default->bg_image = 'noimage';
 			$default->slideset = $this->ID;
 			$default->objects = array();
 			$default->oembed = '';

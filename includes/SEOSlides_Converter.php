@@ -5,8 +5,6 @@
  * Description: Allow converting PDF presentation exports to SEOSlides presentations.
  * Version:     0.1
  * Author:      10up
- *
- * @todo Update postback url to real server location
  */
 
 /**
