@@ -1,6 +1,6 @@
-/*! seoslides - v1.2.1
+/*! seoslides - v1.2.2
  * https://seoslides.com
- * Copyright (c) 2013 Alroum; * Licensed GPLv2+ */
+ * Copyright (c) 2014 Alroum; * Licensed GPLv2+ */
 ( function( window, $, undefined ) {
 	var document = window.document,
 		CORE = window.multiplier;
@@ -25,19 +25,6 @@
 		e.preventDefault();
 
 		var $this = $( this );
-
-		if ( $this.hasClass( 'offer-upgrade' ) ) {
-			var buttons = {};
-			buttons[ CORE.button_ok ] = function() {
-				$( this ).dialog( 'close' );
-			};
-
-			$( CORE.notice_free_subscriber ).dialog( {
-				'dialogClass' : 'wp-dialog',
-				modal: true,
-				buttons: buttons
-			} );
-		}
 
 		if ( controls.is(':hidden')) {
 			controls.slideDown('fast');

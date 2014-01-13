@@ -24,19 +24,6 @@
 
 		var $this = $( this );
 
-		if ( $this.hasClass( 'offer-upgrade' ) ) {
-			var buttons = {};
-			buttons[ CORE.button_ok ] = function() {
-				$( this ).dialog( 'close' );
-			};
-
-			$( CORE.notice_free_subscriber ).dialog( {
-				'dialogClass' : 'wp-dialog',
-				modal: true,
-				buttons: buttons
-			} );
-		}
-
 		if ( controls.is(':hidden')) {
 			controls.slideDown('fast');
 			$(this).hide();

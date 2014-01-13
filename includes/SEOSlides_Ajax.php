@@ -88,7 +88,7 @@ class SEOSlides_Ajax {
 					'status'          => $slide->status,
 				);
 
-				if ( function_exists( 'jetpack_photon_url' ) ) {
+				if ( isset( $data['bg-image'] ) && function_exists( 'jetpack_photon_url' ) ) {
 					$data['bg-image'] = jetpack_photon_url( $data['bg-image'], array(), '//' );
 				}
 
@@ -286,7 +286,8 @@ class SEOSlides_Ajax {
 			$slide->oembed = esc_url_raw( $_POST['oembed'] );
 
 			// Background information
-			$slide->fill_color = sanitize_text_field( $_POST['fill_color'] );
+			$fill_color = sanitize_text_field( $_POST['fill_color'] );
+			$slide->fill_color = ( $fill_color === $slide->fill_color ) ? '' : $fill_color;
 			$slide->bg_image = sanitize_text_field( $_POST['bg_image'] );
 
 			// Update SEO
@@ -401,7 +402,7 @@ class SEOSlides_Ajax {
 			'title'    => $defaults->title,
 			'content'  => '',
 			'image'    => '',
-			'bg-image' => $defaults->bg_image
+			'bg-image' => 'noimage',
 		);
 
 		// Create the slide
@@ -416,7 +417,7 @@ class SEOSlides_Ajax {
 		);
 
 		if ( 0 !== $slide && ! is_wp_error( $slide ) ) {
-			update_post_meta( $slide, 'seoslides_fillcolor', $defaults->fill_color );
+			update_post_meta( $slide, 'seoslides_fillcolor', '' );
 			update_post_meta( $slide, 'seoslides_oembed', $defaults->oembed );
 
 			// Update SEO

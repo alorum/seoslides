@@ -5,8 +5,6 @@
  * Description: Allow converting PDF presentation exports to SEOSlides presentations.
  * Version:     0.1
  * Author:      10up
- *
- * @todo Update postback url to real server location
  */
 
 /**
@@ -176,11 +174,7 @@ class SEOSlides_Converter {
 
 		<?php if ( $core->get_subscription_level() < 20 ) : ?>
 			<div class="updated">
-				<p><?php _e( 'You can use a free license key for 3 imports and 3 embeds on <a href="http://seoslid.es">seoslid.es</a> (our presentation community).', 'seoslides_translate' ); ?></p>
-				<p>
-					<?php _e( 'Upgrade to the <a href="https://seoslides.com/pro">pro version</a> for unlimited imports during the beta and unlimited embeds to <a href="http://seoslid.es">seoslid.es</a>.', 'seoslides_translate' ); ?>
-					<?php _e( 'The pro version also includes the ability to replace our logo and link with your own in every one of your presentations and embeds (free backlinks!).', 'seoslides_translate' ); ?>
-				</p>
+				<p><?php _e( 'You can use a free license key for 3 imports. Upgrade to the <a href="https://seoslides.com/pro">pro version</a> for unlimited imports during the beta.', 'seoslides_translate' ); ?></p>
 			</div>
 		<?php endif; ?>
 
@@ -502,12 +496,15 @@ class SEOSlides_Converter {
 
 		$slideset = new SEOSlides_Slideset( $slideset );
 
+		// Get slide position
+		$position = count( $slideset->slides );
+
 		// Slide content
 		$content = array(
-			'title'    => $slideset->title,
+			'title'    => sprintf( __( 'Slide %d', 'seoslides_translate' ), ( $position + 1 ) ),
 			'content'  => '',
 			'image'    => '',
-			'bg-image' => $src
+			'bg-image' => $src,
 		);
 
 		// Create the slide
@@ -515,7 +512,7 @@ class SEOSlides_Converter {
 			array(
 			     'post_parent'  => $slideset->ID,
 			     'post_type'    => 'seoslides-slide',
-			     'menu_order'   => count( $slideset->slides ), // Insert at the end of the presentation
+			     'menu_order'   => $position, // Insert at the end of the presentation
 			     'post_status'  => 'publish',
 			     'post_content' => serialize( $content )
 			)

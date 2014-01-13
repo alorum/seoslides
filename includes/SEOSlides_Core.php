@@ -1122,11 +1122,7 @@ class SEOSlides_Core {
 
 		if ( $this->get_subscription_level() < 20 ) : ?>
 			<div class="updated">
-				<p><?php _e( 'You can use a free license key for 3 imports and 3 embeds on <a href="http://seoslid.es">seoslid.es</a> (our presentation community).', 'seoslides_translate' ); ?></p>
-				<p>
-					<?php _e( 'Upgrade to the <a href="https://seoslides.com/pro">pro version</a> for unlimited imports during the beta and unlimited embeds to <a href="http://seoslid.es">seoslid.es</a>.', 'seoslides_translate' ); ?>
-					<?php _e( 'The pro version also includes the ability to replace our logo and link with your own in every one of your presentations and embeds (free backlinks!).', 'seoslides_translate' ); ?>
-				</p>
+				<p><?php _e( 'You can use a free license key for 3 imports. Upgrade to the <a href="https://seoslides.com/pro">pro version</a> for unlimited imports during the beta.', 'seoslides_translate' ); ?></p>
 			</div>
 		<?php endif; ?>
 
@@ -1428,16 +1424,6 @@ class SEOSlides_Core {
 			$stylesheet_url = plugin_dir_url( __FILE__ );
 			$stylesheet_url = str_replace( 'includes/', 'css/front-end.css', $stylesheet_url );
 
-			$css_help  = '<p>' . __( 'The Custom Presentation CSS meta box provides more advanced users with the ability to set custom CSS styles on a per-presentation basis. Display of the meta box can be toggled on and off via Screen Options.', 'seoslides_translate' ) . '</p>';
-			$css_help .= '<p>' . __( 'When a new presentation is created, two empty styles are provided in the CSS editor, <code>section.slide{}</code> &mdash; used to style all slides &mdash; and <code>.deck-status{}</code>.', 'seoslides_translate' ) . '</p>';
-			$css_help .= '<p>' . sprintf( __( 'For hints on other styles to target, take a look at the Front-End stylesheet located at <code>%s</code>.', 'seoslides_translate' ), $stylesheet_url ). '</p>';
-
-			get_current_screen()->add_help_tab( array(
-				'id'      => 'seoslides-css',
-				'title'   => __( 'Customizing CSS', 'seoslides_translate' ),
-				'content' => $css_help
-			) );
-
 			$multiplier_help  = '<p>' . __( 'Depending on your subscription level, you may have the option to share your presentations remotely on <a href="http://seoslid.es">seoslide.es</a>. A copy of your presentation will be embedded there and will link back to your site.', 'seoslides_translate' ) . '</p>';
 			$multiplier_help .= '<p>' . __( 'seoslides Pro users may remotely share an <strong>unlimited</strong> number of presentatations, while free users are limited to <strong>just one</strong> remote publication. If you&#8217;ve already exhausted your free allowance, <a href="https://seoslides.com/pro/" target="_blank">upgrade to Pro today!</a>', 'seoslides_translate' ) . '</p>';
 			$multiplier_help .= '<p>' . __( 'Sharing on seoslid.es:', 'seoslides_translate' ) . '</p>';
@@ -1564,11 +1550,6 @@ class SEOSlides_Core {
 			     'post_title' => __( 'Hello World!', 'seoslides_translate' ),
 			)
 		);
-
-		// Build out default customized CSS
-		$default_css = "section.slide {}\r\n.deck-status {}";
-		$default_css = apply_filters( 'seoslides_default_css', $default_css );
-		add_post_meta( $presentation, '_seoslides_custom_css', $default_css, true );
 
 		// Slide notes
 		$notes = __( '<p>Even if all you are saying is "hello", notes are a great way to add additional SEO rich keywords.</p><p>Oh... and to cover details that are not on the slide.</p><p>Viewers of your presentation can see these notes by clicking the "+" in the lower right corner.</p>', 'seoslides_translate' );

@@ -1,6 +1,6 @@
-/*! seoslides - v1.2.1
+/*! seoslides - v1.2.2
  * https://seoslides.com
- * Copyright (c) 2013 Alroum; * Licensed GPLv2+ */
+ * Copyright (c) 2014 Alroum; * Licensed GPLv2+ */
 window.SEOSlides = window.SEOSlides || {};
 
 SEOSlides.DOM = SEOSlides.DOM || new (function(){

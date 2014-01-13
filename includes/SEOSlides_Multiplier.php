@@ -104,13 +104,7 @@ class SEOSlides_Multiplier {
 			     'label_published'        => __( 'Shared', 'seoslides_translate' ),
 			     'label_not_published'    => __( 'Not Shared', 'seoslides_translate' ),
 			     'button_ok'              => __( 'Ok', 'seoslides_translate' ),
-			     'notice_free_subscriber' => '<div id="dialog-message" title="' . __( 'Upgrade Today', 'seoslides_translate' ) . '" style="padding:0 10px;">'
-			        . '<p>' . __( 'You can use a free license key for 3 imports and 3 embeds on <a href="http://seoslid.es">seoslid.es</a> (our presentation community).', 'seoslides_translate' ) . '</p>'
-					. '<p>'
-					. __( 'Upgrade to the <a href="https://seoslides.com/pro">pro version</a> for unlimited imports during the beta and unlimited embeds to <a href="http://seoslid.es">seoslid.es</a>.', 'seoslides_translate' )
-					. __( 'The pro version also includes the ability to replace our logo and link with your own in every one of your presentations and embeds (free backlinks!).', 'seoslides_translate' )
-					. '</p>'
-			        . '</div>',
+			     'notice_free_subscriber' => '',
 			)
 		);
 
@@ -138,13 +132,6 @@ class SEOSlides_Multiplier {
 		$hide_if_remote = $remote_id ? 'display:none;' : '';
 		$show_if_remote = $remote_id ? '' : 'display:none;';
 
-		/** @var SEOSlides_Core $core */
-		$core = SEOSlides_Module_Provider::get( 'SEOSlides Core' );
-		$premium = '';
-		if ( $core->get_subscription_level() < 20 ) {
-			$premium = ' offer-upgrade';
-		}
-
 		if ( 'publish' == $post->post_status ) {
 			if ( $remote_id && $auto_checked )
 				$status = __( 'Shared and Updating', 'seoslides_translate' );
@@ -159,7 +146,7 @@ class SEOSlides_Multiplier {
 		<div class="misc-pub-section" id="multiplier">
 			<label for="seoslides_multiplier"><?php _e( 'seoslid.es:', 'seoslides_translate' ) ?></label>
 			<span id="multiplier-status"><?php echo $status; ?></span>
-			<a href="#" class="edit-multiplier-status hide-if-no-js<?php echo $premium; ?>"><?php _e( 'Edit', 'seoslides_translate' ); ?></a>
+			<a href="#" class="edit-multiplier-status hide-if-no-js"><?php _e( 'Edit', 'seoslides_translate' ); ?></a>
 			<a href="#" class="close-multiplier-status hide-if-js"><?php _e( 'Close', 'seoslides_translate' ); ?></a>
 			<div id="multiplier_controls" class="hide-if-js">
 				<input type="hidden" id="post_ID" value="<?php echo get_the_ID(); ?>" />
