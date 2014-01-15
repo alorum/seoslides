@@ -1113,6 +1113,7 @@ class SEOSlides_Core {
 	public function menu() {
 		$this->process_postback();
 		$api_key = get_option( 'seoslides_api_key', '' );
+		$product_key = get_option( 'seoslides_product_key', '' );
 		$options = get_option( 'seoslides_track', array() );
 		$hideimports = 'yes' === get_option( 'seoslides_hideimports', 'yes' );
 		$can_track = isset( $options['tracking'] ) && 'yes' === $options['tracking'];
@@ -1150,6 +1151,16 @@ class SEOSlides_Core {
 							<input name="api_key" type="text" id="api_key" value="<?php echo esc_attr( $api_key ); ?>" class="regular-text" />
 							<span id="api_key_indicator" class="<?php echo empty( $api_key ) ? 'unset' : 'valid'; ?>"></span>
 							<p class="description"><?php _e( "Don't have a license key? Click <a href=\"https://seoslides.com/free\" class=\"popup\">here</a>.", 'seoslides_translate' ); ?></p>
+						</td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row">
+							<label for="product_key"><?php _e( 'Product Key (optional)', 'seoslides_translate' ); ?></label>
+						</th>
+						<td>
+							<input name="product_key" type="text" id="product_key" value="<?php echo esc_attr( $product_key ); ?>" class="regular-text" />
+							<p class="description"><?php _e( 'This field is optional and only used for experimental integration with Easy Digital Downloads', 'seoslides_translate' ); ?></p>
 						</td>
 					</tr>
 
@@ -1318,6 +1329,19 @@ class SEOSlides_Core {
 					update_option( 'seoslides_api_key', $api_key );
 				} else {
 					add_option( 'seoslides_api_key', $api_key, '', 'no' );
+				}
+			}
+		}
+
+		if ( isset( $_POST['product_key'] ) ) {
+			$old_key = get_option( 'seoslides_product_key' );
+			$new_key = sanitize_text_field( $_POST['product_key'] );
+
+			if ( $old_key !== $new_key ) {
+				if ( $old_key !== false ) {
+					update_option( 'seoslides_product_key', $new_key );
+				} else {
+					add_option( 'seoslides_product_key', $new_key, '', 'no' );
 				}
 			}
 		}

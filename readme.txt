@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= 1.2.3 =
+
+* Add an optional Product Key to the settings page for initial integrations with Easy Digital Downloads.
+
 = 1.2.2 =
 
 * Allow imported slides to "inherit" the background of the default/master slide rather than be set individually.
