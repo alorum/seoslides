@@ -82,7 +82,14 @@ class Catalyst_API {
 	 * @return bool
 	 */
 	public function validate_key() {
-		$success = $this->_send_request( 'validate_key', array( $this->api_key, $this->domain ) );
+		$product_key = get_option( 'seoslides_product_key', '' );
+		$api_args = array( $this->api_key, $this->domain );
+
+		if ( ! empty( $product_key ) ) {
+			$api_args[] = $product_key;
+		}
+
+		$success = $this->_send_request( 'validate_key', $api_args );
 
 		if ( true !== $success ) {
 			return false;
