@@ -28,7 +28,7 @@
  */
 
 // Useful global constants
-define( 'SEOSLIDES_VERSION', '1.2.2' );
+define( 'SEOSLIDES_VERSION', '1.2.3' );
 define( 'SEOSLIDES_URL',     plugin_dir_url( __FILE__ ) );
 define( 'SEOSLIDES_PATH',    dirname( __FILE__ ) . '/' );
 if ( ! defined( 'CATALYST_URL' ) ) {
