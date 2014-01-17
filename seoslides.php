@@ -3,7 +3,7 @@
  * Plugin Name: seoslides
  * Plugin URL:  https://seoslides.com
  * Description: Add embeddable presentations to WordPress.
- * Version:     1.2.2
+ * Version:     1.2.3
  * Author:      alorum, 10up
  * Author URI:  http://alorum.com
  * License:     GPL2+
