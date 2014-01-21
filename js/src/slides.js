@@ -115,6 +115,51 @@
 	}
 
 	/**
+	 * Populate a specific slide given a return from the server.
+	 *
+	 * @param {Object} slide
+	 */
+	function populateSlide( slide ) {
+		slide.id = slide.ID;
+
+		var tbody = table.find( 'tbody' ),
+			rendered = CORE.slideBuilder.createSlide( slide, rowTemplate, true );
+
+		var newRow = '<tr class="slide-' + slide.id + '">' + rendered.html() + '</tr>';
+
+		tbody.find( 'tr.slide-' + slide.id ).replaceWith( newRow );
+
+		CORE.Events.doAction( 'slideList.resize', table );
+	}
+
+	/**
+	 * Specifically populate the master slide given a return from the server.
+	 *
+	 * @param {Object} master
+	 */
+	function populateMaster( master ) {
+		var tbody = table.find( 'tbody' ),
+			rendered = CORE.slideBuilder.createSlide( master, rowTemplate );
+
+		rendered.find( '.editslide' ).attr( 'title', I18N.label_master );
+
+		var title = '<div class="title"><strong>' + I18N.label_master + '</strong></div>';
+		title += '<div class="row-actions">';
+		title += '<span class="edit"><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_edit + '</a></span>';
+		title += '</div>';
+
+		rendered.find( '.slide-title' ).html( title );
+		rendered.find( '.slide-description' ).html( master.seo_description );
+		rendered.find( '.slide-notes' ).html( master.short_notes );
+
+		var newRow = '<tr class="slide-master">' + rendered.html() + '</tr>';
+
+		tbody.find( 'tr.slide-master' ).replaceWith( newRow );
+
+		CORE.Events.doAction( 'slideList.resize', table );
+	}
+
+	/**
 	 * Refresh a specific row in the slide table based on the slide ID being updated.
 	 *
 	 * @param {Number} slide_id
@@ -127,18 +172,13 @@
 			}
 		};
 
-		CORE.ajax( options ).done( function( slide ) {
-			slide.id = slide.ID;
-
-			var tbody = table.find( 'tbody' ),
-				rendered = CORE.slideBuilder.createSlide( slide, rowTemplate, true );
-
-			var newRow = '<tr class="slide-' + slide.id + '">' + rendered.html() + '</tr>';
-
-			tbody.find( 'tr.slide-' + slide.id ).replaceWith( newRow );
-
-			CORE.Events.doAction( 'slideList.resize', table );
-		} );
+		if ( 'master' === slide_id ) {
+			options.data.slideset = INTERNALS.slideset;
+			options.data.slide = 'slide-default';
+			CORE.ajax( options ).done( populateMaster );
+		} else {
+			CORE.ajax( options ).done( populateSlide );
+		}
 	}
 	CORE.Events.addAction( 'updated.slide', refreshSlideRow );
 
@@ -790,6 +830,7 @@
 
 			CORE.ajax( options ).done( function( data ) {
 				INTERNALS.themes = data.themes;
+				CORE.Events.doAction( 'updated.slide', 'master' );
 			} );
 		}
 
