@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= 1.3.0 =
+
+* New: Slide titles on the presentation edit page now launch the slide editor.
+
 = 1.2.4 =
 
 * New: Add a busy spinner when saving slides.
