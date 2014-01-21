@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= 1.2.4 =
+
+* Fix: Remove an erroneous "are you sure" notice when saving the Slide Master.
+
 = 1.2.3 =
 
 * Add an optional Product Key to the settings page for initial integrations with Easy Digital Downloads.
