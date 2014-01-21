@@ -206,7 +206,7 @@ class SEOSlides_Slide {
 		if ( empty( $fill_color ) ) {
 			// Get presentation fill color
 			$default = get_post_meta( $this->slideset, '_default_slide', true );
-			$this->fill_color = $default->fill_color;
+			$this->fill_color = isset( $default->fill_color ) ? $default->fill_color : '#ffffff';
 		} else {
 			$this->fill_color = $fill_color;
 		}
