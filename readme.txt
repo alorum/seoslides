@@ -88,6 +88,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 = 1.2.4 =
 
 * Fix: Remove an erroneous "are you sure" notice when saving the Slide Master.
+* Fix: Update the preview of the Slide Master upon saving the modal.
 
 = 1.2.3 =
 
