@@ -92,7 +92,7 @@
 		var master = CORE.slideBuilder.createSlide( INTERNALS.slide_default, rowTemplate );
 		master.find( '.editslide' ).attr( 'title', I18N.label_master );
 
-		var title = '<div class="title"><strong>' + I18N.label_master + '</strong></div>';
+		var title = '<div class="title"><strong><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_master + '</a></strong></div>';
 		title += '<div class="row-actions">';
 		title += '<span class="edit"><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_edit + '</a></span>';
 		title += '</div>';

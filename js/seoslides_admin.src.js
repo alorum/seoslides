@@ -3120,7 +3120,7 @@
 				slide.title = I18N.label_notitle;
 			}
 
-			var title = '<div class="title">' + slide.title + '</div>';
+			var title = '<div class="title"><a data-id="' + slide.id + '" class="editslide" href="javascript:void;" title="' + I18N.label_edit_slide + '">' + slide.title + '</a></div>';
 			title += '<div class="row-actions">';
 			title += '<span class="edit"><a data-id="' + slide.id + '" class="editslide" href="javascript:void;" title="' + I18N.label_edit_slide + '">' + I18N.label_edit + '</a> | </span>';
 			title += '<span class="trash"><a data-id="' + slide.id + '" class="submittrash" href="javascript:void;" title="' + I18N.label_trash_slide + '">' + I18N.label_trash + '</a></span>';
@@ -3964,7 +3964,7 @@
 		var master = CORE.slideBuilder.createSlide( INTERNALS.slide_default, rowTemplate );
 		master.find( '.editslide' ).attr( 'title', I18N.label_master );
 
-		var title = '<div class="title"><strong>' + I18N.label_master + '</strong></div>';
+		var title = '<div class="title"><strong><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_master + '</a></strong></div>';
 		title += '<div class="row-actions">';
 		title += '<span class="edit"><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_edit + '</a></span>';
 		title += '</div>';
