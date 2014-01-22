@@ -170,15 +170,20 @@
 				'action': 'get-slide',
 				'slide': slide_id
 			}
-		};
+			},
+			request;
 
 		if ( 'master' === slide_id ) {
 			options.data.slideset = INTERNALS.slideset;
 			options.data.slide = 'slide-default';
-			CORE.ajax( options ).done( populateMaster );
+			request = CORE.ajax( options );
+			request.done( populateMaster );
 		} else {
-			CORE.ajax( options ).done( populateSlide );
+			request = CORE.ajax( options );
+			request.done( populateSlide );
 		}
+
+		return request.promise();
 	}
 	CORE.Events.addAction( 'updated.slide', refreshSlideRow );
 
@@ -501,7 +506,8 @@
 		CORE.Pluggables.resetPluginObjects();
 
 		function saveData() {
-			var editor = document.getElementById( 'slide-editor' );
+			var saver = $.Deferred(),
+				editor = document.getElementById( 'slide-editor' );
 
 			var pluggable_data = CORE.Pluggables.getSavedData();
 
@@ -527,8 +533,12 @@
 
 			CORE.ajax( options ).done( function( data ) {
 				CORE.Events.doAction( 'slide.savedData', data );
-				CORE.Events.doAction( 'updated.slide', slide_id );
+				$.when( refreshSlideRow( slide_id ) ).done( function() {
+					saver.resolve();
+				} );
 			} );
+
+			return saver.promise();
 		}
 
 		function createContent() {
@@ -691,8 +701,20 @@
 				} );
 				saveButton.innerHTML = I18N.save_slide;
 
+				//<span style="float: right;margin-top: 1.3em;" class="spinner"></span>
+				var spinner = CORE.createElement( 'span', {
+					'class':    'spinner',
+					'attr':     [
+						['style', 'float: right;margin-top: 20px;']
+					],
+					'appendTo': toolbar_content
+				} );
+
 				$( saveButton ).on( 'click', function ( e ) {
 					e.preventDefault();
+
+					var $spinner = $( spinner );
+					$spinner.show();
 
 					$.each( window.CKEDITOR.instances, function( i, el ) {
 						if ( undefined !== el.fire ) {
@@ -708,11 +730,14 @@
 						} );
 					}
 
-					saveData();
+					var saver = saveData();
 
-					CORE.Events.doAction( 'modal.saved' );
+					saver.done( function() {
+						CORE.Events.doAction( 'modal.saved' );
 
-					modal.close();
+						$spinner.hide();
+						modal.close();
+					} );
 				} );
 			}
 
@@ -786,6 +811,7 @@
 
 		function saveData() {
 			var pluggable_data = CORE.Pluggables.getSavedData(),
+				saver = $.Deferred(),
 				color = $( document.getElementById( 'modal_color_picker_hex' ) ).wpColorPicker( 'color' ),
 				font_color = $( document.getElementById( 'default_font_color' ) ).wpColorPicker( 'color' ),
 				h1_font_color = $( document.getElementById( 'default_h1_font_color' ) ).wpColorPicker( 'color' );
@@ -830,8 +856,12 @@
 
 			CORE.ajax( options ).done( function( data ) {
 				INTERNALS.themes = data.themes;
-				CORE.Events.doAction( 'updated.slide', 'master' );
+				$.when( refreshSlideRow( 'master' ) ).done( function() {
+					saver.resolve();
+				} );
 			} );
+
+			return saver.promise();
 		}
 
 		function createContent() {
@@ -1199,14 +1229,29 @@
 				} );
 				saveButton.innerHTML = I18N.save_master;
 
+				//<span style="float: right;margin-top: 1.3em;" class="spinner"></span>
+				var spinner = CORE.createElement( 'span', {
+					'class':    'spinner',
+					'attr':     [
+						['style', 'float: right;margin-top: 20px;']
+					],
+					'appendTo': toolbar_content
+				} );
+
 				$( saveButton ).on( 'click', function ( e ) {
 					e.preventDefault();
 
-					saveData();
+					var $spinner = $( spinner );
+					$spinner.show();
 
-					CORE.Events.doAction( 'modal.saved' );
+					var saver = saveData();
 
-					modal.close();
+					saver.done( function() {
+						CORE.Events.doAction( 'modal.saved' );
+
+						$spinner.hide();
+						modal.close();
+					} );
 				} );
 			}
 

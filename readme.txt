@@ -87,6 +87,8 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 = 1.2.4 =
 
+* New: Add a busy spinner when saving slides.
+* Fix: Update the target slide row before closing the modal window.
 * Fix: Remove an erroneous "are you sure" notice when saving the Slide Master.
 * Fix: Update the preview of the Slide Master upon saving the modal.
 * Fix: Fix label typo where a closing parentheses was missing.
