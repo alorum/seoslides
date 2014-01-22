@@ -89,6 +89,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 * Fix: Remove an erroneous "are you sure" notice when saving the Slide Master.
 * Fix: Update the preview of the Slide Master upon saving the modal.
+* Fix: Fix label typo where a closing parentheses was missing.
 
 = 1.2.3 =
 

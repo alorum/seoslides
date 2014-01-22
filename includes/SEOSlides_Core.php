@@ -324,7 +324,7 @@ class SEOSlides_Core {
 			'label_restore_slide' => __( 'Restore slide from trash', 'seoslides_translate' ),
 			'message_show_trash'  => __( 'Show Trashed Slides', 'seoslides_translate' ),
 			'label_master'        => __( 'Slide Master', 'seoslides_translate' ),
-			'label_notitle'       => __( '(no title', 'seoslides_translate' ),
+			'label_notitle'       => __( '(no title)', 'seoslides_translate' ),
 			'save_master'         => __( 'Save Slide Master', 'seoslides_translate' ),
 			'label_overview'      => __( 'Default Slide Layout', 'seoslides_translate' ),
 			'label_defaults'      => __( 'Text Editor Defaults', 'seoslides_translate' ),
