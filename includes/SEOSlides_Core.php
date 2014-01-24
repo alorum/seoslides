@@ -1142,7 +1142,6 @@ class SEOSlides_Core {
 						</th>
 						<td>
 							<input name="product_key" type="text" id="product_key" value="<?php echo esc_attr( $product_key ); ?>" class="regular-text" />
-							<p class="description"><?php _e( 'This field is optional and only used for experimental integration with Easy Digital Downloads', 'seoslides_translate' ); ?></p>
 						</td>
 					</tr>
 
