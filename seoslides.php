@@ -3,7 +3,7 @@
  * Plugin Name: seoslides
  * Plugin URL:  https://seoslides.com
  * Description: Add embeddable presentations to WordPress.
- * Version:     1.2.3
+ * Version:     1.2.4
  * Author:      alorum, 10up
  * Author URI:  http://alorum.com
  * License:     GPL2+
@@ -28,7 +28,7 @@
  */
 
 // Useful global constants
-define( 'SEOSLIDES_VERSION', '1.2.3' );
+define( 'SEOSLIDES_VERSION', '1.2.4' );
 define( 'SEOSLIDES_URL',     plugin_dir_url( __FILE__ ) );
 define( 'SEOSLIDES_PATH',    dirname( __FILE__ ) . '/' );
 if ( ! defined( 'CATALYST_URL' ) ) {
