@@ -49,8 +49,6 @@ class SEOSlides_Core {
 		add_action( 'admin_head-post-new.php',                       array( $this, 'presentation_help_tabs' ) );
 		add_action( 'admin_head-post.php',                           array( $this, 'presentation_help_tabs' ) );
 		add_action( 'admin_head-edit.php',                           array( $this, 'hide_view_switcher' ), 100 );
-		add_action( 'seoslides_presstrends_event',                   array( $this, 'track_event' ), 1, 1 );
-		add_action( 'wp_ajax_seoslides_track',                       array( $this, 'toggle_tracking' ) );
 		add_action( 'after_setup_theme',                             array( $this, 'add_thumbnail_sizes' ) );
 
 		// Wire filters
@@ -324,7 +322,7 @@ class SEOSlides_Core {
 			'label_restore_slide' => __( 'Restore slide from trash', 'seoslides_translate' ),
 			'message_show_trash'  => __( 'Show Trashed Slides', 'seoslides_translate' ),
 			'label_master'        => __( 'Slide Master', 'seoslides_translate' ),
-			'label_notitle'       => __( '(no title', 'seoslides_translate' ),
+			'label_notitle'       => __( '(no title)', 'seoslides_translate' ),
 			'save_master'         => __( 'Save Slide Master', 'seoslides_translate' ),
 			'label_overview'      => __( 'Default Slide Layout', 'seoslides_translate' ),
 			'label_defaults'      => __( 'Text Editor Defaults', 'seoslides_translate' ),
@@ -376,11 +374,6 @@ class SEOSlides_Core {
 			'label_h1_font_color' => __( 'Default Header Font Color', 'seoslides_translate' ),
 			'insert_link'         => __( 'Save Backlink', 'seoslides_translate' ),
 			'link_title'          => __( 'Insert/Edit Embed Backlink', 'seoslides_translate' ),
-			'tracking_label'      => '<h3>' . __( 'Help improve seoslides', 'seoslides_translate' ) . '</h3>',
-			'tracking_language'   => '<p>' . __( "You've just installed seoslides. Please help us improve it by allowing us to gather anonymous usage statisticss so we know with which configurations, plugins and themes to test.", 'seoslides_translate' ) . '</p>',
-			'tracking_no_button'  => __( 'Do not allow tracking', 'seoslides_translate' ),
-			'tracking_button'     => __( 'Allow tracking', 'seoslides_translate' ),
-			'tracking_nonce'      => wp_create_nonce( 'seoslides_tracking' ),
 			'close_modal_conf'    => __( 'You have unsaved changes on this slide. Are you sure you wish to close the window?', 'seoslides_translate' ),
 		);
 
@@ -422,15 +415,6 @@ class SEOSlides_Core {
 	 */
 	public function admin_enqueue_scripts() {
 		$current_screen = get_current_screen();
-
-		$can_track = get_option( 'seoslides_track', array() );
-		if ( ! isset( $can_track['tracking'] ) ) {
-			wp_enqueue_style( 'wp-pointer' );
-
-			$this->enqueue_script( 'seoslides_track', array( 'wp-pointer', 'utils' ), true );//array( 'wp-pointer', 'jquery-ui', 'utils' ), true );
-			wp_localize_script( 'seoslides_track', 'seoslides_track', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
-			$this->script_translations( 'seoslides_track' );
-		}
 
 		if ( 'seoslides-slideset' === $current_screen->post_type ) {
 			wp_register_style( 'dashicons', SEOSLIDES_URL . 'css/dashicons.css', array(), SEOSLIDES_VERSION );
@@ -1114,9 +1098,7 @@ class SEOSlides_Core {
 		$this->process_postback();
 		$api_key = get_option( 'seoslides_api_key', '' );
 		$product_key = get_option( 'seoslides_product_key', '' );
-		$options = get_option( 'seoslides_track', array() );
 		$hideimports = 'yes' === get_option( 'seoslides_hideimports', 'yes' );
-		$can_track = isset( $options['tracking'] ) && 'yes' === $options['tracking'];
 		$social_slide = 'yes' === get_option( 'seoslides_add_social_slide', 'no' );
 
 		settings_errors( 'seoslides' );
@@ -1160,19 +1142,6 @@ class SEOSlides_Core {
 						</th>
 						<td>
 							<input name="product_key" type="text" id="product_key" value="<?php echo esc_attr( $product_key ); ?>" class="regular-text" />
-							<p class="description"><?php _e( 'This field is optional and only used for experimental integration with Easy Digital Downloads', 'seoslides_translate' ); ?></p>
-						</td>
-					</tr>
-
-					<tr valign="top">
-						<th scope="row">
-							<?php _e( 'Allow Statistics Tracking', 'seoslides_translate' ); ?>
-						</th>
-						<td>
-							<label for="tracking">
-								<input name="tracking" type="checkbox" id="tracking" <?php checked( $can_track, true, true ); ?>/>
-								<?php _e( 'Allow us to gather <em>anonymous</em> usage statistics so we can further improve seoslides.', 'seoslides_translate' ) ?>
-							</label>
 						</td>
 					</tr>
 
@@ -1345,13 +1314,6 @@ class SEOSlides_Core {
 				}
 			}
 		}
-
-		$can_track = ( isset( $_POST['tracking'] ) && 'on' === $_POST['tracking'] ) ? 'yes' : 'no';
-
-		$options = get_option( 'seoslides_track', array() );
-		$options['tracking'] = $can_track;
-
-		update_option( 'seoslides_track', $options );
 
 		$hideimports = ( isset( $_POST['showimports'] ) && 'on' === $_POST['showimports'] ) ? 'no' : 'yes';
 		update_option( 'seoslides_hideimports', $hideimports );
@@ -1848,22 +1810,6 @@ class SEOSlides_Core {
 	}
 
 	/**
-	 * AJAX callback used to store whether or not we are tracking statistics.
-	 *
-	 * Will only ever be called by the WordPress pointer.
-	 */
-	public function toggle_tracking() {
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'seoslides_tracking' ) ) {
-			die();
-		}
-
-		$options = get_option( 'seoslides_track', array() );
-		$options['tracking'] = ( 'yes' === $_POST['allow_tracking'] ? 'yes' : 'no' );
-
-		update_option( 'seoslides_track', $options );
-	}
-
-	/**
 	 * Filter body classes to detect MP6 or WordPress 3.8 so we can substitute the correct styles.
 	 *
 	 * @param string $classes
@@ -2046,27 +1992,6 @@ class SEOSlides_Core {
 			.substr($charid,20,12);
 
 		return $uuid;
-	}
-
-	/**
-	 * Track an event with PressTrends.
-	 *
-	 * @param string $event_name
-	 */
-	public static function track_event( $event_name ) {
-		$options = get_option( 'seoslides_track', array() );
-		if ( ! isset( $options['tracking'] ) || 'yes' !== $options['tracking'] ) {
-			return;
-		}
-
-		$api_key      = 'ddlfjrcdwx41p07ce9k2sc0aer5x29oogtev';
-		$auth         = 'r0v5atuze05lrjo6a4kv36ub7omk7dqxv';
-		$api_base     = 'http://api.presstrends.io/index.php/api/events/track/auth/';
-		$api_string	  = $api_base . $auth . '/api/' . $api_key . '/';
-		$site_url     = base64_encode( site_url() );
-		$event_string = $api_string . 'name/' . urlencode( $event_name ) . '/url/' . $site_url . '/';
-
-		wp_remote_get( $event_string );
 	}
 
 	/**

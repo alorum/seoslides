@@ -3,8 +3,8 @@ Contributors: alorum, 10up
 Donate link: http://alorum.com
 Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up
 Requires at least: 3.5.1
-Tested up to: 3.8
-Stable tag: 1.2.3
+Tested up to: 3.8.1
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,15 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 1. Publish to seoslid.es & Control Your Backlinks
 
 == Changelog ==
+
+= 1.2.4 =
+
+* New: Add a busy spinner when saving slides.
+* Fix: Update the target slide row before closing the modal window.
+* Fix: Remove an erroneous "are you sure" notice when saving the Slide Master.
+* Fix: Update the preview of the Slide Master upon saving the modal.
+* Fix: Fix label typo where a closing parentheses was missing.
+* Fix: Remove PressTrends bloat since the feature never worked in the first place.
 
 = 1.2.3 =
 

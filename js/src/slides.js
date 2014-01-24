@@ -115,6 +115,51 @@
 	}
 
 	/**
+	 * Populate a specific slide given a return from the server.
+	 *
+	 * @param {Object} slide
+	 */
+	function populateSlide( slide ) {
+		slide.id = slide.ID;
+
+		var tbody = table.find( 'tbody' ),
+			rendered = CORE.slideBuilder.createSlide( slide, rowTemplate, true );
+
+		var newRow = '<tr class="slide-' + slide.id + '">' + rendered.html() + '</tr>';
+
+		tbody.find( 'tr.slide-' + slide.id ).replaceWith( newRow );
+
+		CORE.Events.doAction( 'slideList.resize', table );
+	}
+
+	/**
+	 * Specifically populate the master slide given a return from the server.
+	 *
+	 * @param {Object} master
+	 */
+	function populateMaster( master ) {
+		var tbody = table.find( 'tbody' ),
+			rendered = CORE.slideBuilder.createSlide( master, rowTemplate );
+
+		rendered.find( '.editslide' ).attr( 'title', I18N.label_master );
+
+		var title = '<div class="title"><strong>' + I18N.label_master + '</strong></div>';
+		title += '<div class="row-actions">';
+		title += '<span class="edit"><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_edit + '</a></span>';
+		title += '</div>';
+
+		rendered.find( '.slide-title' ).html( title );
+		rendered.find( '.slide-description' ).html( master.seo_description );
+		rendered.find( '.slide-notes' ).html( master.short_notes );
+
+		var newRow = '<tr class="slide-master">' + rendered.html() + '</tr>';
+
+		tbody.find( 'tr.slide-master' ).replaceWith( newRow );
+
+		CORE.Events.doAction( 'slideList.resize', table );
+	}
+
+	/**
 	 * Refresh a specific row in the slide table based on the slide ID being updated.
 	 *
 	 * @param {Number} slide_id
@@ -125,20 +170,20 @@
 				'action': 'get-slide',
 				'slide': slide_id
 			}
-		};
+			},
+			request;
 
-		CORE.ajax( options ).done( function( slide ) {
-			slide.id = slide.ID;
+		if ( 'master' === slide_id ) {
+			options.data.slideset = INTERNALS.slideset;
+			options.data.slide = 'slide-default';
+			request = CORE.ajax( options );
+			request.done( populateMaster );
+		} else {
+			request = CORE.ajax( options );
+			request.done( populateSlide );
+		}
 
-			var tbody = table.find( 'tbody' ),
-				rendered = CORE.slideBuilder.createSlide( slide, rowTemplate, true );
-
-			var newRow = '<tr class="slide-' + slide.id + '">' + rendered.html() + '</tr>';
-
-			tbody.find( 'tr.slide-' + slide.id ).replaceWith( newRow );
-
-			CORE.Events.doAction( 'slideList.resize', table );
-		} );
+		return request.promise();
 	}
 	CORE.Events.addAction( 'updated.slide', refreshSlideRow );
 
@@ -461,7 +506,8 @@
 		CORE.Pluggables.resetPluginObjects();
 
 		function saveData() {
-			var editor = document.getElementById( 'slide-editor' );
+			var saver = $.Deferred(),
+				editor = document.getElementById( 'slide-editor' );
 
 			var pluggable_data = CORE.Pluggables.getSavedData();
 
@@ -487,8 +533,12 @@
 
 			CORE.ajax( options ).done( function( data ) {
 				CORE.Events.doAction( 'slide.savedData', data );
-				CORE.Events.doAction( 'updated.slide', slide_id );
+				$.when( refreshSlideRow( slide_id ) ).done( function() {
+					saver.resolve();
+				} );
 			} );
+
+			return saver.promise();
 		}
 
 		function createContent() {
@@ -651,8 +701,20 @@
 				} );
 				saveButton.innerHTML = I18N.save_slide;
 
+				//<span style="float: right;margin-top: 1.3em;" class="spinner"></span>
+				var spinner = CORE.createElement( 'span', {
+					'class':    'spinner',
+					'attr':     [
+						['style', 'float: right;margin-top: 20px;']
+					],
+					'appendTo': toolbar_content
+				} );
+
 				$( saveButton ).on( 'click', function ( e ) {
 					e.preventDefault();
+
+					var $spinner = $( spinner );
+					$spinner.show();
 
 					$.each( window.CKEDITOR.instances, function( i, el ) {
 						if ( undefined !== el.fire ) {
@@ -668,11 +730,14 @@
 						} );
 					}
 
-					saveData();
+					var saver = saveData();
 
-					CORE.Events.doAction( 'modal.saved' );
+					saver.done( function() {
+						CORE.Events.doAction( 'modal.saved' );
 
-					modal.close();
+						$spinner.hide();
+						modal.close();
+					} );
 				} );
 			}
 
@@ -746,6 +811,7 @@
 
 		function saveData() {
 			var pluggable_data = CORE.Pluggables.getSavedData(),
+				saver = $.Deferred(),
 				color = $( document.getElementById( 'modal_color_picker_hex' ) ).wpColorPicker( 'color' ),
 				font_color = $( document.getElementById( 'default_font_color' ) ).wpColorPicker( 'color' ),
 				h1_font_color = $( document.getElementById( 'default_h1_font_color' ) ).wpColorPicker( 'color' );
@@ -790,7 +856,12 @@
 
 			CORE.ajax( options ).done( function( data ) {
 				INTERNALS.themes = data.themes;
+				$.when( refreshSlideRow( 'master' ) ).done( function() {
+					saver.resolve();
+				} );
 			} );
+
+			return saver.promise();
 		}
 
 		function createContent() {
@@ -1158,11 +1229,29 @@
 				} );
 				saveButton.innerHTML = I18N.save_master;
 
+				//<span style="float: right;margin-top: 1.3em;" class="spinner"></span>
+				var spinner = CORE.createElement( 'span', {
+					'class':    'spinner',
+					'attr':     [
+						['style', 'float: right;margin-top: 20px;']
+					],
+					'appendTo': toolbar_content
+				} );
+
 				$( saveButton ).on( 'click', function ( e ) {
 					e.preventDefault();
 
-					saveData();
-					modal.close();
+					var $spinner = $( spinner );
+					$spinner.show();
+
+					var saver = saveData();
+
+					saver.done( function() {
+						CORE.Events.doAction( 'modal.saved' );
+
+						$spinner.hide();
+						modal.close();
+					} );
 				} );
 			}
 
