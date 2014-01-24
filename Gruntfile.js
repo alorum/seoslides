@@ -18,12 +18,6 @@ module.exports = function ( grunt ) {
 					' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>' +
 					' */\n'
 			},
-			track: {
-				src: [
-					'js/src/tracking.js'
-				],
-				dest: 'js/seoslides_track.src.js'
-			},
 			front_end:     {
 				src:  [
 					'js/lib/deck.core.js',
@@ -157,7 +151,6 @@ module.exports = function ( grunt ) {
 					except: ['jQuery', 'SEO_Slides', 'seoslides']
 				}
 			},
-			track:         { files: { 'js/seoslides_track.min.js': 'js/seoslides_track.src.js' } },
 			front_end:     { files: { 'js/seoslides_front.min.js': 'js/seoslides_front.src.js' } },
 			back_end:      { files: { 'js/seoslides_admin.min.js': 'js/seoslides_admin.src.js' } },
 			list:          { files: { 'js/seoslides_list.min.js': 'js/seoslides_list.src.js' } },
