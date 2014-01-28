@@ -135,17 +135,18 @@ body {
 	}
 }
 
-.deck-footer {
+//.deck-footer,
+.extras {
 	font-family: 'Noto Sans', sans-serif;
-	position: absolute;
-	right: 35px;
-	bottom: 0;
-	width: 30px;
-	clear: both;
-	z-index: 10;
-	height: 70px;
-	pointer-events: none;
-	@include opacity(0.8);
+//	position: absolute;
+//	right: 35px;
+//	bottom: 0;
+//	width: 30px;
+//	clear: both;
+//	z-index: 10;
+//	height: 70px;
+//	pointer-events: none;
+//	@include opacity(0.8);
 
 	.deck-overview,
 	.deck-notes-overlay,
@@ -492,7 +493,6 @@ body.embeded {
 }
 
 @import '_slide.scss';
-@import '_front-end.overview.scss';
 @import '_front-end.archive.scss';
 @import '_front-end.presenter-view.scss';
 @import '_front-end.embed-code.scss';
