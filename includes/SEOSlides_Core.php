@@ -563,7 +563,7 @@ class SEOSlides_Core {
 			return;
 		}
 
-		global $wp_styles;
+		global $wp_styles, $wp_scripts;
 
 		$theme_ss_uri = get_stylesheet_directory_uri();
 		$child_ss_uri = get_template_directory_uri();
@@ -573,6 +573,14 @@ class SEOSlides_Core {
 
 			if ( false !== strpos( $sheet->src, $theme_ss_uri ) || false !== strpos( $sheet->src, $child_ss_uri ) ) {
 				$wp_styles->dequeue( $queued );
+			}
+		}
+
+		foreach( $wp_scripts->queue as $queued ) {
+			$script = $wp_scripts->registered[ $queued ];
+
+			if ( false !== strpos( $script->src, $theme_ss_uri ) || false !== strpos( $script->src, $child_ss_uri ) ) {
+				$wp_scripts->dequeue( $queued );
 			}
 		}
 	}

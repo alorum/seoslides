@@ -92,16 +92,6 @@ if ( '' === $slide_slug ) {
 		}
 	</style>
 	<![endif]-->
-	<style type="text/css">
-		#wpadminbar,
-		.show-admin-bar {
-			display: none;
-		}
-
-		html {
-			margin-top: 0 !important;
-		}
-	</style>
 </head>
 <body class="home" style="background-color:<?php echo $slideset_bg; ?>;">
 
