@@ -10,6 +10,25 @@
 remove_filter( 'wp_title', 'genesis_doctitle_wrap', 20 );
 remove_filter( 'wp_title', 'genesis_default_title', 10, 3 );
 
+	function branding() {
+		$branding = get_option( 'seoslides_logo', '' );
+		$branding_url = get_option( 'seoslides_logo_url', '' );
+		$branding_title = get_option( 'seoslides_logo_title', '' );
+		$enabled = 'yes' === get_option( 'seoslides_logo_enabled', 'no' );
+
+		if ( 'default' === $branding || 'seoslides' === $branding ) {
+			$brand = '<span class="branding"><img src="' . SEOSLIDES_URL . '/img/seoslides-logo-trans-2x.png" style="height:100%;width:auto;"></span>';
+		} else {
+			$brand = '<span class="branding"><img src="' . esc_url( $branding ) . '" style="height:100%;width:auto;"></span>';
+		}
+
+		if ( '' !== $branding_url ) {
+			$brand = '<a href="' . esc_url( $branding_url ) . '" title="' . esc_attr( $branding_title ) . '">' . $brand . '</a>';
+		}
+
+		echo $enabled ? $brand : '';
+	}
+
 global $post;
 the_post();
 $slide_slug = get_query_var( 'seoslides-slide' );
@@ -150,19 +169,7 @@ if ( '' === $slide_slug ) {
 		<?php endif; ?>
 	<?php endif; ?>
 	<div class="extras">
-		<?php $branding = get_option( 'seoslides_logo', '' ); ?>
-		<?php $branding_url = get_option( 'seoslides_logo_url', '' ); ?>
-		<?php $branding_title = get_option( 'seoslides_logo_title', '' ); ?>
-		<?php $enabled = 'yes' === get_option( 'seoslides_logo_enabled', 'no' ); ?>
-		<?php if ( 'default' === $branding || 'seoslides' === $branding ) : ?>
-			<?php $brand = '<span class="branding"><img src="' . SEOSLIDES_URL . '/img/seoslides-logo-trans-2x.png" style="height:100%;width:auto;"></span>'; ?>
-		<?php else : ?>
-			<?php $brand = '<span class="branding"><img src="' . esc_url( $branding ) . '" style="height:100%;width:auto;"></span>'; ?>
-		<?php endif; ?>
-		<?php if ( '' !== $branding_url ) : ?>
-			<?php $brand = '<a href="' . esc_url( $branding_url ) . '" title="' . esc_attr( $branding_title ) . '">' . $brand . '</a>'; ?>
-		<?php endif; ?>
-		<?php echo $enabled ? $brand : ''; ?>
+		<?php branding(); ?>
 
 		<?php if ( isset( $slide ) ) : ?>
 			<?php $prev = $slide->permalink( 'previous' ); ?>
