@@ -89,6 +89,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 * New: Slide titles on the presentation edit page now launch the slide editor.
 * Fix: Don't load theme scripts or the WP admin bar since we aren't using them (enhances performance).
+* Fix: Add Deck JS as a Git subtree so we can track its progress as well and avoid hacking vendor files.
 
 = 1.2.4 =
 

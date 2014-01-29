@@ -38,6 +38,8 @@ class SEOSlides_Core {
 		add_action( 'init',                                          array( $this, 'register_flags' ) );
 		add_action( 'seoslides_register_cpts',                       array( $this, 'custom_rewrites' ), 11 );
 		add_action( 'seoslides_register_cpts',                       array( $this, 'register_cpts' ) );
+		add_action( 'admin_enqueue_scripts',                         array( $this, 'register_assets' ), 5 );
+		add_action( 'wp_enqueue_scripts',                            array( $this, 'register_assets' ), 5 );
 		add_action( 'admin_enqueue_scripts',                         array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts',                            array( $this, 'slideset_enqueue_scripts' ) );
 		add_action( 'wp_print_styles',                               array( $this, 'remove_theme_styles' ) );
@@ -128,6 +130,10 @@ class SEOSlides_Core {
 		return 'seoslides_api_key';
 	}
 
+	/****************************************************************/
+	/**                          Structure                         **/
+	/****************************************************************/
+
 	/**
 	 * Shortcut to register all CPTs
 	 *
@@ -141,7 +147,7 @@ class SEOSlides_Core {
 	/**
 	 * Register the presentation post type.
 	 */
-	public function register_presentations() {
+	protected function register_presentations() {
 		$labels = array(
 			'name'               => __( 'Presentations', 'seoslides_translate' ),
 			'singular_name'      => __( 'Presentation', 'seoslides_translate' ),
@@ -179,7 +185,7 @@ class SEOSlides_Core {
 	/**
 	 * Register the slide post type.
 	 */
-	public function register_slides() {
+	protected function register_slides() {
 		$labels = array(
 			'name'               => __( 'Presentation Slides', 'seoslides_translate' ),
 			'singular_name'      => __( 'Presentation Slide', 'seoslides_translate' ),
@@ -251,6 +257,39 @@ class SEOSlides_Core {
 	public function add_thumbnail_sizes() {
 		add_image_size( 'seoslides-thumb', 220, 124 );
 	}
+
+	/**
+	 * Register the default scripts and styles used by the plugin.
+	 *
+	 * @uses wp_register_script()
+	 * @uses wp_register_style()
+	 */
+	public function register_assets() {
+		// Deck JS Scripts
+		wp_register_script( 'deck',            SEOSLIDES_URL . 'vendor/deck/core/deck.core.js',                        array( 'jquery' ), '1.1.0', true );
+		wp_register_script( 'deck.menu',       SEOSLIDES_URL . 'vendor/deck/extensions/menu/deck.menu.js',             array( 'deck' ),   '1.1.0', true );
+		wp_register_script( 'deck.goto',       SEOSLIDES_URL . 'vendor/deck/extensions/goto/deck.goto.js',             array( 'deck' ),   '1.1.0', true );
+		wp_register_script( 'deck.status',     SEOSLIDES_URL . 'vendor/deck/extensions/status/deck.status.js',         array( 'deck' ),   '1.1.0', true );
+		wp_register_script( 'deck.navigation', SEOSLIDES_URL . 'vendor/deck/extensions/navigation/deck.navigation.js', array( 'deck' ),   '1.1.0', true );
+
+		// Deck JS Styles
+		wp_register_style( 'deck',            SEOSLIDES_URL . 'vendor/deck/core/deck.core.css',                        array(),         '1.1.0', 'screen' );
+		wp_register_style( 'deck.menu',       SEOSLIDES_URL . 'vendor/deck/extensions/menu/deck.menu.css',             array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.goto',       SEOSLIDES_URL . 'vendor/deck/extensions/goto/deck.goto.css',             array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.status',     SEOSLIDES_URL . 'vendor/deck/extensions/status/deck.status.css',         array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.navigation', SEOSLIDES_URL . 'vendor/deck/extensions/navigation/deck.navigation.css', array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.print',      SEOSLIDES_URL . 'vendor/deck/core/print.css',                            array( 'deck' ), '1.1.0', 'print'  );
+
+		// Deck JS Transitions and Themes
+		wp_register_style( 'deck.theme.neon',            SEOSLIDES_URL . 'vendor/deck/themes/style/neon.css',           array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.theme.swiss',           SEOSLIDES_URL . 'vendor/deck/themes/style/swiss.css',          array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.theme.web20',           SEOSLIDES_URL . 'vendor/deck/themes/style/web-2.0.css',        array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.transition.fade',       SEOSLIDES_URL . 'vendor/deck/transition/fade.css',             array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.transition.horizontal', SEOSLIDES_URL . 'vendor/deck/transition/horizontal-slide.css', array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.transition.vertical',   SEOSLIDES_URL . 'vendor/deck/transition/vertical-slide.css',   array( 'deck' ), '1.1.0', 'screen' );
+	}
+
+	/****************************************************************/
 
 	/**
 	 * Add custom rewrite rules to make sure individual slide URLs direct to the appropriate slideset.
@@ -517,13 +556,15 @@ class SEOSlides_Core {
 		wp_register_script( 'seoslides-modernizr', SEOSLIDES_URL . 'js/lib/modernizr.js', array(), '2.6.2' );
 
 		// Get presentation theme
-		$theme = get_post_meta( get_the_ID(), '_slideset_theme', true );
-		$theme = empty( $theme ) ? 'swiss-horizontal' : $theme;
+		$theme_name = get_post_meta( get_the_ID(), '_slideset_theme', true );
+		$theme_name = empty( $theme_name ) ? 'swiss-horizontal' : $theme_name;
 		$all_themes = $this->available_themes();
-		$theme = isset( $all_themes[ $theme ] ) ? $all_themes[ $theme ] : $all_themes[ 'swiss-horizontal'];
+		$theme = isset( $all_themes[ $theme_name ] ) ? $all_themes[ $theme_name ] : $all_themes[ 'swiss-horizontal'];
 
 		// Styles
-		wp_enqueue_style( 'seoslides-front', $theme['src'], array(), SEOSLIDES_VERSION, 'screen' );
+		if ( null !== $theme['theme'] ) wp_enqueue_style( 'seoslides-theme-' . $theme_name, $theme['theme'], array( 'deck', 'deck.menu', 'deck.goto', 'deck.status', 'deck.navigation' ), SEOSLIDES_VERSION, 'screen' );
+		if ( null !== $theme['transition'] ) wp_enqueue_style( 'seoslides-transition-' . $theme_name, $theme['transition'], array( 'deck', 'deck.menu', 'deck.goto', 'deck.status', 'deck.navigation' ), SEOSLIDES_VERSION, 'screen' );
+		wp_enqueue_style( 'seoslides-front', SEOSLIDES_URL . 'css/front-end.css', array( 'deck', 'deck.menu', 'deck.goto', 'deck.status', 'deck.navigation' ), SEOSLIDES_VERSION, 'screen' );
 		wp_enqueue_style( 'seoslides-print', SEOSLIDES_URL . 'css/print.css', array(), SEOSLIDES_VERSION, 'print' );
 		wp_register_style( 'dashicons', SEOSLIDES_URL . 'css/dashicons.css', array(), SEOSLIDES_VERSION );
 		wp_register_style( 'seoslides-iconography', SEOSLIDES_URL . 'css/seoslides-iconography.css', array(), SEOSLIDES_VERSION );
@@ -534,7 +575,7 @@ class SEOSlides_Core {
 		$this->enqueue_mediaelement();
 
 		// Scripts
-		$this->enqueue_script( 'seoslides_front', array( 'jquery', 'seoslides-modernizr', 'wp-mediaelement' ), true );
+		$this->enqueue_script( 'seoslides_front', array( 'jquery', 'seoslides-modernizr', 'wp-mediaelement', 'deck', 'deck.menu', 'deck.goto', 'deck.status', 'deck.navigation' ), true );
 		$this->script_translations( 'seoslides_front' );
 
 		$embedID = '';
@@ -1720,21 +1761,25 @@ class SEOSlides_Core {
 
 		// Swiss styled theme
 		$themes['swiss-horizontal'] = array(
-				'name' => __( 'Horizontal Slide (Default)', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.css',
-			);
+			'name'       => __( 'Horizontal Slide (Default)', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/swiss.css',
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/horizontal-slide.css',
+		);
 		$themes['swiss-vertical'] = array(
-				'name' => __( 'Vertical Slide', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.vertical.css',
-			);
+			'name'       => __( 'Vertical Slide', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/swiss.css',
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/vertical-slide.css',
+		);
 		$themes['swiss-fade'] = array(
-				'name' => __( 'Fade', 'seoslides_translate' ),
-				'src'  => SEOSLIDES_URL . 'css/front-end.fade.css',
-			);
+			'name'       => __( 'Fade', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/swiss.css',
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/fade.css',
+		);
 		$themes['swiss-none'] = array(
-				'name' => __( 'No Transition', 'seoslides_translate' ),
-				'src' => SEOSLIDES_URL . 'css/front-end.none.css',
-			);
+			'name'       => __( 'No Transition', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/swiss.css',
+			'transition' => null,
+		);
 
 		return apply_filters( 'seoslides_frontend_themes', $themes );
 	}
@@ -1748,81 +1793,83 @@ class SEOSlides_Core {
 	 */
 	public function alpha_themes ( $themes ) {
 		// First, remove the old Swiss themes
+		$old = array();
+		$old['swiss-horizontal'] = $themes['swiss-horizontal'];
+		$old['swiss-vertical'] = $themes['swiss-vertical'];
+		$old['swiss-fade'] = $themes['swiss-fade'];
+		$old['swiss-none'] = $themes['swiss-none'];
 		unset( $themes['swiss-horizontal'] );
 		unset( $themes['swiss-vertical'] );
 		unset( $themes['swiss-fade'] );
 		unset( $themes['swiss-none'] );
 
 		// Neon styled theme
-		$themes['neon-horizontal'] = array (
-			'name' => __ ( 'Neon - Horizontal Slide', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.neon.horizontal.css',
+		$themes['neon-horizontal'] = array(
+			'name'       => __( 'Neon - Horizontal Slide', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/neon.css',
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/horizontal-slide.css',
 		);
-		$themes['neon-vertical']   = array (
-			'name' => __ ( 'Neon - Vertical Slide', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.neon.vertical.css',
+		$themes['neon-vertical']   = array(
+			'name'       => __( 'Neon - Vertical Slide', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/neon.css',
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/vertical-slide.css',
 		);
-		$themes['neon-fade']       = array (
-			'name' => __ ( 'Neon - Fade', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.neon.fade.css',
+		$themes['neon-fade']       = array(
+			'name'       => __( 'Neon - Fade', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/neon.css',
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/fade.css',
 		);
-		$themes['neon-none']       = array (
-			'name' => __ ( 'Neon - No Transition', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.neon.none.css',
+		$themes['neon-none']       = array(
+			'name'       => __( 'Neon - No Transition', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/neon.css',
+			'transition' => null,
 		);
 
 		// Swiss styled theme
-		$themes['swiss-horizontal'] = array(
-			'name' => __( 'Swiss - Horizontal Slide (Default)', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.css',
-		);
-		$themes['swiss-vertical'] = array(
-			'name' => __( 'Swiss - Vertical Slide', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.vertical.css',
-		);
-		$themes['swiss-fade'] = array(
-			'name' => __( 'Swiss - Fade', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.fade.css',
-		);
-		$themes['swiss-none'] = array(
-			'name' => __( 'Swiss - No Transition', 'seoslides_translate' ),
-			'src' => SEOSLIDES_URL . 'css/front-end.none.css',
-		);
+		$themes = array_merge( $themes, $old );
 
 		// No styled theme
-		$themes['none-horizontal'] = array (
-			'name' => __ ( 'No Theme - Horizontal Slide', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.none.horizontal.css',
+		$themes['none-horizontal'] = array(
+			'name'       => __( 'No Theme - Horizontal Slide', 'seoslides_translate' ),
+			'theme'      => null,
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/horizontal-slide.css',
 		);
-		$themes['none-vertical']   = array (
-			'name' => __ ( 'No Theme - Vertical Slide', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.none.vertical.css',
+		$themes['none-vertical']   = array(
+			'name'       => __( 'No Theme - Vertical Slide', 'seoslides_translate' ),
+			'theme'      => null,
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/vertical-slide.css',
 		);
-		$themes['none-fade']       = array (
-			'name' => __ ( 'No Theme - Fade', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.none.fade.css',
+		$themes['none-fade']       = array(
+			'name'       => __( 'No Theme - Fade', 'seoslides_translate' ),
+			'theme'      => null,
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/fade.css',
 		);
-		$themes['none-none']       = array (
-			'name' => __ ( 'No Theme - No Transition', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.none.none.css',
+		$themes['none-none']       = array(
+			'name'       => __( 'No Theme - No Transition', 'seoslides_translate' ),
+			'theme'      => null,
+			'transition' => null,
 		);
 
 		// Web 2.0 styled theme
-		$themes['web-horizontal'] = array (
-			'name' => __ ( 'Web 2.0 - Horizontal Slide', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.web.horizontal.css',
+		$themes['web-horizontal'] = array(
+			'name'       => __( 'Web 2.0 - Horizontal Slide', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/web-2.0.css',
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/horizontal-slide.css',
 		);
-		$themes['web-vertical']   = array (
-			'name' => __ ( 'Web 2.0 - Vertical Slide', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.web.vertical.css',
+		$themes['web-vertical']   = array(
+			'name'       => __( 'Web 2.0 - Vertical Slide', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/web-2.0.css',
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/vertical-slide.css',
 		);
-		$themes['web-fade']       = array (
-			'name' => __ ( 'Web 2.0 - Fade', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.web.fade.css',
+		$themes['web-fade']       = array(
+			'name'       => __( 'Web 2.0 - Fade', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/web-2.0.css',
+			'transition' => SEOSLIDES_URL . 'vendor/deck/themes/transition/fade.css',
 		);
-		$themes['web-none']       = array (
-			'name' => __ ( 'Web 2.0 - No Transition', 'seoslides_translate' ),
-			'src'  => SEOSLIDES_URL . 'css/front-end.web.none.css',
+		$themes['web-none']       = array(
+			'name'       => __( 'Web 2.0 - No Transition', 'seoslides_translate' ),
+			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/web-2.0.css',
+			'transition' => null,
 		);
 
 		return $themes;
