@@ -497,10 +497,10 @@ class SEOSlides_Core {
 				);
 
 				wp_localize_script( 'seoslides_admin', 'seoslides', $js_variables );
-				wp_localize_script( 'seoslides_admin', 'CKEDITOR_BASEPATH', SEOSLIDES_URL . 'js/lib/ckeditor/' );
+				wp_localize_script( 'seoslides_admin', 'CKEDITOR_BASEPATH', SEOSLIDES_URL . 'vendor/ckeditor/' );
 				$this->script_translations( 'seoslides_admin' );
 
-				wp_enqueue_script( 'ckeditor', SEOSLIDES_URL . 'js/lib/ckeditor/ckeditor.js', null, SEOSLIDES_VERSION, true );
+				wp_enqueue_script( 'ckeditor', SEOSLIDES_URL . 'vendor/ckeditor/ckeditor.js', null, SEOSLIDES_VERSION, true );
 			} else {
 				$js_variables = array(
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),
