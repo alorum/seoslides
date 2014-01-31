@@ -1071,7 +1071,7 @@ class SEOSlides_Core {
 			__( 'Settings', 'seoslides_translate' ),
 			__( 'Settings', 'seoslides_translate' ),
 			'edit_posts',
-			'settings',
+			'seoslides_settings',
 			array( $this, 'menu' )
 		);
 
@@ -1086,7 +1086,7 @@ class SEOSlides_Core {
 			__( 'Support', 'seoslides_translate' ),
 			__( 'Support', 'seoslides_translate' ),
 			'edit_posts',
-			'support',
+			'seoslides_support',
 			array( $this, 'support' )
 		);
 	}
@@ -1206,7 +1206,7 @@ class SEOSlides_Core {
 
 			<form id="support-form" method="post" action="<?php echo $api_root; ?>/wp-admin/admin-post.php">
 				<input id="seoslides-api_key" name="seoslides-api_key" type="hidden" value="<?php echo esc_attr( $api_key ); ?>" />
-				<input id="seoslides-redirect" name="seoslides-redirect" type="hidden" value="<?php echo esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=support&step=1' ) ); ?>" />
+				<input id="seoslides-redirect" name="seoslides-redirect" type="hidden" value="<?php echo esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=seoslides_support&step=1' ) ); ?>" />
 				<input id="action" name="action" type="hidden" value="support-request" />
 
 				<p><?php echo sprintf( __( 'Please check our <a href="%s">comprehensive list of FAQs</a>.', 'seoslides_translate' ), 'https://seoslides.com/faq/'); ?></p>
