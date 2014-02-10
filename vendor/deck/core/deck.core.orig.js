@@ -278,7 +278,7 @@ that use the API provided by core.
   };
 
   var goByHash = function(str) {
-    var id = str.substr(str.indexOf("slide-") + 1);
+    var id = str.substr(str.indexOf("#") + 1);
 
     $.each(slides, function(i, $slide) {
       if ($slide.attr('id') === id) {
@@ -311,26 +311,13 @@ that use the API provided by core.
   };
 
   var setupHashBehaviors = function() {
-	var currHash = '';
-
     $fragmentLinks = $();
-
-	  // Get the current slide
-	  $.each( window.location.pathname.split( '/' ).reverse(), function ( i, $el ) {
-		  if ( '' === $el ) {
-			  return;
-		  }
-
-		  currHash = $el;
-		  return false;
-	  } );
-
     $.each(slides, function(i, $slide) {
       var hash;
 
       assignSlideId(i, $slide);
-      hash = $slide.attr('id');
-      if (hash === currHash) {
+      hash = '#' + $slide.attr('id');
+      if (hash === window.location.hash) {
         setTimeout(function() {
           $.deck('go', i);
         }, 1);
@@ -344,15 +331,8 @@ that use the API provided by core.
   };
 
   var changeHash = function(from, to) {
-    var hash = $.deck('getSlide', to).attr('id');
-
-	var hashPath = window.location.href;
-	var path = hashPath.match( /(http|https):\/\/.*\/(?:slides|embeds)\/(.*)/ )[2],
-		pathParts = path.split( '/' );
-
-	pathParts[1] = hash;
-	var newPath = pathParts.join( '/' );
-    var hashPath = hashPath.replace( path, newPath );
+    var hash = '#' + $.deck('getSlide', to).attr('id');
+    var hashPath = window.location.href.replace(/#.*/, '') + hash;
 
     removeContainerHashClass($.deck('getSlide', from).attr('id'));
     addContainerHashClass($.deck('getSlide', to).attr('id'));
