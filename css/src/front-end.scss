@@ -161,14 +161,9 @@ body {
 		text-align: center;
 		background-color: #000;
 		-webkit-font-smoothing: antialiased;
-		@include opacity(0.5);
-		@include transition(opacity, 0.5s);
+		display: none;
 
 		@include border-radius( 10px );
-
-		&:hover {
-			@include opacity(0.8);
-		}
 	}
 
 	.deck-overview {
@@ -270,6 +265,8 @@ body {
 	.deck-actions {
 		background-color: #333;
 		bottom: 0;
+		right: 8px;
+		z-index: 3;
 		position: absolute;
 		cursor: pointer;
 		font-family: 'dashicons';
@@ -309,6 +306,12 @@ body {
 	}
 }
 */
+
+.deck-container:hover .extras {
+	.deck-actions {
+		display: block;
+	}
+}
 
 .fullscreen {
 	.slide {

@@ -111,27 +111,10 @@ body {
     text-align: center;
     background-color: #000;
     -webkit-font-smoothing: antialiased;
-    -khtml-opacity: 0.5;
-    -moz-opacity: 0.5;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-    opacity: 0.5;
-    -webkit-transition: opacity 0.5s ease-in-out 0ms;
-    -moz-transition: opacity 0.5s ease-in-out 0ms;
-    -o-transition: opacity 0.5s ease-in-out 0ms;
-    transition: opacity 0.5s ease-in-out 0ms;
+    display: none;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px; }
-    .extras .deck-overview:hover,
-    .extras .deck-notes-overlay:hover,
-    .extras .deck-embed-overlay:hover,
-    .extras .deck-status:hover,
-    .extras .deck-fullscreen-overlay:hover,
-    .extras .deck-actions:hover {
-      -khtml-opacity: 0.8;
-      -moz-opacity: 0.8;
-      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-      opacity: 0.8; }
   .extras .deck-overview {
     height: 36px;
     padding-top: 14px; }
@@ -201,6 +184,8 @@ body {
   .extras .deck-actions {
     background-color: #333;
     bottom: 0;
+    right: 8px;
+    z-index: 3;
     position: absolute;
     cursor: pointer;
     font-family: 'dashicons'; }
@@ -228,6 +213,9 @@ body {
 	}
 }
 */
+.deck-container:hover .extras .deck-actions {
+  display: block; }
+
 .fullscreen .slide {
   padding-bottom: 0; }
 .fullscreen .deck-footer {
