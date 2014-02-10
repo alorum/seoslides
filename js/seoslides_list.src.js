@@ -2057,7 +2057,7 @@
 					slideEl.style.backgroundImage = 'url(' + slide['bg_thumb'] + ')';
 				}
 			} else {
-				if ( undefined !== slide['bg_image'] && typeof slide['bg_image'] === 'string' && '' !== slide['bg_image'].trim() ) {
+				if ( undefined !== slide['bg_image'] && typeof slide['bg_image'] === 'string' && '' !== slide['bg_image'].trim() && 'noimage' !== slide['bg_image'].trim() ) {
 					slideEl.style.backgroundImage = 'url(' + slide['bg_image'] + ')';
 				}
 			}
