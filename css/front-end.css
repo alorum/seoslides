@@ -182,13 +182,15 @@ body {
     line-height: 30px;
     font-weight: bold; }
   .extras .deck-actions {
-    background-color: #333;
+    background-color: #ccc;
     bottom: 0;
     right: 8px;
     z-index: 3;
     position: absolute;
     cursor: pointer;
     font-family: 'dashicons'; }
+    .extras .deck-actions:hover {
+      background-color: #f15b3c; }
     .extras .deck-actions:before {
       content: '\f132'; }
   .extras .hidden {
@@ -313,6 +315,15 @@ body.embeded .deck-footer .deck-overview {
     box-shadow: none !important;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1) !important;
     cursor: default; }
+
+/*********************************************************************/
+/*                         Deck JS Overrides                         */
+/*********************************************************************/
+.csstransitions.csstransforms .deck-container:not(.deck-menu) > .slide {
+  padding: 0; }
+
+.deck-prev-link:focus, .deck-prev-link:hover, .deck-next-link:focus, .deck-next-link:hover {
+  background-color: #f15b3c; }
 
 #share .slide-body {
   text-align: center; }
