@@ -1736,7 +1736,7 @@
 	 */
 	function isUrlValid( maybeValid ) {
 		var regExp = /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
-		
+
 		return regExp.test( maybeValid );
 	}
 } )( this, jQuery );
@@ -4472,6 +4472,7 @@
 		CORE = window.SEO_Slides,
 		$d = $( document ),
 		$footer = $d.find( '.deck-footer' ),
+		$extras = $d.find( '.extras' ),
 		embed_code;
 
 	function Embed_Code() {
@@ -4509,6 +4510,7 @@
 			if ( undefined === stay_open || ! stay_open ) {
 				$container.removeClass( 'opened' );
 				$footer.removeClass( 'opened' );
+				$extras.removeClass( 'opened' );
 			}
 
 			$container.find( 'li.current' ).removeClass( 'current' );
@@ -4571,6 +4573,7 @@
 
 			$container.addClass( 'opened' );
 			$footer.addClass( 'opened' );
+			$extras.addClass( 'opened' );
 
 			$d.on( 'deck.change', function() {
 				reset_container( $container );
@@ -4599,6 +4602,7 @@
 
 			$container.addClass( 'opened' );
 			$footer.addClass( 'opened' );
+			$extras.addClass( 'opened' );
 
 			CORE.Events.doAction( 'embed.open', container );
 		};

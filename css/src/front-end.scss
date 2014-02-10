@@ -286,7 +286,8 @@ body {
 
 	&.opened {
 		.deck-actions {
-			background-color: #8B0000;
+			display: block;
+			background-color: #f15b3c;
 
 			&:before {
 				content: '\f158';

@@ -196,7 +196,8 @@ body {
   .extras .hidden {
     display: none; }
   .extras.opened .deck-actions {
-    background-color: #8B0000; }
+    display: block;
+    background-color: #f15b3c; }
     .extras.opened .deck-actions:before {
       content: '\f158'; }
 
