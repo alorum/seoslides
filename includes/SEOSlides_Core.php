@@ -610,6 +610,10 @@ class SEOSlides_Core {
 		$child_ss_uri = get_template_directory_uri();
 
 		foreach( $wp_styles->queue as $queued ) {
+			if ( ! isset( $wp_styles->registered[ $queued ] ) ) {
+				continue;
+			}
+
 			$sheet = $wp_styles->registered[ $queued ];
 
 			if ( false !== strpos( $sheet->src, $theme_ss_uri ) || false !== strpos( $sheet->src, $child_ss_uri ) ) {
@@ -618,6 +622,10 @@ class SEOSlides_Core {
 		}
 
 		foreach( $wp_scripts->queue as $queued ) {
+			if ( ! isset( $wp_scripts->registered[ $queued ] ) ) {
+				continue;
+			}
+
 			$script = $wp_scripts->registered[ $queued ];
 
 			if ( false !== strpos( $script->src, $theme_ss_uri ) || false !== strpos( $script->src, $child_ss_uri ) ) {
@@ -830,8 +838,11 @@ class SEOSlides_Core {
 		}
 
 		// Remove the admin bar since, really, we don't want it
-		wp_deregister_script( 'admin-bar' );
-		wp_deregister_style( 'admin-bar' );
+		if ( wp_script_is( 'admin-bar', 'enqueued' ) ) {
+			wp_dequeue_script( 'admin-bar' );
+			wp_dequeue_style( 'admin-bar' );
+		}
+
 		remove_action( 'wp_footer', 'wp_admin_bar_render', 1000 );
 		remove_action( 'wp_head', 'wp_admin_bar_header' );
 		remove_action( 'wp_head', '_admin_bar_bump_cb' );
