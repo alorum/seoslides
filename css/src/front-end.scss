@@ -263,7 +263,7 @@ body {
 	}
 
 	.deck-actions {
-		background-color: #ccc;
+		background-color: #888;
 		bottom: 0;
 		right: 8px;
 		z-index: 3;
@@ -451,6 +451,8 @@ body.embeded {
 }
 
 .deck-prev-link, .deck-next-link {
+	background: #888;
+
 	&:focus, &:hover {
 		background-color: #f15b3c;
 	}

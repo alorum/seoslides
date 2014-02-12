@@ -182,7 +182,7 @@ body {
     line-height: 30px;
     font-weight: bold; }
   .extras .deck-actions {
-    background-color: #ccc;
+    background-color: #888;
     bottom: 0;
     right: 8px;
     z-index: 3;
@@ -323,8 +323,10 @@ body.embeded .deck-footer .deck-overview {
 .csstransitions.csstransforms .deck-container:not(.deck-menu) > .slide {
   padding: 0; }
 
-.deck-prev-link:focus, .deck-prev-link:hover, .deck-next-link:focus, .deck-next-link:hover {
-  background-color: #f15b3c; }
+.deck-prev-link, .deck-next-link {
+  background: #888; }
+  .deck-prev-link:focus, .deck-prev-link:hover, .deck-next-link:focus, .deck-next-link:hover {
+    background-color: #f15b3c; }
 
 #share .slide-body {
   text-align: center; }
@@ -621,10 +623,10 @@ body:not(.has-clones) .slide-notes {
     position: absolute;
     top: 10px;
     height: 32px;
-    right: 60px; }
+    right: 8px; }
     .deck-container div.embed-container .embed-actions .action-icon {
-      width: 30px;
-      height: 30px;
+      width: 20px;
+      height: 20px;
       margin-left: 20px;
       float: left;
       cursor: pointer;
