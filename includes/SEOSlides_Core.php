@@ -44,6 +44,7 @@ class SEOSlides_Core {
 		add_action( 'wp_enqueue_scripts',                            array( $this, 'slideset_enqueue_scripts' ) );
 		add_action( 'wp_print_styles',                               array( $this, 'remove_theme_styles' ) );
 		add_action( 'right_now_content_table_end',                   array( $this, 'display_presentation_count' ) );
+		add_action( 'dashboard_glance_items',                        array( $this, 'right_now_presentation_count' ) );
 		add_action( 'manage_seoslides-slideset_posts_custom_column', array( $this, 'filter_custom_columns' ), 10, 2 );
 		add_action( 'wp_headers',                                    array( $this, 'redirect_to_first' ), 10, 2 );
 		add_action( 'admin_bar_menu',                                array( $this, 'presentation_toolbar' ) );
@@ -650,6 +651,20 @@ class SEOSlides_Core {
 
 		echo '<tr><td class="first b b">' . $num . '</td>';
 		echo '<td class="t">' . $text . '</td></tr>';
+	}
+
+	/**
+	 * Add presentations to the At a Glance widget in WordPress.
+	 */
+	public function right_now_presentation_count() {
+		if ( current_user_can( 'edit_posts' ) ) {
+			$num_pres = wp_count_posts( 'seoslides-slideset' );
+
+			$text = _n( '%s Presentation', '%s Presentations', intval( $num_pres->publish ), 'seoslides_translate' );
+			$text = sprintf( $text, number_format_i18n( $num_pres->publish ) );
+
+			printf( "<li class='presentation-count'><a href='edit.php?post_type=seoslides-slideset'>%s</a></li>", $text );
+		}
 	}
 
 	/**

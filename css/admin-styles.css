@@ -11,10 +11,12 @@
       background-size: 16px auto; } }
 
 body.flaticons #menu-posts-seoslides-slideset .menu-icon-post div.wp-menu-image,
-body.flaticons #toplevel_page_seoslides-slideset .menu-icon-generic div.wp-menu-image {
+body.flaticons #toplevel_page_seoslides-slideset .menu-icon-generic div.wp-menu-image,
+body.flaticons #dashboard_right_now li.presentation-count a {
   background: none; }
   body.flaticons #menu-posts-seoslides-slideset .menu-icon-post div.wp-menu-image:before,
-  body.flaticons #toplevel_page_seoslides-slideset .menu-icon-generic div.wp-menu-image:before {
+  body.flaticons #toplevel_page_seoslides-slideset .menu-icon-generic div.wp-menu-image:before,
+  body.flaticons #dashboard_right_now li.presentation-count a:before {
     content: '\f181'; }
 body.flaticons .tb-close-icon {
   background: none; }
