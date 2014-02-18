@@ -776,7 +776,18 @@ class SEOSlides_Core {
 	public function template_override( $template ) {
 		global $post;
 
-		if ( null == $post || 'seoslides-slideset' != $post->post_type || strpos( $template, 'seoslides-slideset' ) > 0 ) {
+		if ( null == $post || 'seoslides-slideset' != $post->post_type  ) {
+			return $template;
+		}
+
+		// Remove the admin bar since, really, we don't want it
+		wp_deregister_script( 'admin-bar' );
+		wp_deregister_style( 'admin-bar' );
+		remove_action( 'wp_footer', 'wp_admin_bar_render', 1000 );
+		remove_action( 'wp_head', 'wp_admin_bar_header' );
+		remove_action( 'wp_head', '_admin_bar_bump_cb' );
+
+		if ( strpos( $template, 'seoslides-slideset' ) > 0 ) {
 			return $template;
 		}
 
