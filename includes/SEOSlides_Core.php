@@ -1994,18 +1994,21 @@ class SEOSlides_Core {
 			return $query;
 		}
 
+		$tax_query = $query->get( 'tax_query' );
+		if ( empty( $tax_query ) ) {
+			$tax_query = array();
+		}
+
 		// Create the new tax query
-		$query->set(
-			'tax_query',
-			array(
-			     array(
-				     'taxonomy' => 'seoslides-flag',
-				     'terms'    => array( 'imported' ),
-				     'field'    => 'slug',
-				     'operator' => 'NOT IN',
-			     ),
-			)
+		$tax_query[] = array(
+			'taxonomy' => 'seoslides-flag',
+			'terms'    => array( 'imported' ),
+			'field'    => 'slug',
+			'operator' => 'NOT IN',
 		);
+
+		// Update the tax query
+		$query->set( 'tax_query', $tax_query );
 
 		return $query;
 	}
