@@ -375,11 +375,11 @@ class SEOSlides_Slide {
 
 		// Script embed tab and aside
 		$tabs[]   = array( 'class' => 'embed-script-li', 'child' => 'script-embed-instructions', 'label' => __( 'Embed Script', 'seoslides_translate' ) );
-		$asides[] = array( 'class' => 'script-embed-instructions', 'content' => '<p>' . __( 'Insert the script tag below where you would like the presentation to appear.', 'seoslides_translate' ) . '</p>' );
+		$asides[] = array( 'class' => 'script-embed-instructions', 'content' => '<p>' . __( 'To embed this presentation from this slide, insert the script tag below where you would like the presentation to appear.', 'seoslides_translate' ) . '</p>' );
 
 		// Shortcode embed tab and aside
 		$tabs[]   = array( 'class' => 'shortcode-li', 'child' => 'wordpress-embed-instructions', 'label' => __( 'WordPress Shortcode', 'seoslides_translate' ) );
-		$asides[] = array( 'class' => 'wordpress-embed-instructions', 'content' => '<p>' . __( 'Install the <span class="pseudolink" onclick="javascript:window.open(\'http://wordpress.org/plugins/seoslides\',\'_blank\');">seoslides plugin</span> on your WordPress site. Then copy the shortcode below into any post or page.', 'seoslides_translate' ) . '</p>' );
+		$asides[] = array( 'class' => 'wordpress-embed-instructions', 'content' => '<p>' . __( 'Install the <span class="pseudolink" onclick="javascript:window.open(\'http://wordpress.org/plugins/seoslides\',\'_blank\');">seoslides plugin</span> on your WordPress site. Then, to embed this presentation from this slide, copy the shortcode below into any post or page.', 'seoslides_translate' ) . '</p>' );
 
 		$slideset_link = get_post_meta( $this->slideset, '_slideset_link', true );
 
