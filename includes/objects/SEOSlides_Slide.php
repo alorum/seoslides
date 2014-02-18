@@ -159,7 +159,9 @@ class SEOSlides_Slide {
 			// Pull out the background image from the presentation if it exists.
 			// Get presentation fill color
 			$default = get_post_meta( $this->slideset, '_default_slide', true );
-			$this->fill_color = ( ! empty( $default->fill_color ) ) ? $default->fill_color : '#ffffff';
+			if ( empty( $this->fill_color ) ) {
+				$this->fill_color = ( ! empty( $default->fill_color ) ) ? $default->fill_color : '#ffffff';
+			}
 		}
 		$style .= 'background-color:' . $this->fill_color . ';"';
 		$this->style = $style;
