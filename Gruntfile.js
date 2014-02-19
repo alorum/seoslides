@@ -20,12 +20,6 @@ module.exports = function ( grunt ) {
 			},
 			front_end:     {
 				src:  [
-					'js/lib/deck.core.js',
-					'js/lib/deck.hash.js',
-					'js/lib/deck.menu.js',
-					'js/lib/deck.goto.js',
-					'js/lib/deck.status.js',
-					'js/lib/deck.navigation.js',
 					'js/lib/jquery.backstretch.js',
 					'js/src/responsivetext.js',
 					'js/lib/canvas/js/seoslides.js',
@@ -219,22 +213,7 @@ module.exports = function ( grunt ) {
 				files: {
 					'css/admin-styles.css'              : 'css/src/admin-styles.scss',
 					'css/admin-styles-slides.css'       : 'css/src/admin-styles-slides.scss',
-					'css/front-end.css'                 : 'css/src/themes/front-end.scss',
-					'css/front-end.vertical.css'        : 'css/src/themes/front-end.vertical.scss',
-					'css/front-end.fade.css'            : 'css/src/themes/front-end.fade.scss',
-					'css/front-end.none.css'            : 'css/src/themes/front-end.none.scss',
-					'css/front-end.none.horizontal.css' : 'css/src/themes/front-end.none.horizontal.scss',
-					'css/front-end.none.vertical.css'   : 'css/src/themes/front-end.none.vertical.scss',
-					'css/front-end.none.fade.css'       : 'css/src/themes/front-end.none.fade.scss',
-					'css/front-end.none.none.css'       : 'css/src/themes/front-end.none.none.scss',
-					'css/front-end.neon.horizontal.css' : 'css/src/themes/front-end.neon.horizontal.scss',
-					'css/front-end.neon.vertical.css'   : 'css/src/themes/front-end.neon.vertical.scss',
-					'css/front-end.neon.fade.css'       : 'css/src/themes/front-end.neon.fade.scss',
-					'css/front-end.neon.none.css'       : 'css/src/themes/front-end.neon.none.scss',
-					'css/front-end.web.horizontal.css'  : 'css/src/themes/front-end.web.horizontal.scss',
-					'css/front-end.web.vertical.css'    : 'css/src/themes/front-end.web.vertical.scss',
-					'css/front-end.web.fade.css'        : 'css/src/themes/front-end.web.fade.scss',
-					'css/front-end.web.none.css'        : 'css/src/themes/front-end.web.none.scss'
+					'css/front-end.css'                 : 'css/src/front-end.scss'
 				}
 			}
 		},
@@ -249,6 +228,7 @@ module.exports = function ( grunt ) {
 				src:  [
 					'**',
 					'!developer_notes.md',
+					'!readme.md',
 					'!assets/**',
 					'!seoslides_modules/**',
 					'!side-plugins/**',
@@ -262,7 +242,16 @@ module.exports = function ( grunt ) {
 					'!Gruntfile.js',
 					'!package.json',
 					'!.gitignore',
-					'!.gitmodules'
+					'!.gitmodules',
+					'!vendor/deck/introduction/**',
+					'!vendor/deck/test/**',
+					'!vendor/deck/boilerplate.html',
+					'!vendor/deck/CHANGELOG.md',
+					'!vendor/deck/jquery.min.js',
+					'!vendor/deck/Makefile',
+					'!vendor/deck/modernizr.custom.js',
+					'!vendor/deck/README.md',
+					'!vendor/deck/**/*.scss'
 				],
 				dest: 'release/<%= pkg.version %>/'
 			},

@@ -41,7 +41,7 @@
 					slideEl.style.backgroundImage = 'url(' + slide['bg_thumb'] + ')';
 				}
 			} else {
-				if ( undefined !== slide['bg_image'] && typeof slide['bg_image'] === 'string' && '' !== slide['bg_image'].trim() ) {
+				if ( undefined !== slide['bg_image'] && typeof slide['bg_image'] === 'string' && '' !== slide['bg_image'].trim() && 'noimage' !== slide['bg_image'].trim() ) {
 					slideEl.style.backgroundImage = 'url(' + slide['bg_image'] + ')';
 				}
 			}
@@ -52,7 +52,7 @@
 				slide.title = I18N.label_notitle;
 			}
 
-			var title = '<div class="title">' + slide.title + '</div>';
+			var title = '<div class="title"><a data-id="' + slide.id + '" class="editslide" href="javascript:void;" title="' + I18N.label_edit_slide + '">' + slide.title + '</a></div>';
 			title += '<div class="row-actions">';
 			title += '<span class="edit"><a data-id="' + slide.id + '" class="editslide" href="javascript:void;" title="' + I18N.label_edit_slide + '">' + I18N.label_edit + '</a> | </span>';
 			title += '<span class="trash"><a data-id="' + slide.id + '" class="submittrash" href="javascript:void;" title="' + I18N.label_trash_slide + '">' + I18N.label_trash + '</a></span>';

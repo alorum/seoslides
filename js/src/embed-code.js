@@ -4,6 +4,7 @@
 		CORE = window.SEO_Slides,
 		$d = $( document ),
 		$footer = $d.find( '.deck-footer' ),
+		$extras = $d.find( '.extras' ),
 		embed_code;
 
 	function Embed_Code() {
@@ -41,6 +42,7 @@
 			if ( undefined === stay_open || ! stay_open ) {
 				$container.removeClass( 'opened' );
 				$footer.removeClass( 'opened' );
+				$extras.removeClass( 'opened' );
 			}
 
 			$container.find( 'li.current' ).removeClass( 'current' );
@@ -103,6 +105,7 @@
 
 			$container.addClass( 'opened' );
 			$footer.addClass( 'opened' );
+			$extras.addClass( 'opened' );
 
 			$d.on( 'deck.change', function() {
 				reset_container( $container );
@@ -131,6 +134,7 @@
 
 			$container.addClass( 'opened' );
 			$footer.addClass( 'opened' );
+			$extras.addClass( 'opened' );
 
 			CORE.Events.doAction( 'embed.open', container );
 		};

@@ -44,7 +44,7 @@ class SEOSlides_Converter {
 	public function admin_enqueue_scripts() {
 		$current_screen = get_current_screen();
 
-		if ( 'seoslides-slideset_page_import' !== $current_screen->id ) {
+		if ( 'seoslides-slideset_page_seoslides_import' !== $current_screen->id ) {
 			return;
 		}
 
@@ -60,7 +60,7 @@ class SEOSlides_Converter {
 			'text_running'   => __( 'Queueing presentation(s) for import ...', 'seoslides_translate' ),
 			'text_importing' => __( 'Importing slide %1% of %2% ...', 'seoslides_translate' ),
 			'text_notready'  => __( 'The presentation is not yet ready for processing. Please check back later', 'seoslides_translate' ),
-			'text_failure'   => sprintf( __( 'Unfortunately, something went wrong while attempting to import your slides. Please <a href="%s">contact customer support</a> to address the issue.', 'seoslides_translate' ), esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=support' ) ) ),
+			'text_failure'   => sprintf( __( 'Unfortunately, something went wrong while attempting to import your slides. Please <a href="%s">contact customer support</a> to address the issue.', 'seoslides_translate' ), esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=seoslides_support' ) ) ),
 			'confirm_navigation' => __( 'Your imports are still processing; leaving the page will cause errors.  Are you sure you wish to continue?', 'seoslides_translate' ),
 		);
 
@@ -110,7 +110,7 @@ class SEOSlides_Converter {
 			__( 'Import Presentation', 'seoslides_translate' ),
 			__( 'Import Slides', 'seoslides_translate' ),
 			'edit_posts',
-			'import',
+			'seoslides_import',
 			array( $this, 'menu' )
 		);
 	}
@@ -168,7 +168,7 @@ class SEOSlides_Converter {
 			?>
 			<div class="error">
 				<p><?php _e( 'The slide importer requires a license key.', 'seoslides_translate' ); ?>
-					<?php _e( 'Please sign-up for a license key on the <a href="edit.php?post_type=seoslides-slideset&amp;page=settings">settings page</a> to proceed.', 'seoslides_translate' ); ?></p>
+					<?php _e( 'Please sign-up for a license key on the <a href="edit.php?post_type=seoslides-slideset&amp;page=seoslides_settings">settings page</a> to proceed.', 'seoslides_translate' ); ?></p>
 			</div>
 		<?php endif; ?>
 
@@ -207,7 +207,7 @@ class SEOSlides_Converter {
 				<?php if ( false === $api_key || empty( $api_key ) ) :
 					$settings_url = add_query_arg( array(
 						'post_type' => 'seoslides-slideset',
-						'page'      => 'settings'
+						'page'      => 'seoslides_settings'
 					), admin_url( 'edit.php' ) );
 					?>
 					<p><?php printf( __( '<strong>Please Note</strong>: You will need a license key for this step. Check out the <a href="%s">settings page</a> for info on getting a free key.', 'seoslides_translate' ), esc_url( $settings_url ) ); ?></p>
@@ -234,7 +234,7 @@ class SEOSlides_Converter {
 						<label for="upload"><?php _e( 'PDF file:', 'seoslides_translate' ); ?></label>
 						<input type="file" id="upload" name="import" size="25"<?php echo $upload_enabled ? '' : ' disabled="disabled"'; ?> />
 						<input id="seoslides-api_key" name="seoslides-api_key" type="hidden" value="<?php echo esc_attr( $api_key ); ?>" />
-						<input id="seoslides-redirect" name="seoslides-redirect" type="hidden" value="<?php echo esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=import&step=1' ) ); ?>" />
+						<input id="seoslides-redirect" name="seoslides-redirect" type="hidden" value="<?php echo esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=seoslides_import&step=1' ) ); ?>" />
 						<input id="seoslides-client_domain" name="seoslides-client_domain" type="hidden" value="<?php echo esc_attr( $domain ); ?>" />
 						<input id="action" name="action" type="hidden" value="pdf-import" />
 					</p>
@@ -270,7 +270,7 @@ class SEOSlides_Converter {
 						add_query_arg(
 							array(
 								'post_type' => 'seoslides-slideset',
-								'page'      => 'import'
+								'page'      => 'seoslides_import'
 							),
 							admin_url( 'edit.php' )
 						)
@@ -303,7 +303,7 @@ class SEOSlides_Converter {
 					<?php
 					$clear_cache_url = add_query_arg( array(
 						'post_type'   => 'seoslides-slideset',
-						'page'        => 'import',
+						'page'        => 'seoslides_import',
 						'clear_cache' => 1
 					), admin_url( 'edit.php' ) );
 

@@ -10,6 +10,60 @@
 remove_filter( 'wp_title', 'genesis_doctitle_wrap', 20 );
 remove_filter( 'wp_title', 'genesis_default_title', 10, 3 );
 
+/**
+ * Generate branding for the footer.
+ */
+function seoslides_branding() {
+	$branding = get_option( 'seoslides_logo', '' );
+	$branding_url = get_option( 'seoslides_logo_url', '' );
+	$branding_title = get_option( 'seoslides_logo_title', '' );
+	$enabled = 'yes' === get_option( 'seoslides_logo_enabled', 'no' );
+
+	if ( 'default' === $branding || 'seoslides' === $branding ) {
+		$brand = '<span class="branding"><img src="' . SEOSLIDES_URL . '/img/seoslides-logo-trans-2x.png" style="height:100%;width:auto;"></span>';
+	} else {
+		$brand = '<span class="branding"><img src="' . esc_url( $branding ) . '" style="height:100%;width:auto;"></span>';
+	}
+
+	if ( '' !== $branding_url ) {
+		$brand = '<a href="' . esc_url( $branding_url ) . '" title="' . esc_attr( $branding_title ) . '">' . $brand . '</a>';
+	}
+
+	echo $enabled ? $brand : '';
+}
+
+/**
+ * Build a navigation permalink.
+ *
+ * @param string               $direction
+ * @param null|SEOSlides_Slide $slide
+ *
+ * @return string
+ */
+function seoslides_nav_link( $direction, $slide = null ) {
+	if ( null !== $slide ) {
+		return $slide->permalink( $direction );
+	}
+
+	return '#';
+}
+
+/**
+ * Redirect to a 404 page so we don't produce a broken presentation.
+ *
+ * @global WP_Query $wp_query
+ */
+function seoslides_redirect_404() {
+	// Display a 404 page since we don't have overviews
+	global $wp_query;
+	$wp_query->is_404 = true;
+	$wp_query->is_single = false;
+	$wp_query->is_page = false;
+
+	include( get_query_template( '404' ) );
+	exit();
+}
+
 global $post;
 the_post();
 $slide_slug = get_query_var( 'seoslides-slide' );
@@ -30,26 +84,26 @@ if ( get_query_var( 'seoslides-embed' ) ) {
 	}
 	unset( $slide );
 }
+
 if ( '' === $slide_slug ) {
 	// Temporarily redirect to the first slide in the presentation
 	/** @var SEOSlides_Slideset $slideset */
 	$slideset = SEOSlides_Module_Provider::get( 'SEOSlides Core' )->get_slideset( $post->ID );
 	$slides = array_filter( $slideset->slides, array( 'SEOSlides_Slide', 'slide_is_published' ) );
-	if ( count( $slides ) > 0 ) {
-		reset( $slides );
-		$first_id = key( $slides );
-		/** @var SEOSlides_Slide $first  */
-		$first = $slides[ $first_id ];
 
-		header( "HTTP/1.1 307 Temporary Redirect" );
-		header( "Location: " . trailingslashit( trailingslashit( get_permalink() ) . $first->slug ) );
-		die;
+	if ( count( $slides ) === 0 ) {
+		seoslides_redirect_404();
 	}
 
-	$scheme = 'overview';
-} else {
-	$scheme = 'single-slide';
+	reset( $slides );
+	$first_id = key( $slides );
+	/** @var SEOSlides_Slide $slide  */
+	$slide = $slides[ $first_id ];
 
+	header( "HTTP/1.1 307 Temporary Redirect" );
+	header( "Location: " . trailingslashit( trailingslashit( get_permalink() ) . $slide->slug ) );
+	die;
+} else {
 	// Get the slide based on its slug
 	$found = get_posts(
 		array(
@@ -60,12 +114,14 @@ if ( '' === $slide_slug ) {
 		)
 	);
 
-	if ( count( $found ) > 0 ) {
-		$slide = $found[0];
-		$slide = new SEOSlides_Slide( $slide );
-
-		$slideset_bg = $slide->parent( 'default_fill_color' );
+	if ( count( $found ) === 0 ) {
+		seoslides_redirect_404();
 	}
+
+	$slide = $found[0];
+	$slide = new SEOSlides_Slide( $slide );
+
+	$slideset_bg = $slide->parent( 'default_fill_color' );
 }
 ?><!DOCTYPE html>
 <!--[if IE 7]>
@@ -82,8 +138,10 @@ if ( '' === $slide_slug ) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=1024, user-scalable=no">
 	<meta name="author" content="<?php the_author(); ?>">
-	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>"/>
+	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+
 	<?php wp_head(); ?>
+
 	<!--[if IE 8]>
 	<style type="text/css">
 		.slide {
@@ -92,107 +150,31 @@ if ( '' === $slide_slug ) {
 		}
 	</style>
 	<![endif]-->
-	<style type="text/css">
-		#wpadminbar,
-		.show-admin-bar {
-			display: none;
-		}
-
-		html {
-			margin-top: 0 !important;
-		}
-	</style>
 </head>
-<body class="home" style="background-color:<?php echo $slideset_bg; ?>;">
+<body class="home" style="background-color:<?php echo esc_attr( $slideset_bg ); ?>;">
 
-<article class="deck-container <?php echo $scheme; ?>" style="background-color:<?php echo $slideset_bg; ?>;">
-	<?php if ( 'overview' === $scheme ) : ?>
-		<?php
-		$author_link = '<a href="' . get_author_posts_url( get_the_author_meta( 'ID' ) ) . '" rel="author">' . get_the_author() . '</a>';
-		$site_link = '<a href="' . get_bloginfo( 'url' ) . '">' . __( 'Home', 'seoslides_translate' ) . '</a>';
-		$all_slides = '<a href="' . get_bloginfo( 'url' ) . '/slides">' . __( 'All Presentations', 'seoslides_translate' ) . '</a>';
-		?>
-		<section class='overview'>
-			<header class="caption">
-				<h1><?php echo get_the_title( $post ); ?></h1>
+	<article class="deck-container single-slide" style="background-color:<?php echo esc_attr( $slideset_bg ); ?>;">
 
-				<p><?php printf( __( 'Presented by %s', 'seoslides_translate' ), $author_link ); ?></p>
-				<p><?php echo $site_link; ?> &bull; <?php echo $all_slides; ?></p>
-			</header>
-			<?php if ( ! empty( $post->post_content ) ) : ?>
-				<section class="details short">
-					<?php the_content(); ?>
-				</section>
-				<div class="detail-expander">
-					<p class="button button-primary"><?php _e( 'Show More', 'seoslides_translate' ); ?></p>
-					<p class="button button-primary hidden"><?php _e( 'Show Less', 'seoslides_translate' ); ?></p>
-				</div>
-			<?php endif; ?>
-			<section class="list thumbnails">
-				<?php
-				/** @var SEOSlides_Slideset $slideset */
-				$slideset = new SEOSlides_Slideset( $post->ID );
+		<?php $slide->render( 'deck-before', true ); ?>
 
-				$link_base = get_permalink();
+		<div class="extras">
+			<a href="<?php echo esc_url( seoslides_nav_link( 'previous', $slide ) ); ?>" class="deck-prev-link" title="<?php _e( 'Previous', 'seoslides_translate' ); ?>" rel="previous">&lsaquo;</a>
+			<a href="<?php echo esc_url( seoslides_nav_link( 'next', $slide ) ); ?>" class="deck-next-link" title="<?php _e( 'Next', 'seoslides_translate' ); ?>" rel="next">&rsaquo;</a>
 
-				$slide_number = 1;
-				/** @var SEOSlides_Slide $slide */
-				foreach ( $slideset->slides as $slide ) {
-					if ( 'publish' !== $slide->status ) {
-						continue;
-					}
+			<p class="deck-actions"></p>
+		</div>
 
-					echo "<span class='link-wrap' data-href='{$link_base}{$slide->slug}'>";
+	</article>
 
-					echo $slide->render( 'deck-thumb' );
+	<section id="noprint">
+		<p><?php printf( __( 'Presentations are not meant to be printed.<br />Please visit %s to view the slides.', 'seoslides_translate' ), get_permalink( $slide->slideset ) ) ?></p>
+	</section>
 
-					echo "</span>\r\n";
+	<footer class="deck-footer <?php echo $scheme; ?>">
+		<?php seoslides_branding(); ?>
+	</footer>
 
-					$slide_number ++;
-				}
-				?>
-			</section>
+	<?php wp_footer(); ?>
 
-		</section>
-	<?php else : ?>
-		<?php if ( isset( $slide ) ) : ?>
-			<?php $slide->render( 'deck-before', true ); ?>
-		<?php endif; ?>
-	<?php endif; ?>
-	<div class="extras">
-		<?php $branding = get_option( 'seoslides_logo', '' ); ?>
-		<?php $branding_url = get_option( 'seoslides_logo_url', '' ); ?>
-		<?php $branding_title = get_option( 'seoslides_logo_title', '' ); ?>
-		<?php $enabled = 'yes' === get_option( 'seoslides_logo_enabled', 'no' ); ?>
-		<?php if ( 'default' === $branding || 'seoslides' === $branding ) : ?>
-			<?php $brand = '<span class="branding"><img src="' . SEOSLIDES_URL . '/img/seoslides-logo-trans-2x.png" style="height:100%;width:auto;"></span>'; ?>
-		<?php else : ?>
-			<?php $brand = '<span class="branding"><img src="' . esc_url( $branding ) . '" style="height:100%;width:auto;"></span>'; ?>
-		<?php endif; ?>
-		<?php if ( '' !== $branding_url ) : ?>
-			<?php $brand = '<a href="' . esc_url( $branding_url ) . '" title="' . esc_attr( $branding_title ) . '">' . $brand . '</a>'; ?>
-		<?php endif; ?>
-		<?php echo $enabled ? $brand : ''; ?>
-
-		<?php if ( isset( $slide ) ) : ?>
-			<?php $prev = $slide->permalink( 'previous' ); ?>
-			<?php $next = $slide->permalink( 'next' ); ?>
-		<?php else : ?>
-			<?php $prev = $next = '#'; ?>
-		<?php endif; ?>
-
-		<a href="<?php echo esc_url( $prev ); ?>" class="deck-prev-link" title="<?php _e( 'Previous', 'seoslides_translate' ); ?>" rel="previous">&lsaquo;</a>
-		<a href="<?php echo esc_url( $next ); ?>" class="deck-next-link" title="<?php _e( 'Next', 'seoslides_translate' ); ?>" rel="next">&rsaquo;</a>
-	</div>
-</article>
-
-<section id="noprint">
-	<p><?php printf( __( 'Presentations are not meant to be printed.<br />Please visit %s to view the slides.', 'seoslides_translate' ), get_permalink( $slide->slideset ) ) ?></p>
-</section>
-
-<footer class="deck-footer <?php echo $scheme; ?>">
-	<p class="deck-actions"></p>
-</footer>
-<?php wp_footer(); ?>
 </body>
 </html>

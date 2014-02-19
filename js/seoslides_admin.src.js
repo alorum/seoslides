@@ -1,4 +1,4 @@
-/*! seoslides - v1.2.4
+/*! seoslides - v1.3.0
  * https://seoslides.com
  * Copyright (c) 2014 Alroum; * Licensed GPLv2+ */
 ;(function ($, window, undefined) {
@@ -2726,8 +2726,10 @@
 		if ( I18N.layout_image === data.settings.content ) {
 			control = defaultControl;
 		} else {
+			var url = isUrlValid( data.settings.content ) ? data.settings.content : '';
+
 			control += '<div style="position:absolute;top:0;bottom:0;left:0;right:0;">';
-			control += '<img style="height:100%;width:100%;" class="plugin-image" src="' + data.settings.content + '" />';
+			control += '<img style="height:100%;width:100%;" class="plugin-image" data-content="' + data.settings.content + '" src="' + url + '" />';
 			control += '</div>';
 		}
 
@@ -2827,6 +2829,7 @@
 				var image = document.createElement( 'img' );
 				image.className = 'plugin-image';
 				image.setAttribute( 'src', newUri );
+				image.setAttribute( 'data-contnet', newUri );
 
 				plugin.setData( uuid, 'content', newUri );
 
@@ -2886,7 +2889,7 @@
 		swapper.setImageSize();
 	};
 
-	var handleResize = function( element, height, width ) {
+	function handleResize( element, height, width ) {
 		var img = element.querySelector( 'img' ),
 			style = window.getComputedStyle( img ),
 			ratio = window.parseFloat( style.height ) / window.parseFloat( style.width ),
@@ -2910,10 +2913,10 @@
 
 		img.style.height = realHeight + 'px';
 		img.style.width = realWidth + 'px';
-	};
+	}
 	CORE.Events.addAction( 'plugin.resize.' + UUID, handleResize );
 
-	var handleCanvasResize = function( $slide ) {
+	function handleCanvasResize( $slide ) {
 		$( '.plugin-image', $slide ).each( function( i, el ) {
 			var $el = $( el ),
 				$parent = $el.parent();
@@ -2923,7 +2926,7 @@
 				'width':  $parent.width()
 			} );
 		} );
-	};
+	}
 	CORE.Events.addAction( 'debounced.canvas.resize', handleCanvasResize, 11 );
 
 	/**
@@ -2933,14 +2936,26 @@
 	 * @param {Object} $slide
 	 * @returns {{w: number, h: number}}
 	 */
-	var getPluginSize = function( $element, $slide ) {
+	function getPluginSize( $element, $slide ) {
 		$slide = $slide || CORE.Bucket.getCurrentSlideElement();
 
 		return {
 			w : 1600 / $slide.width() * $element.width(),
 			h : 900 / $slide.height() * $element.height()
 		};
-	};
+	}
+
+	/**
+	 * Validate a url
+	 *
+	 * @param {string} maybeValid
+	 * @returns {boolean}
+	 */
+	function isUrlValid( maybeValid ) {
+		var regExp = /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
+
+		return regExp.test( maybeValid );
+	}
 } )( this, jQuery );
 
 ( function( window, $, undefined ) {
@@ -3109,7 +3124,7 @@
 					slideEl.style.backgroundImage = 'url(' + slide['bg_thumb'] + ')';
 				}
 			} else {
-				if ( undefined !== slide['bg_image'] && typeof slide['bg_image'] === 'string' && '' !== slide['bg_image'].trim() ) {
+				if ( undefined !== slide['bg_image'] && typeof slide['bg_image'] === 'string' && '' !== slide['bg_image'].trim() && 'noimage' !== slide['bg_image'].trim() ) {
 					slideEl.style.backgroundImage = 'url(' + slide['bg_image'] + ')';
 				}
 			}
@@ -3120,7 +3135,7 @@
 				slide.title = I18N.label_notitle;
 			}
 
-			var title = '<div class="title">' + slide.title + '</div>';
+			var title = '<div class="title"><a data-id="' + slide.id + '" class="editslide" href="javascript:void;" title="' + I18N.label_edit_slide + '">' + slide.title + '</a></div>';
 			title += '<div class="row-actions">';
 			title += '<span class="edit"><a data-id="' + slide.id + '" class="editslide" href="javascript:void;" title="' + I18N.label_edit_slide + '">' + I18N.label_edit + '</a> | </span>';
 			title += '<span class="trash"><a data-id="' + slide.id + '" class="submittrash" href="javascript:void;" title="' + I18N.label_trash_slide + '">' + I18N.label_trash + '</a></span>';
@@ -3964,7 +3979,7 @@
 		var master = CORE.slideBuilder.createSlide( INTERNALS.slide_default, rowTemplate );
 		master.find( '.editslide' ).attr( 'title', I18N.label_master );
 
-		var title = '<div class="title"><strong>' + I18N.label_master + '</strong></div>';
+		var title = '<div class="title"><strong><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_master + '</a></strong></div>';
 		title += '<div class="row-actions">';
 		title += '<span class="edit"><a data-id="master" class="editslide" href="javascript:void;" title="' + I18N.label_master + '">' + I18N.label_edit + '</a></span>';
 		title += '</div>';

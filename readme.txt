@@ -4,7 +4,7 @@ Donate link: http://alorum.com
 Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up
 Requires at least: 3.5.1
 Tested up to: 3.8.1
-Stable tag: 1.2.4
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,14 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 1. Publish to seoslid.es & Control Your Backlinks
 
 == Changelog ==
+
+= 1.3.0 =
+
+* New: Slide titles on the presentation edit page now launch the slide editor.
+* New: Add presentation count to the At a Glance dashboard widget for easy access.
+* Fix: Don't load theme scripts or the WP admin bar since we aren't using them (enhances performance).
+* Fix: Add Deck JS as a Git subtree so we can track its progress as well and avoid hacking vendor files.
+* Fix: Correct a taxonomy query conflict with Meta Slider.
 
 = 1.2.4 =
 
