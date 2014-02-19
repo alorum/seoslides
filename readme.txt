@@ -4,7 +4,7 @@ Donate link: http://alorum.com
 Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up
 Requires at least: 3.5.1
 Tested up to: 3.8.1
-Stable tag: 1.2.4
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
