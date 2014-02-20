@@ -15,15 +15,16 @@
 		return defaultControl;
 	};
 	plugin.renderControlWithData = function( data ) {
-		var control = '';
+		var control = '',
+			content = data.settings.content.trim();
 
-		if ( I18N.layout_image === data.settings.content ) {
+		if ( I18N.layout_image === content ) {
 			control = defaultControl;
 		} else {
-			var url = isUrlValid( data.settings.content ) ? data.settings.content : '';
+			var url = isUrlValid( content ) ? content : '';
 
 			control += '<div style="position:absolute;top:0;bottom:0;left:0;right:0;">';
-			control += '<img style="height:100%;width:100%;" class="plugin-image" data-content="' + data.settings.content + '" src="' + url + '" />';
+			control += '<img style="height:100%;width:100%;" class="plugin-image" data-content="' + content + '" src="' + url + '" />';
 			control += '</div>';
 		}
 

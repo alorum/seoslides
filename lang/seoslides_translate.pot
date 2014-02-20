@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SEOSlides\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 17:12-0800\n"
-"PO-Revision-Date: 2014-01-07 17:12-0800\n"
+"POT-Creation-Date: 2014-02-18 16:46-0800\n"
+"PO-Revision-Date: 2014-02-18 16:48-0800\n"
 "Last-Translator: Eric Mann <eric@eamann.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,1113 +15,1084 @@ msgstr ""
 "X-Poedit-Country: US\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../includes/SEOSlides_Converter.php:62
+#: ../includes/SEOSlides_Converter.php:60
 msgid "Queueing presentation(s) for import ..."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:63
+#: ../includes/SEOSlides_Converter.php:61
 msgid "Importing slide %1% of %2% ..."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:64
+#: ../includes/SEOSlides_Converter.php:62
 msgid "The presentation is not yet ready for processing. Please check back later"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:65
+#: ../includes/SEOSlides_Converter.php:63
 #, php-format
 msgid "Unfortunately, something went wrong while attempting to import your slides. Please <a href=\"%s\">contact customer support</a> to address the issue."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:66
+#: ../includes/SEOSlides_Converter.php:64
 msgid "Your imports are still processing; leaving the page will cause errors.  Are you sure you wish to continue?"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:79
-#: ../includes/SEOSlides_Converter.php:91
+#: ../includes/SEOSlides_Converter.php:77
+#: ../includes/SEOSlides_Converter.php:89
 msgid "Imports"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:80
+#: ../includes/SEOSlides_Converter.php:78
 msgid "Import"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:81
-#: ../includes/SEOSlides_Core.php:150
-#: ../includes/SEOSlides_Core.php:188
+#: ../includes/SEOSlides_Converter.php:79
+#: ../includes/SEOSlides_Core.php:155
+#: ../includes/SEOSlides_Core.php:193
 msgid "Add New"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:82
+#: ../includes/SEOSlides_Converter.php:80
 msgid "Add New Import"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:83
+#: ../includes/SEOSlides_Converter.php:81
 msgid "Edit Import"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:84
+#: ../includes/SEOSlides_Converter.php:82
 msgid "New Import"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:85
+#: ../includes/SEOSlides_Converter.php:83
 msgid "All Imports"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:86
+#: ../includes/SEOSlides_Converter.php:84
 msgid "View Import"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:87
+#: ../includes/SEOSlides_Converter.php:85
 msgid "Search Imports"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:88
+#: ../includes/SEOSlides_Converter.php:86
 msgid "No imports found"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:89
+#: ../includes/SEOSlides_Converter.php:87
 msgid "No imports found in Trash"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:112
+#: ../includes/SEOSlides_Converter.php:110
 msgid "Import Presentation"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:113
+#: ../includes/SEOSlides_Converter.php:111
 msgid "Import Slides"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:172
+#: ../includes/SEOSlides_Converter.php:170
 msgid "The slide importer requires a license key."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:173
-msgid "Please sign-up for a license key on the <a href=\"edit.php?post_type=seoslides-slideset&amp;page=settings\">settings page</a> to proceed."
+#: ../includes/SEOSlides_Converter.php:171
+msgid "Please sign-up for a license key on the <a href=\"edit.php?post_type=seoslides-slideset&amp;page=seoslides_settings\">settings page</a> to proceed."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:179
-#: ../includes/SEOSlides_Core.php:1125
+#: ../includes/SEOSlides_Converter.php:177
+#: ../includes/SEOSlides_Core.php:1194
 msgid "You can use a free license key for 3 imports. Upgrade to the <a href=\"https://seoslides.com/pro\">pro version</a> for unlimited imports during the beta."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:186
+#: ../includes/SEOSlides_Converter.php:184
 msgid "seoslides Importer"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:190
+#: ../includes/SEOSlides_Converter.php:188
 msgid "Import PowerPoint, Keynote, or other exported to PDF format. Each PDF page is imported as a slide-sized background image. "
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:191
+#: ../includes/SEOSlides_Converter.php:189
 #, php-format
 msgid "Watch a video on <a href=\"%1$s\" target=\"_new\">importing</a>, or view the full <a href=\"%2$s\" target=\"_new\">getting started</a> presentation."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:198
+#: ../includes/SEOSlides_Converter.php:196
 msgid "Step 1: Upload PDF file to seoslides for conversion"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:203
+#: ../includes/SEOSlides_Converter.php:201
 #, php-format
 msgid "<a href=\"%s\" target=\"_new\">Instructions for exporting a PDF from Keynote</a>"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:204
+#: ../includes/SEOSlides_Converter.php:202
 #, php-format
 msgid "<a href=\"%s\" target=\"_new\">Instructions for exporting a PDF from Powerpoint</a>"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:215
+#: ../includes/SEOSlides_Converter.php:213
 #, php-format
 msgid "<strong>Please Note</strong>: You will need a license key for this step. Check out the <a href=\"%s\">settings page</a> for info on getting a free key."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:218
+#: ../includes/SEOSlides_Converter.php:216
 msgid "<strong>Please Note</strong>: Your free license key is good for 3 pdf conversions. After that, <a href=\"http://seoslides.com/pro\" target=\"_new\">upgrade to PRO</a> for unlimited uploads and other benefits."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:224
+#: ../includes/SEOSlides_Converter.php:222
 msgid "Email:"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:228
+#: ../includes/SEOSlides_Converter.php:226
 msgid "(optional)"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:230
+#: ../includes/SEOSlides_Converter.php:228
 msgid "Your email address will only be used to send you an email when import processing is complete."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:236
+#: ../includes/SEOSlides_Converter.php:234
 msgid "PDF file:"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:244
+#: ../includes/SEOSlides_Converter.php:242
 msgid "Upload for Conversion"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:249
+#: ../includes/SEOSlides_Converter.php:247
 msgid "Step 2: Import to your site"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:253
+#: ../includes/SEOSlides_Converter.php:251
 msgid "Processing can take a while. Kick back, relax, and let the seoslides servers do the heavy lifting to convert your presentation."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:264
+#: ../includes/SEOSlides_Converter.php:262
 #, php-format
 msgid "You currently have %s presentation being processed on the seoslides server."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:271
+#: ../includes/SEOSlides_Converter.php:269
 msgid "<a "
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:290
+#: ../includes/SEOSlides_Converter.php:288
 msgid "Process Imports"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:294
+#: ../includes/SEOSlides_Converter.php:292
 msgid "Step 3: Add slide titles and notes, then publish"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:296
+#: ../includes/SEOSlides_Converter.php:294
 msgid "New presentations can be found under &#8220;All Presentations&#8221; as drafts."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:299
+#: ../includes/SEOSlides_Converter.php:297
 msgid "View Draft Presentations"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:303
+#: ../includes/SEOSlides_Converter.php:301
 msgid "Debugging Options"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:315
+#: ../includes/SEOSlides_Converter.php:313
 msgid "Clear import cache"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:316
+#: ../includes/SEOSlides_Converter.php:314
 msgid "View All Imports"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:384
+#: ../includes/SEOSlides_Converter.php:382
 #, php-format
 msgid "Upload Error: %s"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:389
+#: ../includes/SEOSlides_Converter.php:387
 msgid "Presentation queued for import!"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:581
+#: ../includes/SEOSlides_Converter.php:504
+#, php-format
+msgid "Slide %d"
+msgstr ""
+
+#: ../includes/SEOSlides_Converter.php:582
 msgid "Invalid access"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:598
+#: ../includes/SEOSlides_Converter.php:599
 #, php-format
 msgid "<a href=\"%s\">Check for new imports</a>"
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:609
+#: ../includes/SEOSlides_Converter.php:610
 msgid "You currently have 0 presentations converted and ready to import."
 msgstr ""
 
-#: ../includes/SEOSlides_Converter.php:612
+#: ../includes/SEOSlides_Converter.php:613
 msgid "You currently have 1 presentation converted and ready for import."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:148
-#: ../includes/SEOSlides_Core.php:160
-#: ../includes/SEOSlides_Core.php:1073
+#: ../includes/SEOSlides_Core.php:153
+#: ../includes/SEOSlides_Core.php:165
+#: ../includes/SEOSlides_Core.php:1143
 msgid "Presentations"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:149
-#: ../includes/SEOSlides_Core.php:603
+#: ../includes/SEOSlides_Core.php:154
+#: ../includes/SEOSlides_Core.php:645
 msgid "Presentation"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:151
+#: ../includes/SEOSlides_Core.php:156
 msgid "Add New Presentation"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:152
+#: ../includes/SEOSlides_Core.php:157
 msgid "Edit Presentation"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:153
+#: ../includes/SEOSlides_Core.php:158
 msgid "New Presentation"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:154
+#: ../includes/SEOSlides_Core.php:159
 msgid "All Presentations"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:155
+#: ../includes/SEOSlides_Core.php:160
 msgid "View Presentation"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:156
+#: ../includes/SEOSlides_Core.php:161
 msgid "Search Presentations"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:157
+#: ../includes/SEOSlides_Core.php:162
 msgid "No presentations found"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:158
+#: ../includes/SEOSlides_Core.php:163
 msgid "No presentations found in Trash"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:186
+#: ../includes/SEOSlides_Core.php:191
 msgid "Presentation Slides"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:187
+#: ../includes/SEOSlides_Core.php:192
 msgid "Presentation Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:189
+#: ../includes/SEOSlides_Core.php:194
 msgid "Add New Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:190
-#: ../includes/SEOSlides_Core.php:335
+#: ../includes/SEOSlides_Core.php:195
+#: ../includes/SEOSlides_Core.php:373
 msgid "Edit Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:191
+#: ../includes/SEOSlides_Core.php:196
 msgid "New Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:192
+#: ../includes/SEOSlides_Core.php:197
 msgid "All Slides"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:193
+#: ../includes/SEOSlides_Core.php:198
 msgid "View Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:194
+#: ../includes/SEOSlides_Core.php:199
 msgid "Search Slides"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:195
+#: ../includes/SEOSlides_Core.php:200
 msgid "No slides found"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:196
+#: ../includes/SEOSlides_Core.php:201
 msgid "No slides found in Trash"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:225
+#: ../includes/SEOSlides_Core.php:230
 msgid "Flags"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:226
-#: ../includes/SEOSlides_Core.php:235
+#: ../includes/SEOSlides_Core.php:231
+#: ../includes/SEOSlides_Core.php:240
 msgid "Flag"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:227
+#: ../includes/SEOSlides_Core.php:232
 msgid "Search Flags"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:228
+#: ../includes/SEOSlides_Core.php:233
 msgid "All Flags"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:229
+#: ../includes/SEOSlides_Core.php:234
 msgid "Parent Flag"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:230
+#: ../includes/SEOSlides_Core.php:235
 msgid "Parent Flag:"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:231
+#: ../includes/SEOSlides_Core.php:236
 msgid "Edit Flag"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:232
+#: ../includes/SEOSlides_Core.php:237
 msgid "Update Flag"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:233
+#: ../includes/SEOSlides_Core.php:238
 msgid "Add New Flag"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:234
+#: ../includes/SEOSlides_Core.php:239
 msgid "New Flag Name"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:316
+#: ../includes/SEOSlides_Core.php:354
 msgid "None"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:317
+#: ../includes/SEOSlides_Core.php:355
 #: ../includes/SEOSlides_Multiplier.php:149
 msgid "Edit"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:318
+#: ../includes/SEOSlides_Core.php:356
 msgid "Edit this slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:319
+#: ../includes/SEOSlides_Core.php:357
 #: ../includes/objects/SEOSlides_Module_List_Table.php:255
 msgid "Delete"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:320
+#: ../includes/SEOSlides_Core.php:358
 msgid "Delete this slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:321
+#: ../includes/SEOSlides_Core.php:359
 msgid "Trash"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:322
+#: ../includes/SEOSlides_Core.php:360
 msgid "Move slide to trash"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:323
+#: ../includes/SEOSlides_Core.php:361
 msgid "Restore"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:324
+#: ../includes/SEOSlides_Core.php:362
 msgid "Restore slide from trash"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:325
+#: ../includes/SEOSlides_Core.php:363
 #: ../includes/SEOSlides_Meta.php:321
 msgid "Show Trashed Slides"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:326
+#: ../includes/SEOSlides_Core.php:364
 msgid "Slide Master"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:327
-msgid "(no title"
+#: ../includes/SEOSlides_Core.php:365
+#: ../includes/SEOSlides_Core.php:404
+msgid "(no title)"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:328
+#: ../includes/SEOSlides_Core.php:366
 msgid "Save Slide Master"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:329
+#: ../includes/SEOSlides_Core.php:367
 msgid "Default Slide Layout"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:330
+#: ../includes/SEOSlides_Core.php:368
 msgid "Text Editor Defaults"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:331
+#: ../includes/SEOSlides_Core.php:369
 msgid "Double-click to Insert Image"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:332
+#: ../includes/SEOSlides_Core.php:370
 msgid "Click to Insert Text"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:333
+#: ../includes/SEOSlides_Core.php:371
 msgid "Click to Insert Headline"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:334
+#: ../includes/SEOSlides_Core.php:372
 msgid "Click to Insert Subtitle"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:336
+#: ../includes/SEOSlides_Core.php:374
 msgid "Save Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:337
+#: ../includes/SEOSlides_Core.php:375
 msgid "Slide Notes"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:338
+#: ../includes/SEOSlides_Core.php:376
 msgid "Title and Subtitle Layout"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:339
+#: ../includes/SEOSlides_Core.php:377
 msgid "Title and Text Layout"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:340
+#: ../includes/SEOSlides_Core.php:378
 msgid "Text Layout"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:341
+#: ../includes/SEOSlides_Core.php:379
 msgid "Image Layout"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:342
+#: ../includes/SEOSlides_Core.php:380
 msgid "Text with Image on Right Layout"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:343
+#: ../includes/SEOSlides_Core.php:381
 msgid "Text with Image on Left Layout"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:344
+#: ../includes/SEOSlides_Core.php:382
 msgid "Remove Media"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:345
+#: ../includes/SEOSlides_Core.php:383
 msgid "Use as Background Media"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:346
+#: ../includes/SEOSlides_Core.php:384
 msgid "Set Background Media"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:347
+#: ../includes/SEOSlides_Core.php:385
 msgid "Textarea"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:348
+#: ../includes/SEOSlides_Core.php:386
 msgid "Insert Text"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:350
+#: ../includes/SEOSlides_Core.php:388
 msgid "Image"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:351
+#: ../includes/SEOSlides_Core.php:389
 msgid "Insert Image"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:353
+#: ../includes/SEOSlides_Core.php:391
 msgid "Select Image"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:354
+#: ../includes/SEOSlides_Core.php:392
 #: ../includes/SEOSlides_Multiplier.php:150
 msgid "Close"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:355
+#: ../includes/SEOSlides_Core.php:393
 msgid "Title:"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:356
+#: ../includes/SEOSlides_Core.php:394
 msgid "Description:"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:357
+#: ../includes/SEOSlides_Core.php:395
 msgid "Keywords:"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:358
+#: ../includes/SEOSlides_Core.php:396
 msgid "Background Settings"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:359
+#: ../includes/SEOSlides_Core.php:397
 msgid "Slide Transition"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:360
+#: ../includes/SEOSlides_Core.php:398
 msgid "Hex Value"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:361
+#: ../includes/SEOSlides_Core.php:399
 msgid "Embed Image/Video"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:362
+#: ../includes/SEOSlides_Core.php:400
 msgid "Sorry, that file doesn't appear to be an image."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:363
+#: ../includes/SEOSlides_Core.php:401
 msgid "Sorry, that file doesn't appear to be an image or a video."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:364
+#: ../includes/SEOSlides_Core.php:402
 msgid " Video"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:365
+#: ../includes/SEOSlides_Core.php:403
 msgid "Right-click on the canvas above to add elements to the slide."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:366
-msgid "(no title)"
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:367
-#: ../includes/SEOSlides_Core.php:368
-#: ../includes/SEOSlides_Core.php:369
+#: ../includes/SEOSlides_Core.php:405
+#: ../includes/SEOSlides_Core.php:406
+#: ../includes/SEOSlides_Core.php:407
 msgid "YouTube/Vimeo Source"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:368
+#: ../includes/SEOSlides_Core.php:406
 msgid "Format Valid"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:369
+#: ../includes/SEOSlides_Core.php:407
 msgid "Invalid URL"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:370
+#: ../includes/SEOSlides_Core.php:408
 msgid "Paste the URL to a YouTube or Vimeo video."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:371
+#: ../includes/SEOSlides_Core.php:409
 msgid "Default Body Font"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:372
+#: ../includes/SEOSlides_Core.php:410
 msgid "Default Body Font Size"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:373
+#: ../includes/SEOSlides_Core.php:411
 msgid "Default Body Font Color"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:374
+#: ../includes/SEOSlides_Core.php:412
 msgid "Default Header Font"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:375
+#: ../includes/SEOSlides_Core.php:413
 msgid "Default Header Font Size"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:376
+#: ../includes/SEOSlides_Core.php:414
 msgid "Default Header Font Color"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:377
+#: ../includes/SEOSlides_Core.php:415
 msgid "Save Backlink"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:378
+#: ../includes/SEOSlides_Core.php:416
 msgid "Insert/Edit Embed Backlink"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:379
-msgid "Help improve seoslides"
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:380
-msgid "You've just installed seoslides. Please help us improve it by allowing us to gather anonymous usage statisticss so we know with which configurations, plugins and themes to test."
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:381
-msgid "Do not allow tracking"
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:382
-msgid "Allow tracking"
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:384
+#: ../includes/SEOSlides_Core.php:417
 msgid "You have unsaved changes on this slide. Are you sure you wish to close the window?"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:624
+#: ../includes/SEOSlides_Core.php:663
+#, php-format
+msgid "%s Presentation"
+msgstr ""
+
+#: ../includes/SEOSlides_Core.php:680
 #: ../includes/SEOSlides_Meta.php:313
 msgid "Preview"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:625
+#: ../includes/SEOSlides_Core.php:681
 #: ../includes/SEOSlides_Meta.php:314
 msgid "Title"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:626
+#: ../includes/SEOSlides_Core.php:682
 msgid "Slides"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:627
+#: ../includes/SEOSlides_Core.php:683
 msgid "Author"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:628
+#: ../includes/SEOSlides_Core.php:684
 msgid "Date"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:629
+#: ../includes/SEOSlides_Core.php:685
 msgid "Updated"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:744
+#: ../includes/SEOSlides_Core.php:800
 #, php-format
 msgid "%s ago"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:746
+#: ../includes/SEOSlides_Core.php:802
 #: ../includes/SEOSlides_TinyMCE.php:113
 msgid "Y/m/d"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:897
+#: ../includes/SEOSlides_Core.php:967
 #, php-format
 msgid "A %s presentation"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:898
+#: ../includes/SEOSlides_Core.php:968
 msgid "Hello World"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:944
+#: ../includes/SEOSlides_Core.php:1014
 #, php-format
 msgid "Presentation by %s"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:966
+#: ../includes/SEOSlides_Core.php:1036
 #, php-format
 msgid "powered by <a href=\"%s\">seoslides</a>"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1041
+#: ../includes/SEOSlides_Core.php:1111
 #, php-format
 msgid "Use presentatation <a data-nonce=\"%s\" data-presentation=\"%s\" id=\"%s\" href=\"%s\">in a new post</a>."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1045
+#: ../includes/SEOSlides_Core.php:1115
 #, php-format
 msgid "Presentation updated. <a href=\"%s\">View presentation</a>."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1046
+#: ../includes/SEOSlides_Core.php:1116
 msgid "Custom field updated."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1047
+#: ../includes/SEOSlides_Core.php:1117
 msgid "Custom field deleted."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1048
+#: ../includes/SEOSlides_Core.php:1118
 msgid "Presentation updated."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1050
+#: ../includes/SEOSlides_Core.php:1120
 #, php-format
 msgid "Presentation restored to revision from %s"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1051
+#: ../includes/SEOSlides_Core.php:1121
 #, php-format
 msgid "Presentation published. <a href=\"%s\">View presentation</a>"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1052
+#: ../includes/SEOSlides_Core.php:1122
 msgid "Presentation saved."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1053
+#: ../includes/SEOSlides_Core.php:1123
 msgid "Presentation submitted."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1054
+#: ../includes/SEOSlides_Core.php:1124
 #, php-format
 msgid "Presentation scheduled for: <strong>%1$s</strong>."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1056
+#: ../includes/SEOSlides_Core.php:1126
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1057
+#: ../includes/SEOSlides_Core.php:1127
 msgid "Presentation draft updated."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1087
-#: ../includes/SEOSlides_Core.php:1088
+#: ../includes/SEOSlides_Core.php:1157
+#: ../includes/SEOSlides_Core.php:1158
 msgid "Settings"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1097
+#: ../includes/SEOSlides_Core.php:1167
 msgid "Upgrade"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1102
-#: ../includes/SEOSlides_Core.php:1103
+#: ../includes/SEOSlides_Core.php:1172
+#: ../includes/SEOSlides_Core.php:1173
 msgid "Support"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1132
+#: ../includes/SEOSlides_Core.php:1201
 msgid "seoslides Settings"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1136
+#: ../includes/SEOSlides_Core.php:1205
 msgid "General Settings"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1147
+#: ../includes/SEOSlides_Core.php:1216
 msgid "License Key"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1152
+#: ../includes/SEOSlides_Core.php:1221
 msgid "Don't have a license key? Click <a href=\"https://seoslides.com/free\" class=\"popup\">here</a>."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1158
-msgid "Allow Statistics Tracking"
+#: ../includes/SEOSlides_Core.php:1227
+msgid "Product Key (optional)"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1163
-msgid "Allow us to gather <em>anonymous</em> usage statistics so we can further improve seoslides."
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:1170
+#: ../includes/SEOSlides_Core.php:1236
 msgid "Show Imported Slide Backgrounds"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1175
+#: ../includes/SEOSlides_Core.php:1241
 msgid "Show imported slide backgrounds in the media library."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1183
+#: ../includes/SEOSlides_Core.php:1249
 msgid "Add Social Sharing Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1188
+#: ../includes/SEOSlides_Core.php:1254
 msgid "Add a social sharing slide to the end of each presentation. Includes seoslides logo and link."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1199
+#: ../includes/SEOSlides_Core.php:1265
 msgid "Save Changes"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1214
+#: ../includes/SEOSlides_Core.php:1280
 msgid "We've got it! Someone from our support team will be in touch soon."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1224
+#: ../includes/SEOSlides_Core.php:1290
 msgid "seoslides Support"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1232
+#: ../includes/SEOSlides_Core.php:1298
 #, php-format
 msgid "Please check our <a href=\"%s\">comprehensive list of FAQs</a>."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1233
+#: ../includes/SEOSlides_Core.php:1299
 msgid "Still need help?"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1239
+#: ../includes/SEOSlides_Core.php:1305
 msgid "How can we assist you?"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1250
+#: ../includes/SEOSlides_Core.php:1316
 msgid "Name"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1258
+#: ../includes/SEOSlides_Core.php:1324
 msgid "Email"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1266
+#: ../includes/SEOSlides_Core.php:1332
 msgid "Site URL"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1276
+#: ../includes/SEOSlides_Core.php:1342
 msgid "Send Support Request"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1308
+#: ../includes/SEOSlides_Core.php:1374
 msgid "Settings Saved!"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1310
+#: ../includes/SEOSlides_Core.php:1376
 msgid "Could Not Validate Key."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1313
+#: ../includes/SEOSlides_Core.php:1379
 msgid "Invalid License Key!"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1396
+#: ../includes/SEOSlides_Core.php:1468
 msgid "This is the Presentation Editing screen. From here, you can:"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1397
+#: ../includes/SEOSlides_Core.php:1469
 msgid "Edit or create a new presentation"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1398
+#: ../includes/SEOSlides_Core.php:1470
 msgid "Customize the look and feel with CSS"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1399
+#: ../includes/SEOSlides_Core.php:1471
 msgid "Publish to seoslid.es"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1400
+#: ../includes/SEOSlides_Core.php:1472
 msgid "Modify your Embed Backlink"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1401
+#: ../includes/SEOSlides_Core.php:1473
 msgid "For a more in-depth look at how to edit your presentations, check out the other tabs in this panel. If you&#8217;re still stuck, we&#8217;re here to help &mdash; <a href=\"\">Contact Support</a>."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1405
+#: ../includes/SEOSlides_Core.php:1477
 msgid "Basics"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1409
+#: ../includes/SEOSlides_Core.php:1481
 msgid "seoslides&#8217; editor enables you to create rich, SEO-friendly slideshow presentations with ease."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1410
+#: ../includes/SEOSlides_Core.php:1482
 msgid "In the slide editor you can:"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1411
+#: ../includes/SEOSlides_Core.php:1483
 msgid "Choose layouts"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1412
+#: ../includes/SEOSlides_Core.php:1484
 msgid "Add or edit text"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1413
+#: ../includes/SEOSlides_Core.php:1485
 msgid "Embed rich media such as audio or video"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1414
+#: ../includes/SEOSlides_Core.php:1486
 msgid "Change colors, and more!"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1415
+#: ../includes/SEOSlides_Core.php:1487
 msgid "Each presentation has a special &#8220;Slide Master&#8221; at the top of the slide list. This slide serves as a template for all of the other slides you add."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1416
+#: ../includes/SEOSlides_Core.php:1488
 msgid "To edit a specific slide, <strong>click that slide&#8217;s preview image or Edit link</strong> in the slides list."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1420
+#: ../includes/SEOSlides_Core.php:1492
 msgid "Editing Slides"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1427
+#: ../includes/SEOSlides_Core.php:1499
 msgid "Depending on your subscription level, you may have the option to share your presentations remotely on <a href=\"http://seoslid.es\">seoslide.es</a>. A copy of your presentation will be embedded there and will link back to your site."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1428
+#: ../includes/SEOSlides_Core.php:1500
 msgid "seoslides Pro users may remotely share an <strong>unlimited</strong> number of presentatations, while free users are limited to <strong>just one</strong> remote publication. If you&#8217;ve already exhausted your free allowance, <a href=\"https://seoslides.com/pro/\" target=\"_blank\">upgrade to Pro today!</a>"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1429
+#: ../includes/SEOSlides_Core.php:1501
 msgid "Sharing on seoslid.es:"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1430
+#: ../includes/SEOSlides_Core.php:1502
 msgid "First, publish your presentation on your site by <strong>clicking the blue Publish button</strong>"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1431
+#: ../includes/SEOSlides_Core.php:1503
 msgid "In the Publish meta box, <strong>click the Edit link, next to &#8220;seoslid.es&#8221;</strong>"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1432
+#: ../includes/SEOSlides_Core.php:1504
 msgid "<strong>Click the &#8220;Share on seoslid.es now&#8221; button</strong> to send your presentation to the remote server. That&#8217;s it!"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1433
+#: ../includes/SEOSlides_Core.php:1505
 msgid "Other Options:"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1434
+#: ../includes/SEOSlides_Core.php:1506
 msgid "<strong>Select the &#8220;Sync updates automatically&#8221; checkbox</strong> to auto-update the remote server whenever you update your presentation"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1435
+#: ../includes/SEOSlides_Core.php:1507
 msgid "<strong>Click the &#8220;Remove from seoslid.es now&#8221; button</strong> to remove your presentation from the remote server"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1436
+#: ../includes/SEOSlides_Core.php:1508
 msgid "If your presentation has been shared remotely, removing it on your own site will also remove it from <a href=\"http://seoslid.es/\">seoslid.es</a>"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1440
+#: ../includes/SEOSlides_Core.php:1512
 msgid "Using seoslid.es"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1444
+#: ../includes/SEOSlides_Core.php:1516
 msgid "If the Embed Backlink is set, it will be included in the Presentation&#8217;s Extras popup as a slide button, adjacent to the &#8220;fullscreen&#8221; button. It can be accessed by clicking the &#8220;+&#8221; button at the lower right corner of the presentation."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1448
+#: ../includes/SEOSlides_Core.php:1520
 #: ../includes/SEOSlides_Meta.php:87
 #: ../includes/SEOSlides_Meta.php:106
 msgid "Embed Backlink"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1452
+#: ../includes/SEOSlides_Core.php:1524
 msgid "Embed a presentation from this or another site in a few simple steps:"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1453
+#: ../includes/SEOSlides_Core.php:1525
 msgid "Navigate to the Visual tab in the editor, and click the red and orange seoslides button."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1454
+#: ../includes/SEOSlides_Core.php:1526
 msgid "In the popup menu, paste an seoslides shortcode into the provided box, or, search for and select an existing presentation from the list."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1455
+#: ../includes/SEOSlides_Core.php:1527
 msgid "Once you&#8217;ve copied and pasted a shortcode, or made a selection from the list, click the &#8220;Embed Presentation&#8221; button to insert it into the editor."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1456
+#: ../includes/SEOSlides_Core.php:1528
 msgid "You&#8217;re finished!"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1460
+#: ../includes/SEOSlides_Core.php:1532
 msgid "Embed Presentations"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1550
-#: ../includes/SEOSlides_Core.php:1572
+#: ../includes/SEOSlides_Core.php:1622
+#: ../includes/SEOSlides_Core.php:1644
 msgid "Hello World!"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1555
+#: ../includes/SEOSlides_Core.php:1627
 msgid "<p>Even if all you are saying is \"hello\", notes are a great way to add additional SEO rich keywords.</p><p>Oh... and to cover details that are not on the slide.</p><p>Viewers of your presentation can see these notes by clicking the \"+\" in the lower right corner.</p>"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1628
+#: ../includes/SEOSlides_Core.php:1700
 msgid "by the seoslides team"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1637
+#: ../includes/SEOSlides_Core.php:1709
 msgid "Welcome to seoslides!"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1681
+#: ../includes/SEOSlides_Core.php:1753
 msgid "This is your first presentation."
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1682
+#: ../includes/SEOSlides_Core.php:1754
 msgid "Edit or delete it"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1683
+#: ../includes/SEOSlides_Core.php:1755
 msgid "Then start presenting!"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1718
+#: ../includes/SEOSlides_Core.php:1790
 msgid "Horizontal Slide (Default)"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1722
+#: ../includes/SEOSlides_Core.php:1795
 msgid "Vertical Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1726
+#: ../includes/SEOSlides_Core.php:1800
 msgid "Fade"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1730
+#: ../includes/SEOSlides_Core.php:1805
 msgid "No Transition"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1753
+#: ../includes/SEOSlides_Core.php:1834
 msgid "Neon - Horizontal Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1757
+#: ../includes/SEOSlides_Core.php:1839
 msgid "Neon - Vertical Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1761
+#: ../includes/SEOSlides_Core.php:1844
 msgid "Neon - Fade"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1765
+#: ../includes/SEOSlides_Core.php:1849
 msgid "Neon - No Transition"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1771
-msgid "Swiss - Horizontal Slide (Default)"
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:1775
-msgid "Swiss - Vertical Slide"
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:1779
-msgid "Swiss - Fade"
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:1783
-msgid "Swiss - No Transition"
-msgstr ""
-
-#: ../includes/SEOSlides_Core.php:1789
+#: ../includes/SEOSlides_Core.php:1859
 msgid "No Theme - Horizontal Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1793
+#: ../includes/SEOSlides_Core.php:1864
 msgid "No Theme - Vertical Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1797
+#: ../includes/SEOSlides_Core.php:1869
 msgid "No Theme - Fade"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1801
+#: ../includes/SEOSlides_Core.php:1874
 msgid "No Theme - No Transition"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1807
+#: ../includes/SEOSlides_Core.php:1881
 msgid "Web 2.0 - Horizontal Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1811
+#: ../includes/SEOSlides_Core.php:1886
 msgid "Web 2.0 - Vertical Slide"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1815
+#: ../includes/SEOSlides_Core.php:1891
 msgid "Web 2.0 - Fade"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1819
+#: ../includes/SEOSlides_Core.php:1896
 msgid "Web 2.0 - No Transition"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1884
+#: ../includes/SEOSlides_Core.php:1946
 msgid "Embed with seoslides"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1885
+#: ../includes/SEOSlides_Core.php:1947
 msgid "embed"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1892
+#: ../includes/SEOSlides_Core.php:1954
 msgid "Share on Facebook"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1893
-#: ../includes/SEOSlides_Core.php:1917
+#: ../includes/SEOSlides_Core.php:1955
+#: ../includes/SEOSlides_Core.php:1979
 msgid "share"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1900
+#: ../includes/SEOSlides_Core.php:1962
 msgid "Share on Google+"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1901
+#: ../includes/SEOSlides_Core.php:1963
 msgid "+1"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1908
+#: ../includes/SEOSlides_Core.php:1970
 msgid "Tweet on Twitter"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1909
+#: ../includes/SEOSlides_Core.php:1971
 msgid "tweet"
 msgstr ""
 
-#: ../includes/SEOSlides_Core.php:1916
+#: ../includes/SEOSlides_Core.php:1978
 msgid "Share on LinkedIn"
 msgstr ""
 
@@ -1177,7 +1148,7 @@ msgid "Cancel"
 msgstr ""
 
 #: ../includes/SEOSlides_Meta.php:315
-#: ../includes/objects/SEOSlides_Slide.php:358
+#: ../includes/objects/SEOSlides_Slide.php:372
 msgid "Notes"
 msgstr ""
 
@@ -1377,28 +1348,28 @@ msgstr ""
 msgid "By %s."
 msgstr ""
 
-#: ../includes/objects/SEOSlides_Slide.php:363
+#: ../includes/objects/SEOSlides_Slide.php:377
 msgid "Embed Script"
 msgstr ""
 
-#: ../includes/objects/SEOSlides_Slide.php:364
-msgid "Insert the script tag below where you would like the presentation to appear."
+#: ../includes/objects/SEOSlides_Slide.php:378
+msgid "To embed this presentation from this slide, insert the script tag below where you would like the presentation to appear."
 msgstr ""
 
-#: ../includes/objects/SEOSlides_Slide.php:367
+#: ../includes/objects/SEOSlides_Slide.php:381
 msgid "WordPress Shortcode"
 msgstr ""
 
-#: ../includes/objects/SEOSlides_Slide.php:368
-msgid "Install the <span class=\"pseudolink\" onclick=\"javascript:window.open('http://wordpress.org/plugins/seoslides','_blank');\">seoslides plugin</span> on your WordPress site. Then copy the shortcode below into any post or page."
+#: ../includes/objects/SEOSlides_Slide.php:382
+msgid "Install the <span class=\"pseudolink\" onclick=\"javascript:window.open('http://wordpress.org/plugins/seoslides','_blank');\">seoslides plugin</span> on your WordPress site. Then, to embed this presentation from this slide, copy the shortcode below into any post or page."
 msgstr ""
 
-#: ../includes/objects/SEOSlides_Slide.php:376
+#: ../includes/objects/SEOSlides_Slide.php:390
 msgid "Full screen"
 msgstr ""
 
-#: ../includes/objects/SEOSlides_Slide.php:509
-#: ../includes/objects/SEOSlides_Slide.php:545
+#: ../includes/objects/SEOSlides_Slide.php:523
+#: ../includes/objects/SEOSlides_Slide.php:559
 msgid "Invalid ombed url."
 msgstr ""
 
@@ -1407,33 +1378,32 @@ msgstr ""
 msgid "Embed a Slideshow"
 msgstr ""
 
-#: ../templates/single-seoslides-slideset.php:112
-msgid "Home"
-msgstr ""
-
-#: ../templates/single-seoslides-slideset.php:119
-#, php-format
-msgid "Presented by %s"
-msgstr ""
-
-#: ../templates/single-seoslides-slideset.php:127
-msgid "Show More"
-msgstr ""
-
-#: ../templates/single-seoslides-slideset.php:128
-msgid "Show Less"
-msgstr ""
-
-#: ../templates/single-seoslides-slideset.php:184
+#: ../release/1.3.0/templates/single-seoslides-slideset.php:161
 msgid "Previous"
 msgstr ""
 
-#: ../templates/single-seoslides-slideset.php:185
+#: ../release/1.3.0/templates/single-seoslides-slideset.php:162
 msgid "Next"
 msgstr ""
 
-#: ../templates/single-seoslides-slideset.php:190
+#: ../release/1.3.0/templates/single-seoslides-slideset.php:170
 #, php-format
 msgid "Presentations are not meant to be printed.<br />Please visit %s to view the slides."
+msgstr ""
+
+#: ../release/seoslides-1.2.4.1/includes/SEOSlides_Core.php:497
+msgid "Heading"
+msgstr ""
+
+#: ../release/seoslides-1.2.4.1/includes/SEOSlides_Core.php:498
+msgid "Insert Heading"
+msgstr ""
+
+#: ../release/seoslides-1.2.4.1/includes/objects/SEOSlides_Slide.php:380
+msgid "Insert the script tag below where you would like the presentation to appear."
+msgstr ""
+
+#: ../release/seoslides-1.2.4.1/includes/objects/SEOSlides_Slide.php:384
+msgid "Install the <span class=\"pseudolink\" onclick=\"javascript:window.open('http://wordpress.org/plugins/seoslides','_blank');\">seoslides plugin</span> on your WordPress site. Then copy the shortcode below into any post or page."
 msgstr ""
 
