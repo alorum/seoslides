@@ -88,6 +88,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 = 1.3.1 =
 
 * Fix: Strip spaces from the end of image URLs so they display properly as embedded media.
+* Fix: Re-enable styles removed during the 1.3.0 upgrade.
 
 = 1.3.0 =
 
