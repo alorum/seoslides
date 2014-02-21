@@ -85,6 +85,11 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= Dev =
+
+* Improved: The seoslides importer now presents a progress bar rather than a scrolling list of slide counts.
+* New: Slide imports are now processed in parallel to enhance the speed of the importer.
+
 = 1.3.1 =
 
 * Fix: Strip spaces from the end of image URLs so they display properly as embedded media.
