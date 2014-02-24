@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= 1.3.2 =
+
+* Fix: Remove scrollbars on embeds.
+
 = 1.3.1 =
 
 * Fix: Strip spaces from the end of image URLs so they display properly as embedded media.

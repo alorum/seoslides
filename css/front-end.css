@@ -9,7 +9,8 @@ body {
 .deck-container {
   font-size: 16px;
   margin: 0;
-  background-color: #000; }
+  background-color: #000;
+  overflow: hidden; }
   .deck-container section.slide {
     margin-left: 50%; }
     .deck-container section.slide h2 {
