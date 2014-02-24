@@ -4,7 +4,7 @@ Donate link: http://alorum.com
 Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up
 Requires at least: 3.5.1
 Tested up to: 3.8.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 * Improved: The seoslides importer now presents a progress bar rather than a scrolling list of slide counts.
 * New: Slide imports are now processed in parallel to enhance the speed of the importer.
+
+= 1.3.2 =
+
+* Fix: Remove scrollbars on embeds.
 
 = 1.3.1 =
 

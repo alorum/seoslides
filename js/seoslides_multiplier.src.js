@@ -1,4 +1,4 @@
-/*! seoslides - v1.3.1
+/*! seoslides - v1.3.2
  * https://seoslides.com
  * Copyright (c) 2014 Alroum; * Licensed GPLv2+ */
 ( function( window, $, undefined ) {
