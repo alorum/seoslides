@@ -4,7 +4,7 @@ html, body {
 
 body {
   background-color: transparent;
-  overflow: auto; }
+  overflow: hidden; }
 
 .deck-container {
   font-size: 16px;
@@ -98,6 +98,14 @@ body {
     display: none;
     opacity: 0;
     cursor: default; }
+
+footer.deck-footer {
+  position: absolute;
+  height: 32px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  bottom: 0; }
 
 .extras {
   font-family: 'Noto Sans', sans-serif; }
