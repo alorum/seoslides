@@ -7,7 +7,6 @@
  * Author:      10up
  */
 
-// Object requirements
 require_once 'objects/SEOSlides_Slideset.php';
 require_once 'objects/SEOSlides_Slide.php';
 require_once 'objects/SEOSlides_CanvasObject.php';
@@ -291,6 +290,8 @@ class SEOSlides_Core {
 	}
 
 	/****************************************************************/
+	/**                  Redirection and Rewrites                  **/
+	/****************************************************************/
 
 	/**
 	 * Add custom rewrite rules to make sure individual slide URLs direct to the appropriate slideset.
@@ -298,7 +299,8 @@ class SEOSlides_Core {
 	public function custom_rewrites() {
 		add_rewrite_tag( '%seoslides-slide%', '(.+)' );
 		add_rewrite_tag( '%seoslides-first%', '([0-9])' );
-		add_rewrite_rule( '^slides/?$', 'index.php?seoslides-first=1', 'top' );
+
+		add_rewrite_rule( '^slides/?$',           'index.php?seoslides-first=1',                                          'top' );
 		add_rewrite_rule( '^slides/(.+)/(.+)/?$', 'index.php?seoslides-slideset=$matches[1]&seoslides-slide=$matches[2]', 'top' );
 	}
 
@@ -336,11 +338,35 @@ class SEOSlides_Core {
 	}
 
 	/**
-	 * Force a PHP exit. Useful for wiring to action hooks.
+	 * Intercept the template redirect request and inject the one bundled by the plugin if it's not set by the theme.
+	 *
+	 * If there is no global $post, or if the post type for the global $post is not 'seoslides-slideset,' skip any changes.
+	 * Also, if the theme defines a template for 'seoslides-slideset,' skip changes and use that template instead.
+	 *
+	 * @param string $template Template file.
+	 *
+	 * @return string
 	 */
-	public static function force_exit() {
-		exit();
+	public function template_override( $template ) {
+		global $post;
+
+		if ( null === $post || 'seoslides-slideset' !== $post->post_type  ) {
+			return $template;
+		}
+
+		// Remove the admin bar since, really, we don't want it
+		$this->remove_incompatible_third_party_hooks();
+
+		if ( strpos( $template, 'seoslides-slideset' ) > 0 ) {
+			return $template;
+		}
+
+		return SEOSLIDES_PATH . 'templates/single-seoslides-slideset.php';
 	}
+
+	/****************************************************************/
+	/**                    Scripts and Styles                      **/
+	/****************************************************************/
 
 	/**
 	 * Build out the strings needed for JS to display properly in a local language.
@@ -589,10 +615,10 @@ class SEOSlides_Core {
 			'seoslides_front',
 			'seoslides',
 			array(
-			     'ajaxurl'    => admin_url( 'admin-ajax.php' ),
-			     'slideset'   => get_the_ID(),
-			     'embedID'    => $embedID,
-			     'photon_url' => function_exists( 'jetpack_photon_url' ) ? 'enabled' : 'disabled',
+				'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+				'slideset'   => get_the_ID(),
+				'embedID'    => $embedID,
+				'photon_url' => function_exists( 'jetpack_photon_url' ) ? 'enabled' : 'disabled',
 			)
 		);
 	}
@@ -633,6 +659,34 @@ class SEOSlides_Core {
 				$wp_scripts->dequeue( $queued );
 			}
 		}
+	}
+
+	/**
+	 * Unhook some scripts and styles that are known to cause issues with the front-end.
+	 */
+	protected function remove_incompatible_third_party_hooks() {
+		// WordPress admin toolbar
+		if ( wp_script_is( 'admin-bar', 'enqueued' ) ) {
+			wp_dequeue_script( 'admin-bar' );
+			wp_dequeue_style( 'admin-bar' );
+		}
+
+		remove_action( 'wp_footer', 'wp_admin_bar_render', 1000 );
+		remove_action( 'wp_head',   'wp_admin_bar_header'       );
+		remove_action( 'wp_head',   '_admin_bar_bump_cb'        );
+
+		// Remove some known incompatibilities with Genesis Framework themes
+		remove_filter( 'wp_title', 'genesis_doctitle_wrap', 20 );
+		remove_filter( 'wp_title', 'genesis_default_title', 10, 3 );
+	}
+
+	/****************************************************************/
+
+	/**
+	 * Force a PHP exit. Useful for wiring to action hooks.
+	 */
+	public static function force_exit() {
+		exit();
 	}
 
 	/**
@@ -720,7 +774,7 @@ class SEOSlides_Core {
 						$style = ' style="';
 						if ( '' !== $cover->bg_image ) {
 							$image = $cover->bg_image;
-							$image_id = SEOSlides_Core::get_attachment_id_from_url( $cover->bg_image );
+							$image_id = SEOSlides_Util::get_attachment_id_from_url( $cover->bg_image );
 
 							if ( false === $image_id ) {
 								if ( function_exists( 'jetpack_photon_url' ) ) {
@@ -836,65 +890,6 @@ class SEOSlides_Core {
 	}
 
 	/**
-	 * Intercept the template redirect request and inject the one bundled by the plugin if it's not set by the theme.
-	 *
-	 * If there is no global $post, or if the post type for the global $post is not 'seoslides-slideset,' skip any changes.
-	 * Also, if the theme defines a template for 'seoslides-slideset,' skip changes and use that template instead.
-	 *
-	 * @param string $template Template file.
-	 *
-	 * @return string
-	 */
-	public function template_override( $template ) {
-		global $post;
-
-		if ( null == $post || 'seoslides-slideset' != $post->post_type  ) {
-			return $template;
-		}
-
-		// Remove the admin bar since, really, we don't want it
-		if ( wp_script_is( 'admin-bar', 'enqueued' ) ) {
-			wp_dequeue_script( 'admin-bar' );
-			wp_dequeue_style( 'admin-bar' );
-		}
-
-		remove_action( 'wp_footer', 'wp_admin_bar_render', 1000 );
-		remove_action( 'wp_head', 'wp_admin_bar_header' );
-		remove_action( 'wp_head', '_admin_bar_bump_cb' );
-
-		if ( strpos( $template, 'seoslides-slideset' ) > 0 ) {
-			return $template;
-		}
-
-		return SEOSLIDES_PATH . 'templates/single-seoslides-slideset.php';
-	}
-
-	/**
-	 * Populate a static template with actual slide parameters.
-	 *
-	 * @param string $template  Template to populate.
-	 * @param array  $slideargs Associative array of parameters to use for population.
-	 *
-	 * @return string
-	 */
-	public static function populate_template( $template, $slideargs ) {
-		foreach( $slideargs as $key => $value ) {
-			switch( $key ) {
-				case 'image':
-					$template = str_replace( "<%= $key %>", "<div class='seoslide_image'>{$value}</div>", $template );
-					break;
-				case 'content':
-					$template = str_replace( "<%= $key %>", "<div class='seoslide_content'>{$value}</div>", $template );
-					break;
-				default:
-					$template = str_replace( "<%= $key %>", $value, $template );
-			}
-		}
-
-		return $template;
-	}
-
-	/**
 	 * Get the total number of slides assigned to a particular presentation.
 	 *
 	 * @param int $slideset_id
@@ -993,7 +988,7 @@ class SEOSlides_Core {
 
 		// Build and insert slide Headline
 		$headline = array(
-			'element_id' => SEOSlides_Core::generate_guid(),
+			'element_id' => SEOSlides_Util::generate_guid(),
 			'plugin_id'  => '1798dfc0-8695-11e2-9e96-0800200c9a66',
 			'settings'   => array(
 				'size'     => array(
@@ -1015,7 +1010,7 @@ class SEOSlides_Core {
 
 		// Build and insert slide Subheading
 		$sub_headline = array(
-			'element_id' => SEOSlides_Core::generate_guid(),
+			'element_id' => SEOSlides_Util::generate_guid(),
 			'plugin_id' => '1798dfc0-8695-11e2-9e96-0800200c9a66',
 			'settings' => array(
 				'size' => array(
@@ -1037,7 +1032,7 @@ class SEOSlides_Core {
 
 		// Build and insert slide Subheading
 		$sub_headline = array(
-			'element_id' => SEOSlides_Core::generate_guid(),
+			'element_id' => SEOSlides_Util::generate_guid(),
 			'plugin_id' => '1798dfc0-8695-11e2-9e96-0800200c9a66',
 			'settings' => array(
 				'size' => array(
@@ -1668,7 +1663,7 @@ class SEOSlides_Core {
 		update_post_meta( $title_slide, 'seoslides_seo_settings', $title_seo );
 
 		$title_headline = array(
-			'element_id' => SEOSlides_Core::generate_guid(),
+			'element_id' => SEOSlides_Util::generate_guid(),
 			'plugin_id' => '1798dfc0-8695-11e2-9e96-0800200c9a66',
 			'settings' => array(
 				'size' => array(
@@ -1686,7 +1681,7 @@ class SEOSlides_Core {
 		add_post_meta( $title_slide, 'seoslides_canvas_object', $title_headline );
 
 		$title_sub_headline = array(
-			'element_id' => SEOSlides_Core::generate_guid(),
+			'element_id' => SEOSlides_Util::generate_guid(),
 			'plugin_id' => '1798dfc0-8695-11e2-9e96-0800200c9a66',
 			'settings' => array(
 				'size' => array(
@@ -1733,7 +1728,7 @@ class SEOSlides_Core {
 		update_post_meta( $first_slide, 'seoslides_seo_settings', $first_seo );
 
 		$first_headline = array(
-			'element_id' => SEOSlides_Core::generate_guid(),
+			'element_id' => SEOSlides_Util::generate_guid(),
 			'plugin_id' => '1798dfc0-8695-11e2-9e96-0800200c9a66',
 			'settings' => array(
 				'size' => array(
@@ -1755,7 +1750,7 @@ class SEOSlides_Core {
 		$first_content_text .= '<p><span style="color:#ffffff"><span style="font-size:2.769em">' . __( 'Then start presenting!', 'seoslides_translate' ) . '</span></span></p>';
 
 		$first_content = array(
-			'element_id' => SEOSlides_Core::generate_guid(),
+			'element_id' => SEOSlides_Util::generate_guid(),
 			'plugin_id' => '1798dfc0-8695-11e2-9e96-0800200c9a66',
 			'settings' => array(
 				'size' => array(
@@ -2066,64 +2061,5 @@ class SEOSlides_Core {
 		$counts['trash'] = $wpdb->get_var( "SELECT COUNT( * ) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status = 'trash' $hide_and $and");
 
 		return $counts;
-	}
-
-	/****************************************************************/
-	/**                     Utility Functions                      **/
-	/****************************************************************/
-
-	/**
-	 * Generate a random GUID/UUID.
-	 *
-	 * @return string
-	 */
-	public static function generate_guid() {
-		$charid = strtoupper(md5(uniqid(rand(), true)));
-		$hyphen = chr(45);// "-"
-		$uuid = substr($charid, 0, 8).$hyphen
-			.substr($charid, 8, 4).$hyphen
-			.substr($charid,12, 4).$hyphen
-			.substr($charid,16, 4).$hyphen
-			.substr($charid,20,12);
-
-		return $uuid;
-	}
-
-	/**
-	 * Get the ID for a given attachment.
-	 *
-	 * @param string $attachment_url
-	 *
-	 * @global wpdb $wpdb
-	 *
-	 * @return bool|int
-	 */
-	public static function get_attachment_id_from_url( $attachment_url = '' ) {
-		global $wpdb;
-		$attachment_id = false;
-
-		// If there is no url, return.
-		if ( '' == $attachment_url ) {
-			return $attachment_id;
-		}
-
-		// Get the upload directory paths
-		$upload_dir_paths = wp_upload_dir();
-
-		// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
-		if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
-
-			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
-			$attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
-
-			// Remove the upload path base directory from the attachment URL
-			$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
-
-			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
-			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url ) );
-
-		}
-
-		return $attachment_id;
 	}
 }

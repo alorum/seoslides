@@ -65,7 +65,7 @@ class SEOSlides_Ajax {
 			/** @var SEOSlides_Slide $slide */
 			foreach( $slideset->slides as $slide ) {
 				$bg_image = $slide->bg_image;
-				$bg_id = SEOSlides_Core::get_attachment_id_from_url( $bg_image );
+				$bg_id = SEOSlides_Util::get_attachment_id_from_url( $bg_image );
 				if ( false !== $bg_id ) {
 					$bg_arr = wp_get_attachment_image_src( $bg_id, 'seoslides-thumb' );
 					$bg_image = $bg_arr[0];

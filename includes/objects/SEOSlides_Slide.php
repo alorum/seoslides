@@ -182,7 +182,7 @@ class SEOSlides_Slide {
 		$this->bg_image = isset( $slide_content['bg-image'] ) ? $slide_content['bg-image'] : null;
 
 
-		$image_id = SEOSlides_Core::get_attachment_id_from_url( $this->bg_image );
+		$image_id = SEOSlides_Util::get_attachment_id_from_url( $this->bg_image );
 		if ( false !== $image_id ) {
 			$image_arr = wp_get_attachment_image_src( $image_id, 'seoslides-thumb' );
 			$this->bg_thumb = $image_arr[0];
@@ -238,12 +238,13 @@ class SEOSlides_Slide {
 	/**
 	 * Build the <section> containing the slide and all of its related markup.
 	 *
-	 * @param string $class CSS class to apply to the <section>
-	 * @param bool   $echo  Flag whether to echo or return the content
+	 * @param string $class   CSS class to apply to the <section>
+	 * @param bool   $echo    Flag whether to echo or return the content
+	 * @param bool   $overlay Include slide buttons and overlay elements
 	 *
 	 * @return string|void
 	 */
-	public function render( $class = 'deck-before', $echo = false ) {
+	public function render( $class = 'deck-before', $echo = false, $overlay = true ) {
 		$section = "<section class='slide {$class}' data-id='{$this->ID}' id='{$this->slug}' {$this->style}>\r\n";
 
 		$section .= "\t<div class='slide-body'>\r\n";
@@ -289,10 +290,13 @@ class SEOSlides_Slide {
 		}
 
 		$section .= "\t</div>\r\n";
-		$section .= '<span class="slide-button"></span>';
-		$section .= '<span class="embed-button"></span>';
 
-		$section .= $this->render_embed_overlay();
+		if ( $overlay ) {
+			$section .= '<span class="slide-button"></span>';
+			$section .= '<span class="embed-button"></span>';
+
+			$section .= $this->render_embed_overlay();
+		}
 
 		$section .= "</section>";
 
