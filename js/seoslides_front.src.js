@@ -4233,6 +4233,13 @@
 
 		var body = document.getElementsByTagName( 'body' )[0];
 		body.className += ' embeded';
+
+		var head  = window.document.getElementsByTagName('head')[0],
+			title = window.document.getElementsByTagName('title')[0],
+			base  = window.document.createElement('base');
+
+		base.target = '_parent';
+		head.insertBefore(base, title.nextSibling);
 	}
 
 	function hideNotes( e, from, to ) {
@@ -4309,126 +4316,13 @@
 	}
 
 	/**
+	 * Make sure dynamically-sized elements are resized after we change the size of the canvas.
 	 *
-	 * @param element
-	 * @constructor
+	 * This will involve embeded iframes, the notes container, and embedded branding.
+	 *
+	 * @param {*} context
 	 */
-	function Footer( element ) {
-		var SELF = this,
-			enabled = true,
-			disabledForLastSlide = false,
-			$element = $( element );
-
-		var speed = CORE.Events.applyFilter( 'footer.fadeSpeed', 300 ),
-			timeout, block;
-
-		SELF.hide = function() {
-			window.clearTimeout( timeout );
-			$element.fadeOut( speed * 4 );
-		};
-
-		SELF.show = function() {
-			window.clearTimeout( timeout );
-			if ( ! enabled ) {
-				return;
-			}
-
-			$element.fadeIn( speed );
-			timeout = window.setTimeout( SELF.hide, 3000 );
-		};
-
-		SELF.disable = function() {
-			enabled = false;
-			$d.off( 'mousemove', SELF.show );
-
-			return SELF;
-		};
-
-		SELF.enable = function() {
-			enabled = true;
-			$d.on( 'mousemove', SELF.show );
-
-			return SELF;
-		};
-
-		SELF.position = function() {
-			var node = document.querySelector( '.deck-current' );
-			if ( null !== node ) {
-				var $node = $( node ),
-					right = $node.offset().left + 5;
-
-				element.style.right = right + 'px';
-			}
-		};
-	}
-	var footer = new Footer( document.querySelector( 'footer.deck-footer' ) );
-	CORE.Events.addAction( 'debounced.canvas.resize', footer.position );
-
-	if ( null === window.document.querySelector( 'section.overview' ) ) {
-		loadContent();
-		footer.enable().show();
-	} else {
-		footer.disable();
-		// Run backstretch on overview slides
-		$( document.querySelectorAll( '.overview .slide' ) ).backstretchShort();
-
-		// Wait until the user clicks to start the presentation before advancing to the first slide
-		var keys = [ 13, 32, 34, 39, 40 ]; // enter, space, page down, right arrow, down arrow
-
-		$d.off( 'keydown.overview' ).on( 'keydown.overview', function ( e ) {
-			var srcElement = e.target || e.srcElement;
-
-			if ( (e.which === keys || $.inArray( e.which, keys ) > - 1) &&
-				srcElement !== document.querySelector( 'input#author' ) &&
-				srcElement !== document.querySelector( 'input#email' ) &&
-				srcElement !== document.querySelector( 'input#website' ) &&
-				srcElement !== document.querySelector( 'textarea#comment' ) ) {
-				loadContent();
-				footer.enable().show();
-				$d.unbind( 'keydown.overview' );
-				e.preventDefault();
-			}
-		} );
-
-		var plugins = $( '.slide-body > div' );
-		CORE.processPlugins( plugins );
-		plugins.each( function( i, el ) { CORE.resizePlugins( el ); } );
-		$( '.seoslides_responsive', '.list.thumbnails' ).responsiveText();
-
-		// Handle clicks for the overview button
-		$( '.link-wrap' ).on( 'click', function( e ) {
-			var $this = $( this ),
-				$target = $( e.target ),
-				href = $this.data( 'href' );
-
-			if ( $target.hasClass( 'embed-button' ) || $this.find( '.embed-container' ).hasClass( 'opened' ) ) {
-				return;
-			}
-
-			window.location.href = href;
-		} );
-	}
-
-	$.extend(true, $.deck.defaults, {
-		selectors: {
-			hashLink: '.deck-permalink'
-		},
-
-		hashPrefix: '',
-		preventFragmentScroll: true
-	});
-
-	if ( CORE.isEmbeded ) {
-		// We're in an iframe
-		var head  = window.document.getElementsByTagName('head')[0],
-			title = window.document.getElementsByTagName('title')[0],
-			base  = window.document.createElement('base');
-
-		base.target = '_parent';
-		head.insertBefore(base, title.nextSibling);
-	}
-
-	CORE.Events.addAction( 'debounced.canvas.resize', function ( context ) {
+	function resize_elements( context ) {
 		$( '.seoslides_responsive', context ).responsiveText();
 
 		var node = document.querySelector( '.deck-current' );
@@ -4458,14 +4352,22 @@
 				notes.style.height = height - 130 + 'px';
 			}
 		}
+	}
+
+	// Set up DeckJS Defaults
+	$.extend( true, $.deck.defaults, {
+		selectors: {
+			hashLink: '.deck-permalink'
+		},
+
+		hashPrefix:            '',
+		preventFragmentScroll: true
 	} );
 
-	var $buttons = $( document.querySelectorAll( '.detail-expander .button' ) ),
-		$details = $( document.querySelector( 'section.details' ) );
-	$( '.detail-expander' ).on( 'click', '.button', function() {
-		$buttons.toggleClass( 'hidden' );
-		$details.toggleClass( 'short' );
-	} );
+	CORE.Events.addAction( 'debounced.canvas.resize', resize_elements );
+
+	// Let's run things
+	loadContent();
 
 } )( jQuery, this );
 (function ( window, $, undefined ) {
