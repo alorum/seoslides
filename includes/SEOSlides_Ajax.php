@@ -224,8 +224,6 @@ class SEOSlides_Ajax {
 				$slide_number++;
 			}
 
-			$sections .= $slideset->last_slide();
-
 			$response['success'] = true;
 			$response['sections'] = $sections;
 		}

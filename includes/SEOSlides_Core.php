@@ -1180,7 +1180,6 @@ class SEOSlides_Core {
 		$api_key = get_option( 'seoslides_api_key', '' );
 		$product_key = get_option( 'seoslides_product_key', '' );
 		$hideimports = 'yes' === get_option( 'seoslides_hideimports', 'yes' );
-		$social_slide = 'yes' === get_option( 'seoslides_add_social_slide', 'no' );
 
 		settings_errors( 'seoslides' );
 
@@ -1237,20 +1236,6 @@ class SEOSlides_Core {
 							</label>
 						</td>
 					</tr>
-
-					<?php if ( defined( 'SEOSLIDES_ALPHA' ) && SEOSLIDES_ALPHA ) : ?>
-					<tr valign="top">
-						<th scope="row">
-							<?php _e( 'Add Social Sharing Slide', 'seoslides_translate' ); ?>
-						</th>
-						<td>
-							<label for="add_social_slide">
-								<input name="add_social_slide" type="checkbox" id="add_social_slide" <?php checked( $social_slide, true, true ); ?> />
-								<?php _e( 'Add a social sharing slide to the end of each presentation. Includes seoslides logo and link.', 'seolides_translate' ); ?>
-							</label>
-						</td>
-					</tr>
-					<?php endif; ?>
 
 					<?php do_action( 'seoslides_settings_form_bottom_rows' ); ?>
 
@@ -1398,9 +1383,6 @@ class SEOSlides_Core {
 
 		$hideimports = ( isset( $_POST['showimports'] ) && 'on' === $_POST['showimports'] ) ? 'no' : 'yes';
 		update_option( 'seoslides_hideimports', $hideimports );
-
-		$social_slide = ( isset( $_POST['add_social_slide'] ) && 'on' === $_POST['add_social_slide'] ) ? 'yes' : 'no';
-		update_option( 'seoslides_add_social_slide', $social_slide );
 
 		do_action( 'seoslides_settings_postback' );
 	}
