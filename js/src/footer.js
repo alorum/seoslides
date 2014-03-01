@@ -113,6 +113,29 @@
 		}
 
 		/**
+		 * Switch from one overlay to another based on the footer button being clicked.
+		 *
+		 * @param {object} $container
+		 * @param {object} $target
+		 */
+		function switchOverlay( $container, $target ) {
+			$container.find( 'aside.current' ).removeClass( 'current' );
+
+			if ( $target.hasClass( 'seoslides' ) ) {
+				$container.find( 'aside.wordpress-embed-instructions' ).addClass( 'current' );
+				load_embed_code( $container[0] );
+				$container.find( '.embed-input' ).show();
+			} else if ( $target.hasClass( 'link' ) ) {
+				$container.find( 'aside.script-embed-instructions' ).addClass( 'current' );
+				load_embed_code( $container[0] );
+				$container.find( '.embed-input' ).show();
+			} else if ( $target.hasClass( 'notes' ) ) {
+				$container.find( 'aside.note' ).addClass( 'current' );
+				$container.find( '.embed-input' ).hide();
+			}
+		}
+
+		/**
 		 * Open the overlay from a footer trigger.
 		 *
 		 * @param {Event} event
@@ -133,19 +156,7 @@
 			reset_container( $container, false );
 
 			// Make sure the correct element is selected
-			$container.find( 'aside.current' ).removeClass( 'current' );
-			if ( $target.hasClass( 'seoslides' ) ) {
-				$container.find( 'aside.wordpress-embed-instructions' ).addClass( 'current' );
-				load_embed_code( $container[0] );
-				$container.find( '.embed-input' ).show();
-			} else if ( $target.hasClass( 'link' ) ) {
-				$container.find( 'aside.script-embed-instructions' ).addClass( 'current' );
-				load_embed_code( $container[0] );
-				$container.find( '.embed-input' ).show();
-			} else if ( $target.hasClass( 'notes' ) ) {
-				$container.find( 'aside.note' ).addClass( 'current' );
-				$container.find( '.embed-input' ).hide();
-			}
+			switchOverlay( $container, $target );
 
 			$container.addClass( 'opened' );
 			$footer.addClass( 'opened' );
@@ -156,29 +167,6 @@
 
 				CORE.Events.doAction( 'embed.close', container );
 			} );
-
-			CORE.Events.doAction( 'embed.open', container );
-		};
-
-		SELF.overview_embed_clicked = function ( event ) {
-			event.preventDefault();
-
-			var container = document.querySelector( '.deck-current .embed-container' ),
-				$container = $( container );
-
-			if ( $container.hasClass( 'opened' ) ) {
-				reset_container( $container );
-
-				CORE.Events.doAction( 'embed.close', container );
-				return;
-			}
-
-			reset_container( $container, false );
-			load_embed_code( container );
-
-			$container.addClass( 'opened' );
-			$footer.addClass( 'opened' );
-			$extras.addClass( 'opened' );
 
 			CORE.Events.doAction( 'embed.open', container );
 		};
@@ -196,14 +184,20 @@
 			}
 		};
 
-		SELF.cancel_click_on_container = function( event ) {
-			var srcElement = event.target || event.srcElement;
+		SELF.click_on_container = function( event ) {
+			var container = document.querySelector( '.deck-current .embed-container' ),
+				$container = $( container ),
+				$target = $( event.target );
 
-			if( $( event.currentTarget ).hasClass( 'opened' ) ) {
+			if ( $container.hasClass( 'opened' ) && ( $target.hasClass( 'seoslides' ) || $target.hasClass( 'link' ) || $target.hasClass( 'notes' ) ) ) {
 				event.preventDefault();
+				event.stopImmediatePropagation();
 
-				var container = document.querySelector( '.deck-current .embed-container' ),
-					$container = $( container );
+				switchOverlay( $container, $target );
+			} else if ( $container.hasClass( 'opened' ) && $target.hasClass( 'ssi' ) ) {
+				reset_container( $container );
+
+				CORE.Events.doAction( 'embed.close', container );
 			}
 		};
 
@@ -248,14 +242,13 @@
 		$input.select();
 	} );
 
+	$d.on( 'click.embed-input', 'section.slide', embed_code.cancel_click_on_embed );
+	$d.on( 'click.embed-overlay', '.embed-container', embed_code.click_on_container );
+	$d.on( 'click.embed-overlay', '.ssi', embed_code.click_on_container );
+	$d.on( 'keyup.embed-overlay', embed_code.close_on_escape );
+
 	$d.off( 'click.embed-code' ).on( 'click.embed-code', '#deck-embed-link', embed_code.open_footer_embed );
 	$d.off( 'click.embed-code' ).on( 'click.embed-code', '.ssi.seoslides, .ssi.link, .ssi.notes', embed_code.open_footer_embed );
-	$d.off( 'click.overview-embed' ).on( 'click.overview-embed', '.overview .slide .embed-button', embed_code.overview_embed_clicked );
-
-	$d.on( 'click.embed-input', 'section.slide', embed_code.cancel_click_on_embed );
-	$d.on( 'click.embed-overlay', '.embed-container', embed_code.cancel_click_on_container );
-	$d.on( 'click.embed-overlay', '.ssi.seoslides, .ssi.link, .ssi.notes', embed_code.cancel_click_on_container );
-	$d.on( 'keyup.embed-overlay', embed_code.close_on_escape );
 
 	$d.on( 'click.embed-actions', '.action-icon', embed_code.click_on_action );
 }( this, jQuery ));
