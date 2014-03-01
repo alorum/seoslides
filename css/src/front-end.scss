@@ -140,11 +140,39 @@ body {
 
 footer.deck-footer {
 	position: absolute;
-	height: 2em;
+	height: 32px;
 	width: 100%;
-	background: rgba(0, 0, 0, .6);
+	background: rgba(0, 0, 0, .75);
 	z-index: 10;
 	bottom: 0;
+	overflow: hidden;
+
+	.ssi {
+		font-size: 20px;
+		padding-left: 6px;
+		padding-right: 6px;
+		padding-top: 6px;
+		cursor: pointer;
+		color: #f15b3c;
+		height: 100%;
+		display: inline-block;
+
+		&:first-child {
+			margin-left: 0.25em;
+		}
+
+		&:last-child {
+			margin-right: 0.25em;
+		}
+
+		&.embiggen {
+			float: right;
+		}
+
+		&:hover {
+			background-color: #000;
+		}
+	}
 }
 
 //.deck-footer,

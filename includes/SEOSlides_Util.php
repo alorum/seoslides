@@ -78,28 +78,6 @@ class SEOSlides_Util {
 	}
 
 	/**
-	 * Generate branding for the footer.
-	 */
-	public static function branding() {
-		$branding = get_option( 'seoslides_logo', '' );
-		$branding_url = get_option( 'seoslides_logo_url', '' );
-		$branding_title = get_option( 'seoslides_logo_title', '' );
-		$enabled = 'yes' === get_option( 'seoslides_logo_enabled', 'no' );
-
-		if ( 'default' === $branding || 'seoslides' === $branding ) {
-			$brand = '<span class="branding"><img src="' . SEOSLIDES_URL . '/img/seoslides-logo-trans-2x.png" style="height:100%;width:auto;"></span>';
-		} else {
-			$brand = '<span class="branding"><img src="' . esc_url( $branding ) . '" style="height:100%;width:auto;"></span>';
-		}
-
-		if ( '' !== $branding_url ) {
-			$brand = '<a href="' . esc_url( $branding_url ) . '" title="' . esc_attr( $branding_title ) . '">' . $brand . '</a>';
-		}
-
-		echo $enabled ? $brand : '';
-	}
-
-	/**
 	 * Build a navigation permalink.
 	 *
 	 * @param string               $direction

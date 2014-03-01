@@ -10,3 +10,33 @@
   font-style: normal;
 
 }
+
+.ssi {
+	font-family: "seoslides-iconography";
+}
+.ssi.facebook,
+.ssi.google,
+.ssi.twitter {
+	background: none;
+}
+.ssi.facebook:before {
+	content: 'f';
+}
+.ssi.google:before {
+	content: 'g';
+}
+.ssi.twitter:before {
+	content: 't';
+}
+.ssi.seoslides:before {
+	content: 's';
+}
+.ssi.link:before {
+	content: 'l';
+}
+.ssi.notes:before {
+	content: 'n';
+}
+.ssi.embiggen:before {
+	content: 'w';
+}

@@ -483,9 +483,7 @@ class SEOSlides_Core {
 		$current_screen = get_current_screen();
 
 		if ( 'seoslides-slideset' === $current_screen->post_type ) {
-			wp_register_style( 'dashicons', SEOSLIDES_URL . 'css/dashicons.css', array(), SEOSLIDES_VERSION );
 			wp_register_style( 'seoslides-iconography', SEOSLIDES_URL . 'css/seoslides-iconography.css', array(), SEOSLIDES_VERSION );
-			wp_enqueue_style( 'dashicons' );
 			wp_enqueue_style( 'seoslides-iconography' );
 
 			if ( 'post' === $current_screen->base ) {

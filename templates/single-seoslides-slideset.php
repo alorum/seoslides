@@ -102,8 +102,6 @@ if ( '' === $slide_slug ) {
 		<div class="extras">
 			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'previous', $slide ) ); ?>" class="deck-prev-link" title="<?php _e( 'Previous', 'seoslides_translate' ); ?>" rel="previous">&lsaquo;</a>
 			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'next', $slide ) ); ?>" class="deck-next-link" title="<?php _e( 'Next', 'seoslides_translate' ); ?>" rel="next">&rsaquo;</a>
-
-			<p class="deck-actions"></p>
 		</div>
 
 	</article>
@@ -112,8 +110,23 @@ if ( '' === $slide_slug ) {
 		<p><?php printf( __( 'Presentations are not meant to be printed.<br />Please visit %s to view the slides.', 'seoslides_translate' ), get_permalink( $slide->slideset ) ) ?></p>
 	</section>
 
-	<footer class="deck-footer <?php echo $scheme; ?>">
-		<?php SEOSlides_Util::branding(); ?>
+	<footer class="deck-footer">
+		<span class="ssi facebook"></span>
+		<span class="ssi google"></span>
+		<span class="ssi twitter"></span>
+
+		<?php do_action( 'seoslides-social-toolbar-buttons', $slide->ID ); ?>
+
+		<span class="ssi seoslides"></span>
+		<span class="ssi link"></span>
+
+		<?php do_action( 'seoslides-sharing-toolbar-buttons', $slide->ID ); ?>
+
+		<span class="ssi notes"></span>
+
+		<?php do_action( 'seoslides-utility-toolbar-buttons', $slide->ID ); ?>
+
+		<span class="ssi embiggen"></span>
 	</footer>
 
 	<?php wp_footer(); ?>

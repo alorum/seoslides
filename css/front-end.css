@@ -103,9 +103,27 @@ footer.deck-footer {
   position: absolute;
   height: 32px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.75);
   z-index: 10;
-  bottom: 0; }
+  bottom: 0;
+  overflow: hidden; }
+  footer.deck-footer .ssi {
+    font-size: 20px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 6px;
+    cursor: pointer;
+    color: #f15b3c;
+    height: 100%;
+    display: inline-block; }
+    footer.deck-footer .ssi:first-child {
+      margin-left: 0.25em; }
+    footer.deck-footer .ssi:last-child {
+      margin-right: 0.25em; }
+    footer.deck-footer .ssi.embiggen {
+      float: right; }
+    footer.deck-footer .ssi:hover {
+      background-color: #000; }
 
 .extras {
   font-family: 'Noto Sans', sans-serif; }
