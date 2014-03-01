@@ -21,15 +21,6 @@
 		head.insertBefore(base, title.nextSibling);
 	}
 
-	function hideNotes( e, from, to ) {
-		var newSlide = $.deck( 'getSlide', to ),
-			notesEl = newSlide[0].querySelector( 'aside.note' );
-
-		if ( null !== notesEl ) {
-			$( notesEl ).addClass( 'hidden' );
-		}
-	}
-
 	/**
 	 * Scan the current slide for any embeds and, if present, add a body class.
 	 *
@@ -85,11 +76,6 @@
 				CORE.resizeCanvas();
 			}
 		} );
-
-		// Hide notes icon if embedded
-		if ( CORE.isEmbeded ) {
-			$d.on( 'deck.change', hideNotes );
-		}
 
 		$d.on( 'deck.change', scanEmbeds );
 	}

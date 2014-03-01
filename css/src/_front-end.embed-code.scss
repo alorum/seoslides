@@ -19,14 +19,14 @@
 	top: 0;
 	left: 0;
 	right: 0;
-	height: 100%;
+	bottom: 0;
 	margin-left: 0;
 	margin-top: 0;
 	padding: {
-		top: 0;
+		top: 1em;
 		bottom: 0;
-		left: 0;
-		right: 0;
+		left: 1em;
+		right: 1em;
 	}
 	background-color: #4b4b4b;
 	background-color: rgba(75, 75, 75, 0.975);
@@ -57,9 +57,14 @@
 	}
 
 	aside {
+		display: none;
 		clear: both;
 		margin-left: 30px;
 		margin-right: 30px;
+
+		&.current {
+			display: block;
+		}
 	}
 
 	ul.embed-tabs {

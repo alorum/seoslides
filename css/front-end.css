@@ -654,13 +654,13 @@ body:not(.has-clones) .slide-notes {
   top: 0;
   left: 0;
   right: 0;
-  height: 100%;
+  bottom: 0;
   margin-left: 0;
   margin-top: 0;
-  padding-top: 0;
+  padding-top: 1em;
   padding-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 1em;
+  padding-right: 1em;
   background-color: #4b4b4b;
   background-color: rgba(75, 75, 75, 0.975);
   color: #fff;
@@ -688,9 +688,12 @@ body:not(.has-clones) .slide-notes {
     top: 10px;
     font-size: 11px; }
   .deck-container div.embed-container aside {
+    display: none;
     clear: both;
     margin-left: 30px;
     margin-right: 30px; }
+    .deck-container div.embed-container aside.current {
+      display: block; }
   .deck-container div.embed-container ul.embed-tabs {
     list-style-type: none;
     margin: 0 0 1em;

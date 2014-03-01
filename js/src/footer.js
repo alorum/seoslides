@@ -7,9 +7,22 @@
 		$extras = $d.find( '.extras' ),
 		embed_code;
 
+	/**
+	 * The Embed_Code object handles all events and interactions with the standard footer overlays.
+	 *
+	 * It's called "embed code" because it originally only controlled the script and shortcode embeds.
+	 *
+	 * @constructor
+	 */
 	function Embed_Code() {
 		var SELF = this;
 
+		/**
+		 * Get the embed script for the current slide.
+		 *
+		 * @param {object} data
+		 * @returns {string}
+		 */
 		function get_code( data ) {
 			var code = '<script id="' + data.embed_id + '" type="text/javascript" src="' + data.embed_url + '"></script>';
 			code += '<span id="seoslides-embed-' + data.embed_id + '"><a href="' + data.overview + '">' + data.slide_title + '</a> from <a href="' + data.site_url + '">' + data.site_title + '</a>' + '</span>';
@@ -18,6 +31,12 @@
 			return code;
 		}
 
+		/**
+		 * Get the WordPress shortcode for the current slide.
+		 *
+		 * @param {object} data
+		 * @returns {string}
+		 */
 		function get_shortcode( data ) {
 			var code = '[seoslides embed_id="' + data.embed_id + '"';
 			code += ' script_src="' + data.embed_url + '"';
@@ -45,14 +64,20 @@
 				$extras.removeClass( 'opened' );
 			}
 
-			$container.find( 'li.current' ).removeClass( 'current' );
-			$container.find( 'aside.child, .embed-input' ).addClass( 'hidden' );
-			$container.find( 'li.default' ).addClass( 'current' );
+			$container.find( 'aside.current' ).removeClass( 'current' );
+			$container.find( 'aside, .embed-input' ).addClass( 'hidden' );
+			$container.find( 'aside.default' ).addClass( 'current' );
 			$container.find( 'aside.default, input.default' ).removeClass( 'hidden' );
 
 			load_embed_code( $container[0] );
 		}
 
+		/**
+		 * Load the embed code into the input field if we're on an embedable overlay.
+		 *
+		 * @param {HTMLElement} container
+		 * @param {string}      slide_link
+		 */
 		function load_embed_code( container, slide_link ) {
 			var input = container.querySelector( '.embed-input' ),
 				$container = $( container ),
@@ -78,21 +103,25 @@
 				site_url: input.getAttribute( 'data-siteurl' )
 			};
 
-			var scheme = container.querySelector( 'aside.child:not(.hidden)' ),
-				code = '';
-			if ( scheme.className.match( /(^| )wordpress-embed-instructions( |$)/ ) ) {
-				code = get_shortcode( embed_data );
-			} else {
-				code = get_code( embed_data );
+			// Find out whether we're using the WordPress shortcode or the script embed
+			var activeElement = container.querySelector( 'aside.current' );
+			if ( activeElement.className.match( /(^| )wordpress-embed-instructions( |$)/ ) ) {
+				$input.val( get_shortcode( embed_data ) );
+			} else if ( activeElement.className.match( /(^| )script-embed-instructions( |$)/) ) {
+				$input.val( get_code( embed_data ) );
 			}
-
-			$input.val( code );
 		}
 
+		/**
+		 * Open the overlay from a footer trigger.
+		 *
+		 * @param {Event} event
+		 */
 		SELF.open_footer_embed = function ( event ) {
 			event.preventDefault();
 			var container = document.querySelector( '.deck-current .embed-container' ),
-				$container = $( container );
+				$container = $( container ),
+				$target = $( event.target );
 
 			if ( $container.hasClass( 'opened' ) ) {
 				reset_container( $container );
@@ -102,6 +131,21 @@
 			}
 
 			reset_container( $container, false );
+
+			// Make sure the correct element is selected
+			$container.find( 'aside.current' ).removeClass( 'current' );
+			if ( $target.hasClass( 'seoslides' ) ) {
+				$container.find( 'aside.wordpress-embed-instructions' ).addClass( 'current' );
+				load_embed_code( $container[0] );
+				$container.find( '.embed-input' ).show();
+			} else if ( $target.hasClass( 'link' ) ) {
+				$container.find( 'aside.script-embed-instructions' ).addClass( 'current' );
+				load_embed_code( $container[0] );
+				$container.find( '.embed-input' ).show();
+			} else if ( $target.hasClass( 'notes' ) ) {
+				$container.find( 'aside.note' ).addClass( 'current' );
+				$container.find( '.embed-input' ).hide();
+			}
 
 			$container.addClass( 'opened' );
 			$footer.addClass( 'opened' );
@@ -139,6 +183,11 @@
 			CORE.Events.doAction( 'embed.open', container );
 		};
 
+		/**
+		 * Make sure that clicking on the input field for the embed code doesn't cancel out the overlay.
+		 *
+		 * @param {Event} event
+		 */
 		SELF.cancel_click_on_embed = function ( event ) {
 			var srcElement = event.target || event.srcElement;
 
@@ -155,27 +204,6 @@
 
 				var container = document.querySelector( '.deck-current .embed-container' ),
 					$container = $( container );
-
-				if ( 'LI' === srcElement.nodeName ) {
-					var $this = $( srcElement ),
-						child = srcElement.getAttribute( 'data-child' ),
-						$child = $( child );
-
-					$container.find( 'li.current' ).removeClass( 'current' );
-					$this.addClass( 'current' );
-
-					$container.find( 'aside.child' ).addClass( 'hidden' );
-					$child.removeClass( 'hidden' );
-
-					if ( srcElement.className.match( /(^| )shortcode-li( |$)/ ) || srcElement.className.match( /(^| )embed-script-li( |$)/ ) ) {
-						$container.find( '.embed-input' ).removeClass( 'hidden' );
-						load_embed_code( container );
-					} else {
-						$container.find( '.embed-input' ).addClass( 'hidden' );
-					}
-
-					CORE.Events.doAction( 'embed.navigate', srcElement );
-				}
 			}
 		};
 
@@ -221,12 +249,12 @@
 	} );
 
 	$d.off( 'click.embed-code' ).on( 'click.embed-code', '#deck-embed-link', embed_code.open_footer_embed );
-	$d.off( 'click.embed-code' ).on( 'click.embed-code', '.deck-actions', embed_code.open_footer_embed );
+	$d.off( 'click.embed-code' ).on( 'click.embed-code', '.ssi.seoslides, .ssi.link, .ssi.notes', embed_code.open_footer_embed );
 	$d.off( 'click.overview-embed' ).on( 'click.overview-embed', '.overview .slide .embed-button', embed_code.overview_embed_clicked );
 
 	$d.on( 'click.embed-input', 'section.slide', embed_code.cancel_click_on_embed );
 	$d.on( 'click.embed-overlay', '.embed-container', embed_code.cancel_click_on_container );
-	$d.on( 'click.embed-overlay', '.deck-actions', embed_code.cancel_click_on_container );
+	$d.on( 'click.embed-overlay', '.ssi.seoslides, .ssi.link, .ssi.notes', embed_code.cancel_click_on_container );
 	$d.on( 'keyup.embed-overlay', embed_code.close_on_escape );
 
 	$d.on( 'click.embed-actions', '.action-icon', embed_code.click_on_action );
