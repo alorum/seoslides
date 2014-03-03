@@ -141,12 +141,14 @@
 		 * @param {Event} event
 		 */
 		SELF.sharePresentation = function( event ) {
-			var $target = $( event.target );
+			var $target = $( event.target ),
+				me = window.self;
 
 			// Get the URL to share
-			var url = window.location.href,
+			var url = me.location.href,
 				title = encodeURIComponent( document.title );
 
+			url = url.replace( me.location.origin + '/embeds/', me.location.origin + '/slides/' );
 			url = encodeURIComponent( url );
 
 			if ( $target.hasClass( 'facebook' ) ) {
