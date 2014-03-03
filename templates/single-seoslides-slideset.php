@@ -111,18 +111,18 @@ if ( '' === $slide_slug ) {
 	</section>
 
 	<footer class="deck-footer">
-		<span class="ssi facebook"></span>
-		<span class="ssi google"></span>
-		<span class="ssi twitter"></span>
+		<span class="ssi social facebook"></span>
+		<span class="ssi social google"></span>
+		<span class="ssi social twitter"></span>
 
 		<?php do_action( 'seoslides-social-toolbar-buttons', $slide->ID ); ?>
 
-		<span class="ssi seoslides"></span>
-		<span class="ssi link"></span>
+		<span class="ssi overlay seoslides"></span>
+		<span class="ssi overlay link"></span>
 
 		<?php do_action( 'seoslides-sharing-toolbar-buttons', $slide->ID ); ?>
 
-		<span class="ssi notes"></span>
+		<span class="ssi overlay notes"></span>
 
 		<?php do_action( 'seoslides-utility-toolbar-buttons', $slide->ID ); ?>
 

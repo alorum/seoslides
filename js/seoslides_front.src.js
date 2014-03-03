@@ -4493,6 +4493,29 @@
 		}
 
 		/**
+		 * Share the presentation on one of the 3 default social networks.
+		 *
+		 * @param {Event} event
+		 */
+		SELF.sharePresentation = function( event ) {
+			var $target = $( event.target );
+
+			// Get the URL to share
+			var url = window.location.href,
+				title = encodeURIComponent( document.title );
+
+			url = encodeURIComponent( url );
+
+			if ( $target.hasClass( 'facebook' ) ) {
+				window.open( 'https://www.facebook.com/sharer/sharer.php?s=100&p[url]=' + url + '&p[title]=' + title + '&p[summary]=' + title, 'sharer','toolbar=0,status=0,width=580,height=325' );
+			} else if ( $target.hasClass( 'google' ) ) {
+				window.open( 'https://plus.google.com/share?url=' + url, 'google', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600' );
+			} else if ( $target.hasClass( 'twitter' ) ) {
+				window.open( 'https://twitter.com/intent/tweet?url=' + url + '&text=' + title + '&via=seoslides', 'twitter', 'toolbar=0,status=0,width=580,height=250' );
+			}
+		};
+
+		/**
 		 * Open the overlay from a footer trigger.
 		 *
 		 * @param {Event} event
@@ -4541,18 +4564,23 @@
 			}
 		};
 
+		/**
+		 * Handle any clicks within the fotter container.
+		 *
+		 * @param {Event} event
+		 */
 		SELF.click_on_container = function( event ) {
 			var container = document.querySelector( '.deck-current .embed-container' ),
 				$container = $( container ),
 				$target = $( event.target );
 
-			if ( $container.hasClass( 'opened' ) && ( $target.hasClass( 'seoslides' ) || $target.hasClass( 'link' ) || $target.hasClass( 'notes' ) ) ) {
+			if ( $container.hasClass( 'opened' ) && $target.hasClass( 'overlay' ) ) {
 				event.preventDefault();
 				event.stopImmediatePropagation();
 
 				switchOverlay( $container, $target );
-			} else if ( $container.hasClass( 'opened' ) && $target.hasClass( 'ssi' ) ) {
-				reset_container( $container );
+			} else if ( $container.hasClass( 'opened' ) && $target.hasClass( 'ssi' ) && $target.hasClass( 'social' ) ) {
+				SELF.sharePresentation( event );
 
 				CORE.Events.doAction( 'embed.close', container );
 			}
@@ -4600,12 +4628,10 @@
 	} );
 
 	$d.on( 'click.embed-input', 'section.slide', embed_code.cancel_click_on_embed );
-	$d.on( 'click.embed-overlay', '.embed-container', embed_code.click_on_container );
-	$d.on( 'click.embed-overlay', '.ssi', embed_code.click_on_container );
+	$d.on( 'click.embed-overlay', '.ssi, .embed-container', embed_code.click_on_container );
 	$d.on( 'keyup.embed-overlay', embed_code.close_on_escape );
-
-	$d.off( 'click.embed-code' ).on( 'click.embed-code', '#deck-embed-link', embed_code.open_footer_embed );
-	$d.off( 'click.embed-code' ).on( 'click.embed-code', '.ssi.seoslides, .ssi.link, .ssi.notes', embed_code.open_footer_embed );
+	$d.on( 'click.embed-code', '.ssi.social', embed_code.sharePresentation );
+	$d.on( 'click.embed-code', '.ssi.overlay', embed_code.open_footer_embed );
 
 	$d.on( 'click.embed-actions', '.action-icon', embed_code.click_on_action );
 }( this, jQuery ));
