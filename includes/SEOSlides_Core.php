@@ -1358,6 +1358,20 @@ class SEOSlides_Core {
 			return;
 		}
 
+		// This test must pass before checking the api_key since the product_key is used in the validate_key() request.
+		if ( isset( $_POST['product_key'] ) ) {
+			$old_key = get_option( 'seoslides_product_key' );
+			$new_key = sanitize_text_field( $_POST['product_key'] );
+
+			if ( $old_key !== $new_key ) {
+				if ( $old_key !== false ) {
+					update_option( 'seoslides_product_key', $new_key );
+				} else {
+					add_option( 'seoslides_product_key', $new_key, '', 'no' );
+				}
+			}
+		}
+
 		if ( isset( $_POST['api_key'] ) ) {
 			delete_transient( 'seoslides_level' );
 
@@ -1374,29 +1388,14 @@ class SEOSlides_Core {
 					add_settings_error( 'seoslides', 'settings_updated', __( 'Settings Saved!', 'seoslides_translate' ), 'updated' );
 				} elseif( ! empty( $catalyst->request_error ) ) {
 					add_settings_error( 'seoslides', 'invalid_key', __( 'Could Not Validate Key.', 'seoslides_translate' ) . " <span style=\"font-style: italic;font-weight: normal;float: right;\">({$catalyst->request_error})</span>", 'error' );
-					$api_key = '';
 				} else {
 					add_settings_error( 'seoslides', 'invalid_key', __( 'Invalid License Key!', 'seoslides_translate' ), 'error' );
-					$api_key = '';
 				}
 
 				if ( $old_key !== false ) {
 					update_option( 'seoslides_api_key', $api_key );
 				} else {
 					add_option( 'seoslides_api_key', $api_key, '', 'no' );
-				}
-			}
-		}
-
-		if ( isset( $_POST['product_key'] ) ) {
-			$old_key = get_option( 'seoslides_product_key' );
-			$new_key = sanitize_text_field( $_POST['product_key'] );
-
-			if ( $old_key !== $new_key ) {
-				if ( $old_key !== false ) {
-					update_option( 'seoslides_product_key', $new_key );
-				} else {
-					add_option( 'seoslides_product_key', $new_key, '', 'no' );
 				}
 			}
 		}
