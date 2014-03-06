@@ -59,37 +59,6 @@ body {
 .embeded .slide aside.note {
   height: 60%; }
 
-.branding {
-  position: absolute;
-  z-index: 11;
-  display: block;
-  width: auto;
-  height: 5%;
-  bottom: 5px;
-  left: 45px;
-  /*	background: url(../img/seoslides-logo-trans.png) no-repeat center center; */
-  -khtml-opacity: 0.5;
-  -moz-opacity: 0.5;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  opacity: 0.5;
-  -webkit-transition: opacity 0.5s ease-in-out 0ms;
-  -moz-transition: opacity 0.5s ease-in-out 0ms;
-  -o-transition: opacity 0.5s ease-in-out 0ms;
-  transition: opacity 0.5s ease-in-out 0ms;
-  /*	@media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-  		background-image: url(../img/seoslides-logo-trans-2x.png);
-  		background-size: 234px auto;
-  	}
-  */ }
-  .branding:hover {
-    -khtml-opacity: 1;
-    -moz-opacity: 1;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    opacity: 1; }
-
-.has-embed .branding {
-  bottom: 45px; }
-
 .deck-container .deck-nav-disabled {
   display: none;
   opacity: 0;
@@ -149,17 +118,6 @@ footer.deck-footer {
   .extras .deck-overview {
     height: 36px;
     padding-top: 14px; }
-  .extras .slide-overview-link {
-    margin: auto;
-    width: 30px;
-    height: 21px;
-    display: block;
-    background-repeat: no-repeat;
-    background-image: url(../img/overview.png); }
-    @media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6 / 2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-      .extras .slide-overview-link {
-        background-image: url(../img/overview-2x.png);
-        background-size: 30px auto; } }
   .extras .deck-status,
   .extras .deck-actions {
     color: #fff;

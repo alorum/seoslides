@@ -97,11 +97,6 @@
 				width = $node.width(),
 				height = $node.height();
 
-			var branding = document.querySelector( '.branding' );
-			if ( null !== branding ) {
-				branding.style.left = left + 'px';
-			}
-
 			// Resize iframes
 			var frames = document.querySelectorAll( '.seoslides_iframe' );
 			for ( var i = 0, l = frames.length; i < l; i++ ) {

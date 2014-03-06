@@ -4318,11 +4318,6 @@
 				width = $node.width(),
 				height = $node.height();
 
-			var branding = document.querySelector( '.branding' );
-			if ( null !== branding ) {
-				branding.style.left = left + 'px';
-			}
-
 			// Resize iframes
 			var frames = document.querySelectorAll( '.seoslides_iframe' );
 			for ( var i = 0, l = frames.length; i < l; i++ ) {
@@ -4613,7 +4608,7 @@
 			} else if ( $this.hasClass( 'dismiss' ) ) {
 				var container = document.querySelector( '.deck-current .embed-container' ),
 					$container = $( container );
-				
+
 				reset_container( $container, false );
 
 				CORE.Events.doAction( 'embed.close', container );
