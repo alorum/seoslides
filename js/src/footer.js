@@ -3,6 +3,7 @@
 	var document = window.document,
 		CORE = window.SEO_Slides,
 		$d = $( document ),
+		$html = $( 'html' ),
 		$body = $( 'body' ),
 		$footer = $d.find( '.deck-footer' ),
 		$footer_height = $footer.height(),
@@ -380,5 +381,7 @@
 
 	$d.on( 'click.embed-actions', '.ssi.embiggen, .ssi.landing, .ssi.dismiss', embed_code.click_on_action );
 
-	$body.on( 'mousemove', throttle( embed_code.mousemove, 250 ) );
+	if ( ! $html.hasClass( 'touch' ) ) {
+		$body.on( 'mousemove', throttle( embed_code.mousemove, 250 ) );
+	}
 }( this, jQuery ));

@@ -15,6 +15,7 @@ $grid: '';
 
 html, body {
 	height: 100%;
+	overflow: hidden;
 }
 
 html {
@@ -23,7 +24,6 @@ html {
 
 body {
 	background-color: transparent;
-	overflow: hidden;
 	margin-top: -1px;
 	padding-top: 1px;
 }
@@ -157,6 +157,10 @@ footer.deck-footer {
 	&.opened .dismiss {
 		display: inline-block;
 	}
+}
+
+.touch footer.deck-footer {
+	bottom: 0;
 }
 
 //.deck-footer,
