@@ -2,9 +2,14 @@
 html, body {
   height: 100%; }
 
+html {
+  margin-top: 0; }
+
 body {
   background-color: transparent;
-  overflow: hidden; }
+  overflow: hidden;
+  margin-top: -1px;
+  padding-top: 1px; }
 
 .deck-container {
   font-size: 16px;
@@ -74,7 +79,7 @@ footer.deck-footer {
   width: 100%;
   background: rgba(0, 0, 0, 0.75);
   z-index: 10;
-  bottom: 0;
+  bottom: -32px;
   overflow: hidden; }
   footer.deck-footer .ssi {
     font-size: 20px;

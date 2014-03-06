@@ -3,7 +3,9 @@
 	var document = window.document,
 		CORE = window.SEO_Slides,
 		$d = $( document ),
+		$body = $( 'body' ),
 		$footer = $d.find( '.deck-footer' ),
+		$footer_height = $footer.height(),
 		$extras = $d.find( '.extras' ),
 		embed_code;
 
@@ -231,6 +233,11 @@
 			}
 		};
 
+		/**
+		 * Allow viewers to close the overlay with the ESC button.
+		 *
+		 * @param {Event} event
+		 */
 		SELF.close_on_escape = function( event ) {
 			if ( 27 === event.keyCode ) {
 				var container = document.querySelector( '.deck-current .embed-container' ),
@@ -242,6 +249,11 @@
 			}
 		};
 
+		/**
+		 * Handle clicks on non-overlay buttons.
+		 *
+		 * @param {Event} event
+		 */
 		SELF.click_on_action = function( event ) {
 			var $this = $( this );
 
@@ -264,9 +276,71 @@
 
 			CORE.Events.doAction( 'embed.action', '' );
 		};
+
+		/**
+		 * Capture mouse movement to make sure we expand the footer overlay when hovering over the appropriate region.
+		 *
+		 * @param {Event} event
+		 */
+		SELF.mousemove = function( event ) {
+			var $footer_position = parseInt( $footer.css( 'bottom' ), 10 ),
+				$window_height = $body.height(),
+				threshhold = $window_height - $footer_height;
+
+			if ( event.pageY >= threshhold && $footer_position < 0 && ! $footer.hasClass( 'sliding' ) ) {
+				// cursor in zone and bar is hidden and is not currently sliding
+				$footer.addClass( 'sliding' ).animate( {
+					'bottom' : 0
+				}, 200, function () {
+					$footer.removeClass( 'sliding' );
+				} );
+			} else if ( event.pageY < threshhold && $footer_position === 0 && ! $footer.hasClass( 'opened' ) ) {
+				// cursor not in zone and bar is showing and not in submenu
+				$footer.stop().animate( {
+					'bottom' : ($footer_height * - 1)
+				}, 200, function () {
+					$footer.removeClass( 'sliding' );
+				} );
+			} else if ( ( event.pageY >= threshhold && $footer_position === 0 ) || ( event.pageY < threshhold && $footer_position < 0 ) ) {
+				// cursor in zone and bar is showing or not in zone and bar is hidden
+				// do nothing!
+			}
+		};
 	}
 
 	embed_code = new Embed_Code();
+
+	/**
+	 * Throttle events (like mousemove)
+	 *
+	 * @param {function} fn
+	 * @param {number}   threshhold
+	 * @param {*}        scope
+	 *
+	 * @returns {Function}
+	 */
+	function throttle ( fn, threshhold, scope ) {
+		threshhold = threshhold || (threshhold = 250);
+		var last,
+			deferTimer;
+		return function () {
+			var context = scope || this;
+
+			var now = + new Date(),
+				args = arguments;
+			if ( last && now < last + threshhold ) {
+				// hold on to it
+				window.clearTimeout( deferTimer );
+				deferTimer = window.setTimeout( function () {
+					last = now;
+					fn.apply( context, args );
+				}, threshhold );
+			} else {
+				last = now;
+				fn.apply( context, args );
+			}
+		};
+	}
 
 	/**
 	 * Make sure the embed input field is selected when we open the overlay to facilitate copy-paste.
@@ -286,4 +360,6 @@
 	$d.on( 'click.embed-code', '.ssi.overlay', embed_code.open_footer_embed );
 
 	$d.on( 'click.embed-actions', '.ssi.embiggen, .ssi.landing, .ssi.dismiss', embed_code.click_on_action );
+
+	$body.on( 'mousemove', throttle( embed_code.mousemove, 250 ) );
 }( this, jQuery ));
