@@ -36,6 +36,7 @@ if ( ! defined( 'CATALYST_URL' ) ) {
 }
 
 // Load plugin modules
+require_once( 'includes/SEOSlides_Util.php' );
 require_once( 'includes/SEOSlides_Module_Provider.php' );
 
 /**

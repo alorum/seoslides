@@ -4233,15 +4233,13 @@
 
 		var body = document.getElementsByTagName( 'body' )[0];
 		body.className += ' embeded';
-	}
 
-	function hideNotes( e, from, to ) {
-		var newSlide = $.deck( 'getSlide', to ),
-			notesEl = newSlide[0].querySelector( 'aside.note' );
+		var head  = window.document.getElementsByTagName('head')[0],
+			title = window.document.getElementsByTagName('title')[0],
+			base  = window.document.createElement('base');
 
-		if ( null !== notesEl ) {
-			$( notesEl ).addClass( 'hidden' );
-		}
+		base.target = '_parent';
+		head.insertBefore(base, title.nextSibling);
 	}
 
 	/**
@@ -4300,135 +4298,17 @@
 			}
 		} );
 
-		// Hide notes icon if embedded
-		if ( CORE.isEmbeded ) {
-			$d.on( 'deck.change', hideNotes );
-		}
-
 		$d.on( 'deck.change', scanEmbeds );
 	}
 
 	/**
+	 * Make sure dynamically-sized elements are resized after we change the size of the canvas.
 	 *
-	 * @param element
-	 * @constructor
+	 * This will involve embeded iframes, the notes container, and embedded branding.
+	 *
+	 * @param {*} context
 	 */
-	function Footer( element ) {
-		var SELF = this,
-			enabled = true,
-			disabledForLastSlide = false,
-			$element = $( element );
-
-		var speed = CORE.Events.applyFilter( 'footer.fadeSpeed', 300 ),
-			timeout, block;
-
-		SELF.hide = function() {
-			window.clearTimeout( timeout );
-			$element.fadeOut( speed * 4 );
-		};
-
-		SELF.show = function() {
-			window.clearTimeout( timeout );
-			if ( ! enabled ) {
-				return;
-			}
-
-			$element.fadeIn( speed );
-			timeout = window.setTimeout( SELF.hide, 3000 );
-		};
-
-		SELF.disable = function() {
-			enabled = false;
-			$d.off( 'mousemove', SELF.show );
-
-			return SELF;
-		};
-
-		SELF.enable = function() {
-			enabled = true;
-			$d.on( 'mousemove', SELF.show );
-
-			return SELF;
-		};
-
-		SELF.position = function() {
-			var node = document.querySelector( '.deck-current' );
-			if ( null !== node ) {
-				var $node = $( node ),
-					right = $node.offset().left + 5;
-
-				element.style.right = right + 'px';
-			}
-		};
-	}
-	var footer = new Footer( document.querySelector( 'footer.deck-footer' ) );
-	CORE.Events.addAction( 'debounced.canvas.resize', footer.position );
-
-	if ( null === window.document.querySelector( 'section.overview' ) ) {
-		loadContent();
-		footer.enable().show();
-	} else {
-		footer.disable();
-		// Run backstretch on overview slides
-		$( document.querySelectorAll( '.overview .slide' ) ).backstretchShort();
-
-		// Wait until the user clicks to start the presentation before advancing to the first slide
-		var keys = [ 13, 32, 34, 39, 40 ]; // enter, space, page down, right arrow, down arrow
-
-		$d.off( 'keydown.overview' ).on( 'keydown.overview', function ( e ) {
-			var srcElement = e.target || e.srcElement;
-
-			if ( (e.which === keys || $.inArray( e.which, keys ) > - 1) &&
-				srcElement !== document.querySelector( 'input#author' ) &&
-				srcElement !== document.querySelector( 'input#email' ) &&
-				srcElement !== document.querySelector( 'input#website' ) &&
-				srcElement !== document.querySelector( 'textarea#comment' ) ) {
-				loadContent();
-				footer.enable().show();
-				$d.unbind( 'keydown.overview' );
-				e.preventDefault();
-			}
-		} );
-
-		var plugins = $( '.slide-body > div' );
-		CORE.processPlugins( plugins );
-		plugins.each( function( i, el ) { CORE.resizePlugins( el ); } );
-		$( '.seoslides_responsive', '.list.thumbnails' ).responsiveText();
-
-		// Handle clicks for the overview button
-		$( '.link-wrap' ).on( 'click', function( e ) {
-			var $this = $( this ),
-				$target = $( e.target ),
-				href = $this.data( 'href' );
-
-			if ( $target.hasClass( 'embed-button' ) || $this.find( '.embed-container' ).hasClass( 'opened' ) ) {
-				return;
-			}
-
-			window.location.href = href;
-		} );
-	}
-
-	$.extend(true, $.deck.defaults, {
-		selectors: {
-			hashLink: '.deck-permalink'
-		},
-
-		hashPrefix: '',
-		preventFragmentScroll: true
-	});
-
-	if ( CORE.isEmbeded ) {
-		// We're in an iframe
-		var head  = window.document.getElementsByTagName('head')[0],
-			title = window.document.getElementsByTagName('title')[0],
-			base  = window.document.createElement('base');
-
-		base.target = '_parent';
-		head.insertBefore(base, title.nextSibling);
-	}
-
-	CORE.Events.addAction( 'debounced.canvas.resize', function ( context ) {
+	function resize_elements( context ) {
 		$( '.seoslides_responsive', context ).responsiveText();
 
 		var node = document.querySelector( '.deck-current' );
@@ -4437,11 +4317,6 @@
 				left = $node.offset().left + 5, // Left offset + Padding
 				width = $node.width(),
 				height = $node.height();
-
-			var branding = document.querySelector( '.branding' );
-			if ( null !== branding ) {
-				branding.style.left = left + 'px';
-			}
 
 			// Resize iframes
 			var frames = document.querySelectorAll( '.seoslides_iframe' );
@@ -4458,27 +4333,51 @@
 				notes.style.height = height - 130 + 'px';
 			}
 		}
+	}
+
+	// Set up DeckJS Defaults
+	$.extend( true, $.deck.defaults, {
+		selectors: {
+			hashLink: '.deck-permalink'
+		},
+
+		hashPrefix:            '',
+		preventFragmentScroll: true
 	} );
 
-	var $buttons = $( document.querySelectorAll( '.detail-expander .button' ) ),
-		$details = $( document.querySelector( 'section.details' ) );
-	$( '.detail-expander' ).on( 'click', '.button', function() {
-		$buttons.toggleClass( 'hidden' );
-		$details.toggleClass( 'short' );
-	} );
+	CORE.Events.addAction( 'debounced.canvas.resize', resize_elements );
+
+	// Let's run things
+	loadContent();
 
 } )( jQuery, this );
 (function ( window, $, undefined ) {
 	var document = window.document,
 		CORE = window.SEO_Slides,
 		$d = $( document ),
+		$body = $( 'body' ),
 		$footer = $d.find( '.deck-footer' ),
+		$footer_height = $footer.height(),
 		$extras = $d.find( '.extras' ),
 		embed_code;
 
+	/**
+	 * The Embed_Code object handles all events and interactions with the standard footer overlays.
+	 *
+	 * It's called "embed code" because it originally only controlled the script and shortcode embeds.
+	 *
+	 * @constructor
+	 */
 	function Embed_Code() {
-		var SELF = this;
+		var SELF = this,
+			trigger = '';
 
+		/**
+		 * Get the embed script for the current slide.
+		 *
+		 * @param {object} data
+		 * @returns {string}
+		 */
 		function get_code( data ) {
 			var code = '<script id="' + data.embed_id + '" type="text/javascript" src="' + data.embed_url + '"></script>';
 			code += '<span id="seoslides-embed-' + data.embed_id + '"><a href="' + data.overview + '">' + data.slide_title + '</a> from <a href="' + data.site_url + '">' + data.site_title + '</a>' + '</span>';
@@ -4487,6 +4386,12 @@
 			return code;
 		}
 
+		/**
+		 * Get the WordPress shortcode for the current slide.
+		 *
+		 * @param {object} data
+		 * @returns {string}
+		 */
 		function get_shortcode( data ) {
 			var code = '[seoslides embed_id="' + data.embed_id + '"';
 			code += ' script_src="' + data.embed_url + '"';
@@ -4514,14 +4419,20 @@
 				$extras.removeClass( 'opened' );
 			}
 
-			$container.find( 'li.current' ).removeClass( 'current' );
-			$container.find( 'aside.child, .embed-input' ).addClass( 'hidden' );
-			$container.find( 'li.default' ).addClass( 'current' );
+			$container.find( 'aside, .embed-input' ).addClass( 'hidden' );
+			$container.find( 'aside.current' ).removeClass( 'current' );
+			$container.find( 'aside.default' ).addClass( 'current' );
 			$container.find( 'aside.default, input.default' ).removeClass( 'hidden' );
 
 			load_embed_code( $container[0] );
 		}
 
+		/**
+		 * Load the embed code into the input field if we're on an embedable overlay.
+		 *
+		 * @param {HTMLElement} container
+		 * @param {string}      slide_link
+		 */
 		function load_embed_code( container, slide_link ) {
 			var input = container.querySelector( '.embed-input' ),
 				$container = $( container ),
@@ -4547,21 +4458,73 @@
 				site_url: input.getAttribute( 'data-siteurl' )
 			};
 
-			var scheme = container.querySelector( 'aside.child:not(.hidden)' ),
-				code = '';
-			if ( scheme.className.match( /(^| )wordpress-embed-instructions( |$)/ ) ) {
-				code = get_shortcode( embed_data );
-			} else {
-				code = get_code( embed_data );
+			// Find out whether we're using the WordPress shortcode or the script embed
+			var activeElement = container.querySelector( 'aside.current' );
+			if ( activeElement.className.match( /(^| )wordpress-embed-instructions( |$)/ ) ) {
+				$input.val( get_shortcode( embed_data ) );
+			} else if ( activeElement.className.match( /(^| )script-embed-instructions( |$)/) ) {
+				$input.val( get_code( embed_data ) );
 			}
-
-			$input.val( code );
 		}
 
+		/**
+		 * Switch from one overlay to another based on the footer button being clicked.
+		 *
+		 * @param {object} $container
+		 * @param {object} $target
+		 */
+		function switchOverlay( $container, $target ) {
+			$container.find( 'aside.current' ).removeClass( 'current' );
+
+			if ( $target.hasClass( 'seoslides' ) ) {
+				$container.find( 'aside.wordpress-embed-instructions' ).addClass( 'current' );
+				load_embed_code( $container[0] );
+				$container.find( '.embed-input' ).show();
+			} else if ( $target.hasClass( 'link' ) ) {
+				$container.find( 'aside.script-embed-instructions' ).addClass( 'current' );
+				load_embed_code( $container[0] );
+				$container.find( '.embed-input' ).show();
+			} else if ( $target.hasClass( 'notes' ) ) {
+				$container.find( 'aside.note' ).addClass( 'current' );
+				$container.find( '.embed-input' ).hide();
+			}
+		}
+
+		/**
+		 * Share the presentation on one of the 3 default social networks.
+		 *
+		 * @param {Event} event
+		 */
+		SELF.sharePresentation = function( event ) {
+			var $target = $( event.target ),
+				me = window.self;
+
+			// Get the URL to share
+			var url = me.location.href,
+				title = encodeURIComponent( document.title );
+
+			url = url.replace( me.location.origin + '/embeds/', me.location.origin + '/slides/' );
+			url = encodeURIComponent( url );
+
+			if ( $target.hasClass( 'facebook' ) ) {
+				window.open( 'https://www.facebook.com/sharer/sharer.php?s=100&p[url]=' + url + '&p[title]=' + title + '&p[summary]=' + title, 'sharer','toolbar=0,status=0,width=580,height=325' );
+			} else if ( $target.hasClass( 'google' ) ) {
+				window.open( 'https://plus.google.com/share?url=' + url, 'google', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600' );
+			} else if ( $target.hasClass( 'twitter' ) ) {
+				window.open( 'https://twitter.com/intent/tweet?url=' + url + '&text=' + title + '&via=seoslides', 'twitter', 'toolbar=0,status=0,width=580,height=250' );
+			}
+		};
+
+		/**
+		 * Open the overlay from a footer trigger.
+		 *
+		 * @param {Event} event
+		 */
 		SELF.open_footer_embed = function ( event ) {
 			event.preventDefault();
 			var container = document.querySelector( '.deck-current .embed-container' ),
-				$container = $( container );
+				$container = $( container ),
+				$target = $( event.target );
 
 			if ( $container.hasClass( 'opened' ) ) {
 				reset_container( $container );
@@ -4570,7 +4533,18 @@
 				return;
 			}
 
+			if ( $target.hasClass( 'seoslides' ) ) {
+				trigger = 'seoslides';
+			} else if ( $target.hasClass( 'link' ) ) {
+				trigger = 'link';
+			} else if ( $target.hasClass( 'notes' ) ) {
+				trigger = 'notes';
+			}
+
 			reset_container( $container, false );
+
+			// Make sure the correct element is selected
+			switchOverlay( $container, $target );
 
 			$container.addClass( 'opened' );
 			$footer.addClass( 'opened' );
@@ -4585,29 +4559,11 @@
 			CORE.Events.doAction( 'embed.open', container );
 		};
 
-		SELF.overview_embed_clicked = function ( event ) {
-			event.preventDefault();
-
-			var container = document.querySelector( '.deck-current .embed-container' ),
-				$container = $( container );
-
-			if ( $container.hasClass( 'opened' ) ) {
-				reset_container( $container );
-
-				CORE.Events.doAction( 'embed.close', container );
-				return;
-			}
-
-			reset_container( $container, false );
-			load_embed_code( container );
-
-			$container.addClass( 'opened' );
-			$footer.addClass( 'opened' );
-			$extras.addClass( 'opened' );
-
-			CORE.Events.doAction( 'embed.open', container );
-		};
-
+		/**
+		 * Make sure that clicking on the input field for the embed code doesn't cancel out the overlay.
+		 *
+		 * @param {Event} event
+		 */
 		SELF.cancel_click_on_embed = function ( event ) {
 			var srcElement = event.target || event.srcElement;
 
@@ -4616,38 +4572,43 @@
 			}
 		};
 
-		SELF.cancel_click_on_container = function( event ) {
-			var srcElement = event.target || event.srcElement;
+		/**
+		 * Handle any clicks within the fotter container.
+		 *
+		 * @param {Event} event
+		 */
+		SELF.click_on_container = function( event ) {
+			var container = document.querySelector( '.deck-current .embed-container' ),
+				$container = $( container ),
+				$target = $( event.target );
 
-			if( $( event.currentTarget ).hasClass( 'opened' ) ) {
+			if ( $target.hasClass( trigger ) ) {
+				// Don't stop the close events
+			} else if ( $container.hasClass( 'opened' ) && $target.hasClass( 'overlay' ) ) {
 				event.preventDefault();
+				event.stopImmediatePropagation();
 
-				var container = document.querySelector( '.deck-current .embed-container' ),
-					$container = $( container );
-
-				if ( 'LI' === srcElement.nodeName ) {
-					var $this = $( srcElement ),
-						child = srcElement.getAttribute( 'data-child' ),
-						$child = $( child );
-
-					$container.find( 'li.current' ).removeClass( 'current' );
-					$this.addClass( 'current' );
-
-					$container.find( 'aside.child' ).addClass( 'hidden' );
-					$child.removeClass( 'hidden' );
-
-					if ( srcElement.className.match( /(^| )shortcode-li( |$)/ ) || srcElement.className.match( /(^| )embed-script-li( |$)/ ) ) {
-						$container.find( '.embed-input' ).removeClass( 'hidden' );
-						load_embed_code( container );
-					} else {
-						$container.find( '.embed-input' ).addClass( 'hidden' );
-					}
-
-					CORE.Events.doAction( 'embed.navigate', srcElement );
+				if ( $target.hasClass( 'seoslides' ) ) {
+					trigger = 'seoslides';
+				} else if ( $target.hasClass( 'link' ) ) {
+					trigger = 'link';
+				} else if ( $target.hasClass( 'notes' ) ) {
+					trigger = 'notes';
 				}
+
+				switchOverlay( $container, $target );
+			} else if ( $container.hasClass( 'opened' ) && $target.hasClass( 'ssi' ) && $target.hasClass( 'social' ) ) {
+				SELF.sharePresentation( event );
+
+				CORE.Events.doAction( 'embed.close', container );
 			}
 		};
 
+		/**
+		 * Allow viewers to close the overlay with the ESC button.
+		 *
+		 * @param {Event} event
+		 */
 		SELF.close_on_escape = function( event ) {
 			if ( 27 === event.keyCode ) {
 				var container = document.querySelector( '.deck-current .embed-container' ),
@@ -4659,24 +4620,98 @@
 			}
 		};
 
+		/**
+		 * Handle clicks on non-overlay buttons.
+		 *
+		 * @param {Event} event
+		 */
 		SELF.click_on_action = function( event ) {
 			var $this = $( this );
 
-			if ( $this.hasClass( 'overview' ) ) {
+			if ( $this.hasClass( 'landing' ) ) {
 				window.open( $this.data( 'href' ) );
-			} else if ( $this.hasClass( 'full-screen' ) ) {
+			} else if ( $this.hasClass( 'embiggen' ) ) {
 				var me = window.self,
 					embed_url = me.location.href;
 				embed_url = embed_url.replace( me.location.origin + '/embeds/', me.location.origin + '/slides/' );
 
 				window.open( embed_url );
+			} else if ( $this.hasClass( 'dismiss' ) ) {
+				var container = document.querySelector( '.deck-current .embed-container' ),
+					$container = $( container );
+
+				reset_container( $container, false );
+
+				CORE.Events.doAction( 'embed.close', container );
 			}
 
 			CORE.Events.doAction( 'embed.action', '' );
 		};
+
+		/**
+		 * Capture mouse movement to make sure we expand the footer overlay when hovering over the appropriate region.
+		 *
+		 * @param {Event} event
+		 */
+		SELF.mousemove = function( event ) {
+			var $footer_position = parseInt( $footer.css( 'bottom' ), 10 ),
+				$window_height = $body.height(),
+				threshhold = $window_height - $footer_height;
+
+			if ( event.pageY >= threshhold && $footer_position < 0 && ! $footer.hasClass( 'sliding' ) ) {
+				// cursor in zone and bar is hidden and is not currently sliding
+				$footer.addClass( 'sliding' ).animate( {
+					'bottom' : 0
+				}, 200, function () {
+					$footer.removeClass( 'sliding' );
+				} );
+			} else if ( event.pageY < threshhold && $footer_position === 0 && ! $footer.hasClass( 'opened' ) ) {
+				// cursor not in zone and bar is showing and not in submenu
+				$footer.stop().animate( {
+					'bottom' : ($footer_height * - 1)
+				}, 200, function () {
+					$footer.removeClass( 'sliding' );
+				} );
+			} else if ( ( event.pageY >= threshhold && $footer_position === 0 ) || ( event.pageY < threshhold && $footer_position < 0 ) ) {
+				// cursor in zone and bar is showing or not in zone and bar is hidden
+				// do nothing!
+			}
+		};
 	}
 
 	embed_code = new Embed_Code();
+
+	/**
+	 * Throttle events (like mousemove)
+	 *
+	 * @param {function} fn
+	 * @param {number}   threshhold
+	 * @param {*}        scope
+	 *
+	 * @returns {Function}
+	 */
+	function throttle ( fn, threshhold, scope ) {
+		threshhold = threshhold || (threshhold = 250);
+		var last,
+			deferTimer;
+		return function () {
+			var context = scope || this;
+
+			var now = + new Date(),
+				args = arguments;
+			if ( last && now < last + threshhold ) {
+				// hold on to it
+				window.clearTimeout( deferTimer );
+				deferTimer = window.setTimeout( function () {
+					last = now;
+					fn.apply( context, args );
+				}, threshhold );
+			} else {
+				last = now;
+				fn.apply( context, args );
+			}
+		};
+	}
 
 	/**
 	 * Make sure the embed input field is selected when we open the overlay to facilitate copy-paste.
@@ -4689,14 +4724,13 @@
 		$input.select();
 	} );
 
-	$d.off( 'click.embed-code' ).on( 'click.embed-code', '#deck-embed-link', embed_code.open_footer_embed );
-	$d.off( 'click.embed-code' ).on( 'click.embed-code', '.deck-actions', embed_code.open_footer_embed );
-	$d.off( 'click.overview-embed' ).on( 'click.overview-embed', '.overview .slide .embed-button', embed_code.overview_embed_clicked );
-
 	$d.on( 'click.embed-input', 'section.slide', embed_code.cancel_click_on_embed );
-	$d.on( 'click.embed-overlay', '.embed-container', embed_code.cancel_click_on_container );
-	$d.on( 'click.embed-overlay', '.deck-actions', embed_code.cancel_click_on_container );
+	$d.on( 'click.embed-overlay', '.ssi, .embed-container', embed_code.click_on_container );
 	$d.on( 'keyup.embed-overlay', embed_code.close_on_escape );
+	$d.on( 'click.embed-code', '.ssi.social', embed_code.sharePresentation );
+	$d.on( 'click.embed-code', '.ssi.overlay', embed_code.open_footer_embed );
 
-	$d.on( 'click.embed-actions', '.action-icon', embed_code.click_on_action );
+	$d.on( 'click.embed-actions', '.ssi.embiggen, .ssi.landing, .ssi.dismiss', embed_code.click_on_action );
+
+	$body.on( 'mousemove', throttle( embed_code.mousemove, 250 ) );
 }( this, jQuery ));
