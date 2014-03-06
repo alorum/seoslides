@@ -247,7 +247,7 @@
 
 			if ( $this.hasClass( 'overview' ) ) {
 				window.open( $this.data( 'href' ) );
-			} else if ( $this.hasClass( 'full-screen' ) ) {
+			} else if ( $this.hasClass( 'embiggen' ) ) {
 				var me = window.self,
 					embed_url = me.location.href;
 				embed_url = embed_url.replace( me.location.origin + '/embeds/', me.location.origin + '/slides/' );
@@ -278,5 +278,5 @@
 	$d.on( 'click.embed-code', '.ssi.social', embed_code.sharePresentation );
 	$d.on( 'click.embed-code', '.ssi.overlay', embed_code.open_footer_embed );
 
-	$d.on( 'click.embed-actions', '.action-icon', embed_code.click_on_action );
+	$d.on( 'click.embed-actions', '.ssi.embiggen', embed_code.click_on_action );
 }( this, jQuery ));
