@@ -87,8 +87,9 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 = Dev =
 
-* Improved: The seoslides importer now presents a progress bar rather than a scrolling list of slide counts.
+* New: The seoslides importer now presents a progress bar to keep track of ongoing imports.
 * New: Slide imports are now processed in parallel to enhance the speed of the importer.
+* New: Add a flexible footer bar to all presentations to allow easy social sharing and access to embeds & notes.
 * Fix: Updated product key logic to allow bulk updating.
 * Fix: Don't remove the api key upon failed validation.
 
