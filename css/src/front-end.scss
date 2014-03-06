@@ -161,7 +161,8 @@ footer.deck-footer {
 			margin-left: 0.25em;
 		}
 
-		&.embiggen {
+		&.embiggen,
+		&.dismiss {
 			display: none;
 		}
 
@@ -174,6 +175,10 @@ footer.deck-footer {
 		float: right;
 		height: 100%;
 		margin-right: 0.25em;
+	}
+
+	&.opened .dismiss {
+		display: inline-block;
 	}
 }
 

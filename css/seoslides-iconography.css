@@ -44,3 +44,10 @@
 .ssi.landing:before {
 	content: 'c';
 }
+
+.ssi.dismiss {
+	font-family: "dashicons";
+}
+.ssi.dismiss:before {
+	content: "\f153";
+}

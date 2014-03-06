@@ -4610,6 +4610,13 @@
 				embed_url = embed_url.replace( me.location.origin + '/embeds/', me.location.origin + '/slides/' );
 
 				window.open( embed_url );
+			} else if ( $this.hasClass( 'dismiss' ) ) {
+				var container = document.querySelector( '.deck-current .embed-container' ),
+					$container = $( container );
+				
+				reset_container( $container, false );
+
+				CORE.Events.doAction( 'embed.close', container );
 			}
 
 			CORE.Events.doAction( 'embed.action', '' );
@@ -4635,5 +4642,5 @@
 	$d.on( 'click.embed-code', '.ssi.social', embed_code.sharePresentation );
 	$d.on( 'click.embed-code', '.ssi.overlay', embed_code.open_footer_embed );
 
-	$d.on( 'click.embed-actions', '.ssi.embiggen, .ssi.landing', embed_code.click_on_action );
+	$d.on( 'click.embed-actions', '.ssi.embiggen, .ssi.landing, .ssi.dismiss', embed_code.click_on_action );
 }( this, jQuery ));

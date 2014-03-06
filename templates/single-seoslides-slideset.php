@@ -127,6 +127,7 @@ if ( '' === $slide_slug ) {
 		<?php do_action( 'seoslides-utility-toolbar-buttons', $slide->ID ); ?>
 
 		<span class="ssi-right">
+			<span class="ssi dismiss" title="<?php esc_attr_e( 'Close Overlay', 'seoslides_translate' ); ?>"></span>
 			<?php if ( $slideset_link = get_post_meta( get_the_ID(), '_slideset_link', true ) ) : ?>
 			<span class="ssi landing" data-href="<?php echo esc_attr( $slideset_link ); ?>" title="<?php esc_attr_e( 'View Presentation Overview', 'seoslides_translate' ); ?>"></span>
 			<?php endif; ?>

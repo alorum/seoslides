@@ -118,7 +118,7 @@ footer.deck-footer {
     display: inline-block; }
     footer.deck-footer .ssi:first-child {
       margin-left: 0.25em; }
-    footer.deck-footer .ssi.embiggen {
+    footer.deck-footer .ssi.embiggen, footer.deck-footer .ssi.dismiss {
       display: none; }
     footer.deck-footer .ssi:hover {
       background-color: #000; }
@@ -126,6 +126,8 @@ footer.deck-footer {
     float: right;
     height: 100%;
     margin-right: 0.25em; }
+  footer.deck-footer.opened .dismiss {
+    display: inline-block; }
 
 .extras {
   font-family: 'Noto Sans', sans-serif; }
