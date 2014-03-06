@@ -4369,7 +4369,8 @@
 	 * @constructor
 	 */
 	function Embed_Code() {
-		var SELF = this;
+		var SELF = this,
+			trigger = '';
 
 		/**
 		 * Get the embed script for the current slide.
@@ -4532,6 +4533,14 @@
 				return;
 			}
 
+			if ( $target.hasClass( 'seoslides' ) ) {
+				trigger = 'seoslides';
+			} else if ( $target.hasClass( 'link' ) ) {
+				trigger = 'link';
+			} else if ( $target.hasClass( 'notes' ) ) {
+				trigger = 'notes';
+			}
+
 			reset_container( $container, false );
 
 			// Make sure the correct element is selected
@@ -4573,9 +4582,19 @@
 				$container = $( container ),
 				$target = $( event.target );
 
-			if ( $container.hasClass( 'opened' ) && $target.hasClass( 'overlay' ) ) {
+			if ( $target.hasClass( trigger ) ) {
+				// Don't stop the close events
+			} else if ( $container.hasClass( 'opened' ) && $target.hasClass( 'overlay' ) ) {
 				event.preventDefault();
 				event.stopImmediatePropagation();
+
+				if ( $target.hasClass( 'seoslides' ) ) {
+					trigger = 'seoslides';
+				} else if ( $target.hasClass( 'link' ) ) {
+					trigger = 'link';
+				} else if ( $target.hasClass( 'notes' ) ) {
+					trigger = 'notes';
+				}
 
 				switchOverlay( $container, $target );
 			} else if ( $container.hasClass( 'opened' ) && $target.hasClass( 'ssi' ) && $target.hasClass( 'social' ) ) {
