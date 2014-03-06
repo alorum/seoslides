@@ -111,22 +111,22 @@ if ( '' === $slide_slug ) {
 	</section>
 
 	<footer class="deck-footer">
-		<span class="ssi social facebook"></span>
-		<span class="ssi social google"></span>
-		<span class="ssi social twitter"></span>
+		<span class="ssi social facebook" title="<?php esc_attr_e( 'Share on Facebook', 'seoslides_translate' ); ?>"></span>
+		<span class="ssi social google" title="<?php esc_attr_e( 'Share on Google+', 'seoslides_translate' ); ?>"></span>
+		<span class="ssi social twitter" title="<?php esc_attr_e( 'Share on Twitter', 'seoslides_translate' ); ?>"></span>
 
 		<?php do_action( 'seoslides-social-toolbar-buttons', $slide->ID ); ?>
 
-		<span class="ssi overlay seoslides"></span>
-		<span class="ssi overlay link"></span>
+		<span class="ssi overlay seoslides" title="<?php esc_attr_e( 'Embed with seoslides', 'seoslides_translate' ); ?>"></span>
+		<span class="ssi overlay link" title="<?php esc_attr_e( 'Embed anywhere with a link', 'seoslides_translate' ); ?>"></span>
 
 		<?php do_action( 'seoslides-sharing-toolbar-buttons', $slide->ID ); ?>
 
-		<span class="ssi overlay notes"></span>
+		<span class="ssi overlay notes" title="<?php esc_attr_e( 'Slide Notes', 'seoslides_translate' ); ?>"></span>
 
 		<?php do_action( 'seoslides-utility-toolbar-buttons', $slide->ID ); ?>
 
-		<span class="ssi embiggen"></span>
+		<span class="ssi embiggen" title="<?php esc_attr_e( 'View Full-screen', 'seoslides_translate' ); ?>"></span>
 	</footer>
 
 	<?php wp_footer(); ?>
