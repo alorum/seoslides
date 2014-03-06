@@ -161,18 +161,19 @@ footer.deck-footer {
 			margin-left: 0.25em;
 		}
 
-		&:last-child {
-			margin-right: 0.25em;
-		}
-
 		&.embiggen {
-			float: right;
 			display: none;
 		}
 
 		&:hover {
 			background-color: #000;
 		}
+	}
+
+	.ssi-right {
+		float: right;
+		height: 100%;
+		margin-right: 0.25em;
 	}
 }
 

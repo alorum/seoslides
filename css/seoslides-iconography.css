@@ -40,3 +40,7 @@
 .ssi.embiggen:before {
 	content: 'w';
 }
+
+.ssi.landing:before {
+	content: 'c';
+}

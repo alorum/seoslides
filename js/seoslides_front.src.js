@@ -4421,8 +4421,8 @@
 				$extras.removeClass( 'opened' );
 			}
 
-			$container.find( 'aside.current' ).removeClass( 'current' );
 			$container.find( 'aside, .embed-input' ).addClass( 'hidden' );
+			$container.find( 'aside.current' ).removeClass( 'current' );
 			$container.find( 'aside.default' ).addClass( 'current' );
 			$container.find( 'aside.default, input.default' ).removeClass( 'hidden' );
 
@@ -4602,7 +4602,7 @@
 		SELF.click_on_action = function( event ) {
 			var $this = $( this );
 
-			if ( $this.hasClass( 'overview' ) ) {
+			if ( $this.hasClass( 'landing' ) ) {
 				window.open( $this.data( 'href' ) );
 			} else if ( $this.hasClass( 'embiggen' ) ) {
 				var me = window.self,
@@ -4635,5 +4635,5 @@
 	$d.on( 'click.embed-code', '.ssi.social', embed_code.sharePresentation );
 	$d.on( 'click.embed-code', '.ssi.overlay', embed_code.open_footer_embed );
 
-	$d.on( 'click.embed-actions', '.ssi.embiggen', embed_code.click_on_action );
+	$d.on( 'click.embed-actions', '.ssi.embiggen, .ssi.landing', embed_code.click_on_action );
 }( this, jQuery ));
