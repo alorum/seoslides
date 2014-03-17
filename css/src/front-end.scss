@@ -121,7 +121,7 @@ footer.deck-footer {
 	width: 100%;
 	background: rgba(0, 0, 0, .75);
 	z-index: 10;
-	bottom: -32px;
+	bottom: 0;
 	overflow: hidden;
 
 	.ssi {
@@ -157,10 +157,6 @@ footer.deck-footer {
 	&.opened .dismiss {
 		display: inline-block;
 	}
-}
-
-.touch footer.deck-footer {
-	bottom: 0;
 }
 
 //.deck-footer,

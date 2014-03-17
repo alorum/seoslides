@@ -4650,33 +4650,63 @@
 		};
 
 		/**
-		 * Capture mouse movement to make sure we expand the footer overlay when hovering over the appropriate region.
+		 * Capture mouse movement to make sure we open the footer when required.
 		 *
 		 * @param {Event} event
 		 */
-		SELF.mousemove = function( event ) {
+		SELF.mouseopen = function( event ) {
 			var $footer_position = parseInt( $footer.css( 'bottom' ), 10 ),
 				$window_height = $body.height(),
 				threshhold = $window_height - $footer_height;
 
-			if ( event.pageY >= threshhold && $footer_position < 0 && ! $footer.hasClass( 'sliding' ) ) {
-				// cursor in zone and bar is hidden and is not currently sliding
+			// The footer is open. Do nothing.
+			if ( $footer.hasClass( 'opened' ) ) {
+				return;
+			}
+
+			if ( $footer_position < 0 && ! $footer.hasClass( 'sliding' ) ) {
+				// bar is hidden and is not currently sliding
 				$footer.addClass( 'sliding' ).animate( {
 					'bottom' : 0
 				}, 200, function () {
-					$footer.removeClass( 'sliding' );
+					$footer.removeClass( 'sliding' ).addClass( 'opened' );
+
+					// Swap out events
+					$body.off( 'mousemove.footer' );
+					$body.on( 'mousemove.footer', debounce( embed_code.mouseclose, 2500 ) );
 				} );
-			} else if ( event.pageY < threshhold && $footer_position === 0 && ! $footer.hasClass( 'opened' ) ) {
-				// cursor not in zone and bar is showing and not in submenu
-				$footer.stop().animate( {
-					'bottom' : ($footer_height * - 1)
-				}, 200, function () {
-					$footer.removeClass( 'sliding' );
-				} );
-			} else if ( ( event.pageY >= threshhold && $footer_position === 0 ) || ( event.pageY < threshhold && $footer_position < 0 ) ) {
-				// cursor in zone and bar is showing or not in zone and bar is hidden
-				// do nothing!
 			}
+		};
+
+		/**
+		 * Capture mouse movement to make sure we close the footer when required.
+		 *
+		 * @param {Event} event
+		 */
+		SELF.mouseclose = function( event ) {
+			var $footer_position = parseInt( $footer.css( 'bottom' ), 10 ),
+				$window_height = $body.height(),
+				threshhold = $window_height - $footer_height;
+
+			// The footer is closed. Do nothing.
+			if ( ! $footer.hasClass( 'opened' ) ) {
+				return;
+			}
+
+			// If we're hovering over the footer
+			if ( event.pageY >= threshhold ) {
+				return;
+			}
+
+			$footer.stop().addClass( 'sliding' ).animate( {
+				'bottom': ( $footer_height * -1 )
+			}, 200, function() {
+				$footer.removeClass( 'sliding' ).removeClass( 'opened' );
+
+				// Swap out events
+				$body.off( 'mousemove.footer' );
+				$body.on( 'mousemove.footer', throttle( embed_code.mouseopen, 250 ) );
+			} );
 		};
 	}
 
@@ -4715,6 +4745,28 @@
 	}
 
 	/**
+	 * Debounce events (like mousemove)
+	 *
+	 * @param {function} fn
+	 * @param {number}   delay
+	 *
+	 * @returns {Function}
+	 */
+	function debounce( fn, delay ) {
+		window.timer = null;
+
+		return function() {
+			var context = this,
+				args = arguments;
+
+			window.clearTimeout( window.timer );
+			window.timer = window.setTimeout( function() {
+				fn.apply( context, args );
+			}, delay );
+		};
+	}
+
+	/**
 	 * Make sure the embed input field is selected when we open the overlay to facilitate copy-paste.
 	 *
 	 * Do this in an action callback, though, so we aren't changing the browser focus away from the document element
@@ -4734,6 +4786,6 @@
 	$d.on( 'click.embed-actions', '.ssi.embiggen, .ssi.landing, .ssi.dismiss', embed_code.click_on_action );
 
 	if ( ! $html.hasClass( 'touch' ) ) {
-		$body.on( 'mousemove', throttle( embed_code.mousemove, 250 ) );
+		$body.on( 'mousemove.footer', debounce( embed_code.mouseclose, 2500 ) );
 	}
 }( this, jQuery ));
