@@ -93,6 +93,8 @@ if ( '' === $slide_slug ) {
 <?php endif; ?>
 <?php if ( ! empty( $slide->seo_description ) ) : ?>
 	<meta property="og:description" content="<?php echo esc_attr( $slide->seo_description ); ?>" />
+<?php elseif ( ! empty( $slide->presenter_notes ) ) : ?>
+	<meta property="og:description" content="<?php echo esc_attr( wp_trim_words( strip_tags( $slide->presenter_notes ), 200 ) ); ?>" />
 <?php endif; ?>
 
 	<?php wp_head(); ?>
