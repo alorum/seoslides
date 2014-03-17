@@ -4660,7 +4660,7 @@
 				threshhold = $window_height - $footer_height;
 
 			// The footer is open. Do nothing.
-			if ( $footer.hasClass( 'opened' ) ) {
+			if ( $footer_position >= 0 ) {
 				return;
 			}
 
@@ -4669,7 +4669,7 @@
 				$footer.addClass( 'sliding' ).animate( {
 					'bottom' : 0
 				}, 200, function () {
-					$footer.removeClass( 'sliding' ).addClass( 'opened' );
+					$footer.removeClass( 'sliding' );
 
 					// Swap out events
 					$body.off( 'mousemove.footer' );
@@ -4689,7 +4689,7 @@
 				threshhold = $window_height - $footer_height;
 
 			// The footer is closed. Do nothing.
-			if ( ! $footer.hasClass( 'opened' ) ) {
+			if ( $footer_position < 0 ) {
 				return;
 			}
 
@@ -4706,6 +4706,8 @@
 				// Swap out events
 				$body.off( 'mousemove.footer' );
 				$body.on( 'mousemove.footer', throttle( embed_code.mouseopen, 250 ) );
+
+				CORE.Events.doAction( 'embed.close', document.querySelector( '.deck-current .embed-container' ) );
 			} );
 		};
 	}

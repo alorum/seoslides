@@ -125,7 +125,7 @@ if ( '' === $slide_slug ) {
 		<p><?php printf( __( 'Presentations are not meant to be printed.<br />Please visit %s to view the slides.', 'seoslides_translate' ), get_permalink( $slide->slideset ) ) ?></p>
 	</section>
 
-	<footer class="deck-footer opened">
+	<footer class="deck-footer">
 		<span class="ssi social facebook" title="<?php esc_attr_e( 'Share on Facebook', 'seoslides_translate' ); ?>"></span>
 		<span class="ssi social google" title="<?php esc_attr_e( 'Share on Google+', 'seoslides_translate' ); ?>"></span>
 		<span class="ssi social twitter" title="<?php esc_attr_e( 'Share on Twitter', 'seoslides_translate' ); ?>"></span>
