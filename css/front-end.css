@@ -326,9 +326,11 @@ body.embeded .ssi.embiggen {
     vertical-align: middle; }
 
 .deck-prev-link, .deck-next-link {
-  background: #888; }
+  background: rgba(0, 0, 0, 0.75);
+  color: #f15b3c; }
   .deck-prev-link:focus, .deck-prev-link:hover, .deck-next-link:focus, .deck-next-link:hover {
-    background-color: #f15b3c; }
+    background-color: #000;
+    color: #f15b3c; }
 
 #share .slide-body {
   text-align: center; }
