@@ -78,7 +78,7 @@ if ( '' === $slide_slug ) {
 
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=1024, user-scalable=no">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui">
 	<meta name="author" content="<?php the_author(); ?>">
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
