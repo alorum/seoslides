@@ -82,6 +82,19 @@ if ( '' === $slide_slug ) {
 	<meta name="author" content="<?php the_author(); ?>">
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
+	<meta name="twitter:card" content="summary" />
+	<meta property="og:site_name" content="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" />
+	<meta property="og:title" content="<?php echo esc_attr( $slide->seo_title ); ?>" />
+	<meta property="og:url" content="<?php echo esc_url( $slide->permalink() ); ?>" />
+	<meta property="og:type" content="presentation:slide" />
+<?php $bg_image = $slide->get_bg_image(); ?>
+<?php if ( '' !== $bg_image && 'noimage' !== $bg_image ) : ?>
+	<meta property="og:image" content="<?php echo esc_url( $bg_image ); ?>" />
+<?php endif; ?>
+<?php if ( ! empty( $slide->seo_description ) ) : ?>
+	<meta property="og:description" content="<?php echo esc_attr( $slide->seo_description ); ?>" />
+<?php endif; ?>
+
 	<?php wp_head(); ?>
 
 	<!--[if IE 8]>

@@ -147,15 +147,10 @@ class SEOSlides_Slide {
 
 		// Build out inline style
 		$style = ' style="';
-		if ( '' !== $this->bg_image && 'noimage' !== $this->bg_image ) {
-			$image = $this->bg_image;
-
-			if ( function_exists( 'jetpack_photon_url' ) ) {
-				$image = jetpack_photon_url( $this->bg_image, array(), '//' );
-			}
-
+		$image = $this->get_bg_image();
+		if ( '' !== $image && 'noimage' !== $image ) {
 			$style .= 'background-image:url(' . $image . ');';
-		} elseif ( 'noimage' === $this->bg_image ) {
+		} elseif ( 'noimage' === $image ) {
 			// Pull out the background image from the presentation if it exists.
 			// Get presentation fill color
 			$default = get_post_meta( $this->slideset, '_default_slide', true );
@@ -460,6 +455,29 @@ class SEOSlides_Slide {
 		}
 
 		return $this->_parent->$property;
+	}
+
+	/**
+	 * Get the background image for the slide.
+	 *
+	 * @return string
+	 */
+	public function get_bg_image() {
+		$image = $this->bg_image;
+
+		// If the image is not set, then grab it from the parent presentation.
+		if ( 'noimage' === $image ) {
+			$default = get_post_meta( $this->slideset, '_default_slide', true );
+			if ( isset( $default->bg_image ) && '' !== $default->bg_image && 'noimage' !== $default->bg_image ) {
+				$image = $default->bg_image;
+			}
+		}
+
+		if ( '' !== $image && 'noimage' !== $image && function_exists( 'jetpack_photon_url') ) {
+			$image = jetpack_photon_url( $image, array(), '//' );
+		}
+
+		return $image;
 	}
 
 	/**
