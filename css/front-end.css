@@ -607,6 +607,8 @@ body:not(.has-clones) .slide-notes {
     margin-right: 30px; }
     .deck-container div.embed-container aside.current {
       display: block; }
+    .deck-container div.embed-container aside h2.overlay-label {
+      font-size: 1.5em; }
   .deck-container div.embed-container .hidden {
     display: none; }
 

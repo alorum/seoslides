@@ -365,13 +365,13 @@ class SEOSlides_Slide {
 		$asides = array();
 
 		// Shortcode embed tab and aside
-		$asides['wordpress-embed-instructions'] = '<h2>' . sprintf( __( 'Embed with seoslides: %s', 'seoslides_translate' ), esc_html( $this->parent( 'title' ) ) ) . '</h2><p>' . __( 'Install the <span class="pseudolink" onclick="javascript:window.open(\'http://wordpress.org/plugins/seoslides\',\'_blank\');">seoslides plugin</span> on your WordPress site. Then, to embed this presentation from this slide, copy the shortcode below into any post or page.', 'seoslides_translate' ) . '</p>';
+		$asides['wordpress-embed-instructions'] = '<h2 class="overlay-label">' . sprintf( __( 'Embed with seoslides: %s', 'seoslides_translate' ), esc_html( $this->parent( 'title' ) ) ) . '</h2><p>' . __( 'Install the <span class="pseudolink" onclick="javascript:window.open(\'http://wordpress.org/plugins/seoslides\',\'_blank\');">seoslides plugin</span> on your WordPress site. Then, to embed this presentation from this slide, copy the shortcode below into any post or page.', 'seoslides_translate' ) . '</p>';
 
 		// Script embed tab and aside
-		$asides['script-embed-instructions'] =  '<h2>' . sprintf( __( 'Embed: %s', 'seoslides_translate' ), esc_html( $this->parent( 'title' ) ) ) . '</h2><p>' . __( 'To embed this presentation from this slide, insert the script tag below where you would like the presentation to appear.', 'seoslides_translate' ) . '</p>';
+		$asides['script-embed-instructions'] =  '<h2 class="overlay-label">' . sprintf( __( 'Embed: %s', 'seoslides_translate' ), esc_html( $this->parent( 'title' ) ) ) . '</h2><p>' . __( 'To embed this presentation from this slide, insert the script tag below where you would like the presentation to appear.', 'seoslides_translate' ) . '</p>';
 
 		// Presenter notes tab and aside
-		$asides['note'] = "<div class='note-container'><h2>" . sprintf( __( 'Notes: %s', 'seoslides_translate' ),  esc_html( $this->title ) ) . "</h2>" . ( empty( $this->presenter_notes ) ? __( 'Notes are not available for this slide.', 'seoslides_translate' ) : wp_kses_post( $this->presenter_notes ) ) . "</div>";
+		$asides['note'] = "<div class='note-container'><h2 class='overlay-label'>" . sprintf( __( 'Notes: %s', 'seoslides_translate' ),  esc_html( $this->title ) ) . "</h2>" . ( empty( $this->presenter_notes ) ? __( 'Notes are not available for this slide.', 'seoslides_translate' ) : wp_kses_post( $this->presenter_notes ) ) . "</div>";
 
 		// Filter asides so other plugins can hook in to add their own overlays
 		$asides = apply_filters( 'seoslides_embed_asides', $asides, $this, $this->post );
