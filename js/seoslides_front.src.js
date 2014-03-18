@@ -4706,6 +4706,11 @@
 				return;
 			}
 
+			// An overlay is open, do nothing.
+			if ( $footer.hasClass( 'opened' ) ) {
+				return;
+			}
+
 			// If we're hovering over the footer
 			if ( event.pageY >= threshhold ) {
 				return;
