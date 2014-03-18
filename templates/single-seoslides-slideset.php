@@ -110,7 +110,7 @@ if ( '' === $slide_slug ) {
 </head>
 <body class="home" style="background-color:<?php echo esc_attr( $slideset_bg ); ?>;">
 
-	<article class="deck-container single-slide" style="background-color:<?php echo esc_attr( $slideset_bg ); ?>;">
+	<article class="deck-container single-slide shownav" style="background-color:<?php echo esc_attr( $slideset_bg ); ?>;">
 
 		<?php $slide->render( 'deck-before', true ); ?>
 

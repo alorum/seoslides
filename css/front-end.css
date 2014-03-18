@@ -325,6 +325,11 @@ body.embeded .ssi.embiggen {
     padding: .25em 0;
     vertical-align: middle; }
 
+.deck-container:hover .deck-prev-link, .deck-container:hover .deck-next-link {
+  display: none; }
+.deck-container.shownav .deck-prev-link, .deck-container.shownav .deck-next-link {
+  display: inline; }
+
 .deck-prev-link, .deck-next-link {
   background: rgba(0, 0, 0, 0.75);
   color: #f15b3c; }

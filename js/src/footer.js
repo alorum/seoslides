@@ -19,6 +19,7 @@
 	 */
 	function Embed_Code() {
 		var SELF = this,
+			deck_container = $( 'article.deck-container' ),
 			trigger = '';
 
 		/**
@@ -314,14 +315,26 @@
 
 			if ( $footer_position < 0 && ! $footer.hasClass( 'sliding' ) ) {
 				// bar is hidden and is not currently sliding
-				$footer.addClass( 'sliding' ).animate( {
-					'bottom' : 0
-				}, 200, function () {
-					$footer.removeClass( 'sliding' );
+				$( function() {
+					var nav = $( '.deck-prev-link, .deck-next-link' );
 
-					// Swap out events
-					$body.off( 'mousemove.footer' );
-					$body.on( 'mousemove.footer', debounce( embed_code.mouseclose, 2500 ) );
+					nav.css( 'opacity', 0 );
+					deck_container.addClass( 'shownav' );
+
+					$footer.addClass( 'sliding' ).animate( {
+						'bottom' : 0
+					}, 200, function () {
+						$footer.removeClass( 'sliding' );
+
+						// Swap out events
+						$body.off( 'mousemove.footer' );
+						$body.on( 'mousemove.footer', debounce( embed_code.mouseclose, 2500 ) );
+					} );
+					nav.not( '.deck-nav-disabled' ).animate( {
+						'opacity': 1
+					}, 200, function() {
+						nav.css( 'opacity', '' );
+					} );
 				} );
 			}
 		};
@@ -346,16 +359,27 @@
 				return;
 			}
 
-			$footer.stop().addClass( 'sliding' ).animate( {
-				'bottom': ( $footer_height * -1 )
-			}, 200, function() {
-				$footer.removeClass( 'sliding' ).removeClass( 'opened' );
+			$( function() {
+				var nav = $( '.deck-prev-link, .deck-next-link' );
 
-				// Swap out events
-				$body.off( 'mousemove.footer' );
-				$body.on( 'mousemove.footer', throttle( embed_code.mouseopen, 250 ) );
+				$footer.stop().addClass( 'sliding' ).animate( {
+					'bottom': ( $footer_height * -1 )
+				}, 200, function() {
+					$footer.removeClass( 'sliding' ).removeClass( 'opened' );
 
-				CORE.Events.doAction( 'embed.close', document.querySelector( '.deck-current .embed-container' ) );
+					// Swap out events
+					$body.off( 'mousemove.footer' );
+					$body.on( 'mousemove.footer', throttle( embed_code.mouseopen, 250 ) );
+
+					CORE.Events.doAction( 'embed.close', document.querySelector( '.deck-current .embed-container' ) );
+				} );
+
+				nav.not( '.deck-nav-disabled' ).animate( {
+					'opacity': 0
+				}, 200, function() {
+					deck_container.removeClass( 'shownav' );
+					nav.css( 'opacity', '' );
+				} );
 			} );
 		};
 	}

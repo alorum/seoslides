@@ -465,6 +465,20 @@ body.embeded {
 	}
 }
 
+.deck-container {
+	&:hover {
+		.deck-prev-link, .deck-next-link {
+			display: none;
+		}
+	}
+
+	&.shownav {
+		.deck-prev-link, .deck-next-link {
+			display: inline;
+		}
+	}
+}
+
 .deck-prev-link, .deck-next-link {
 	background: rgba(0, 0, 0, .75);
 	color: #f15b3c;
