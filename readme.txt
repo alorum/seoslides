@@ -90,6 +90,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 * New: The seoslides importer now presents a progress bar to keep track of ongoing imports.
 * New: Slide imports are now processed in parallel to enhance the speed of the importer.
 * New: Add a flexible footer bar to all presentations to allow easy social sharing and access to embeds & notes.
+* New: Add open graph tags for Facebook, Twitter, and Google+ data elements when sharing a slide URL on social networks.
+* New: Add the 'minimal-ui' tag to the viewport tag for mobile optimization.
+* Fix: Synchronize the animations of navigation elements and the footer.
+* Fix: Remove a bug where not changing the slide background while updating elements would reset it to the default.
 * Fix: Updated product key logic to allow bulk updating.
 * Fix: Don't remove the api key upon failed validation.
 
