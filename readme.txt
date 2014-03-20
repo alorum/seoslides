@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= Dev =
+
+* New: Darken overlays for more consistent branding and UI.
+
 = 1.4.0 =
 
 * New: The seoslides importer now presents a progress bar to keep track of ongoing imports.

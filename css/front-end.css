@@ -50,7 +50,6 @@ body {
     .slide.deck-current .seoslides_iframe_thumb {
       display: none; }
   .slide aside.note {
-    background-color: #5d5d5d;
     overflow: hidden;
     color: #fff;
     padding: 30px;
@@ -574,8 +573,7 @@ body:not(.has-clones) .slide-notes {
   padding-bottom: 0;
   padding-left: 1em;
   padding-right: 1em;
-  background-color: #4b4b4b;
-  background-color: rgba(75, 75, 75, 0.975);
+  background-color: rgba(0, 0, 0, 0.9);
   color: #fff;
   -webkit-transition: opacity 0.3s ease-in-out 0ms;
   -moz-transition: opacity 0.3s ease-in-out 0ms;
