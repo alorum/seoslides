@@ -88,6 +88,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 = Dev =
 
 * New: Darken overlays for more consistent branding and UI.
+* New: If no description is provided and notes are blank, fall back on the slide title for open graph tags.
 
 = 1.4.0 =
 
