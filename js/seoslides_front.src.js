@@ -4328,6 +4328,7 @@
 					frame.style.display = 'none';
 					$( frame ).siblings( 'img' ).css( 'display', 'block' );
 				} else {
+					$( frame ).siblings( 'p.video-no-mobile' ).css( 'display', 'none' );
 					frame.style.width = width + 'px';
 					frame.style.height = height + 'px';
 				}
