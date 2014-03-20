@@ -49,15 +49,17 @@ class SEOSlides_Converter {
 		}
 
 		if ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) {
-			wp_enqueue_script( 'seoslides-converter', SEOSLIDES_URL . 'js/seoslides_converter.src.js', array( 'jquery' ), SEOSLIDES_VERSION . time(), true );
+			wp_enqueue_script( 'seoslides-converter', SEOSLIDES_URL . 'js/seoslides_converter.src.js', array( 'jquery', 'jquery-ui-progressbar' ), SEOSLIDES_VERSION . time(), true );
 		} else {
-			wp_enqueue_script( 'seoslides-converter', SEOSLIDES_URL . 'js/seoslides_converter.min.js', array( 'jquery' ), SEOSLIDES_VERSION, true );
+			wp_enqueue_script( 'seoslides-converter', SEOSLIDES_URL . 'js/seoslides_converter.min.js', array( 'jquery', 'jquery-ui-progressbar' ), SEOSLIDES_VERSION, true );
 		}
+
+		wp_enqueue_style( 'seoslides-converter', SEOSLIDES_URL . 'css/seoslides.converter.min.css', array(), '1.10.4' );
 
 		$js_variables = array(
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
 			'nonce_import'   => wp_create_nonce( __FILE__ ),
-			'text_running'   => __( 'Queueing presentation(s) for import ...', 'seoslides_translate' ),
+			'text_running'   => __( 'Processing your import queue ...', 'seoslides_translate' ),
 			'text_importing' => __( 'Importing slide %1% of %2% ...', 'seoslides_translate' ),
 			'text_notready'  => __( 'The presentation is not yet ready for processing. Please check back later', 'seoslides_translate' ),
 			'text_failure'   => sprintf( __( 'Unfortunately, something went wrong while attempting to import your slides. Please <a href="%s">contact customer support</a> to address the issue.', 'seoslides_translate' ), esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=seoslides_support' ) ) ),
@@ -281,7 +283,7 @@ class SEOSlides_Converter {
 				<?php endif; ?>
 
 				<?php if( 0 === $pending_count || 0 < $this->count_imports() ) : ?>
-					<div id="seoslides_import_status" style="max-height: 200px;overflow-y: scroll;">
+					<div id="seoslides_import_status">
 						<p><?php echo $this->get_status( true ); ?></p>
 					</div><!-- #seoslides_import_status -->
 
@@ -455,10 +457,11 @@ class SEOSlides_Converter {
 	/**
 	 * Import a background image as a slide
 	 *
-	 * @param int    $slideset
-	 * @param string $image
+	 * @param int      $slideset
+	 * @param string   $image
+	 * @param null|int $position
 	 */
-	protected function import_background( $slideset, $image ) {
+	protected function import_background( $slideset, $image, $position = null ) {
 		// Download image to temp location
 		$tmp = download_url( $image );
 
@@ -497,7 +500,9 @@ class SEOSlides_Converter {
 		$slideset = new SEOSlides_Slideset( $slideset );
 
 		// Get slide position
-		$position = count( $slideset->slides );
+		if ( null === $position ) {
+			$position = count( $slideset->slides );
+		}
 
 		// Slide content
 		$content = array(
@@ -586,7 +591,7 @@ class SEOSlides_Converter {
 		$file = $_POST['file'];
 		$position = (int) $_POST['slide'];
 
-		$this->import_background( $slideset, $file );
+		$this->import_background( $slideset, $file, $position );
 
 		wp_send_json( true );
 	}

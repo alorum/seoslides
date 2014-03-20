@@ -15,11 +15,17 @@ $grid: '';
 
 html, body {
 	height: 100%;
+	overflow: hidden;
+}
+
+html {
+	margin-top: 0;
 }
 
 body {
 	background-color: transparent;
-	overflow: auto;
+	margin-top: -1px;
+	padding-top: 1px;
 }
 
 .deck-container {
@@ -98,35 +104,6 @@ body {
 	height: 60%;
 }
 
-.branding {
-	position: absolute;
-	z-index: 11;
-	display: block;
-	width: auto;
-	height: 5%;
-	bottom: 5px; // Padding
-	left: 45px;
-/*	background: url(../img/seoslides-logo-trans.png) no-repeat center center; */
-	@include opacity(0.5);
-	@include transition(opacity, 0.5s);
-
-	&:hover {
-		@include opacity(1);
-	}
-
-/*	@media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-		background-image: url(../img/seoslides-logo-trans-2x.png);
-		background-size: 234px auto;
-	}
-*/
-}
-
-.has-embed {
-	.branding {
-		bottom: 45px;
-	}
-}
-
 .deck-container .deck-nav-disabled {
 	display: none;
 	opacity: 0;
@@ -135,6 +112,50 @@ body {
 		display: none;
 		opacity: 0;
 		cursor: default;
+	}
+}
+
+footer.deck-footer {
+	position: absolute;
+	height: 32px;
+	width: 100%;
+	background: rgba(0, 0, 0, .75);
+	z-index: 10;
+	bottom: 0;
+	overflow: hidden;
+
+	.ssi {
+		font-size: 20px;
+		padding-left: 6px;
+		padding-right: 6px;
+		padding-top: 6px;
+		cursor: pointer;
+		color: #f15b3c;
+		height: 100%;
+		display: inline-block;
+
+		&:first-child {
+			margin-left: 0.25em;
+		}
+
+		&.embiggen,
+		&.dismiss {
+			display: none;
+		}
+
+		&:hover {
+			background-color: #000;
+		}
+	}
+
+	.ssi-right {
+		float: right;
+		height: 100%;
+		margin-right: 0.25em;
+	}
+
+	&.opened .dismiss {
+		display: inline-block;
 	}
 }
 
@@ -172,86 +193,6 @@ body {
 		padding-top: 14px;
 	}
 
-	.slide-overview-link {
-		margin: auto;
-		width: 30px;
-		height: 21px;
-		display: block;
-		background: {
-			repeat: no-repeat;
-			image: url( ../img/overview.png );
-		}
-
-		@media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-			background-image: url(../img/overview-2x.png);
-			background-size: 30px auto;
-		}
-	}
-
-	.deck-notes-overlay {
-		height: 35px;
-		padding-top: 15px;
-	}
-
-	.slide-notes-icon {
-		margin-left: 12px;
-		width: 27px;
-		height: 20px;
-		display: block;
-		background: {
-			repeat: no-repeat;
-			image: url( ../img/notes.png );
-		}
-
-		@media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-			background-image: url(../img/notes-2x.png);
-			background-size: 27px auto;
-		}
-	}
-
-	.deck-embed-overlay {
-		height: 40px;
-		padding-top: 10px;
-	}
-
-	#deck-embed-link {
-		margin: auto;
-		height: 30px;
-		width: 30px;
-		display: block;
-		background: {
-			repeat: no-repeat;
-			image: url(../img/embed.png);
-			position: 0 -30px;
-		};
-
-		@media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-			background-image: url(../img/embed-2x.png);
-			background-size: 30px auto;
-		}
-	}
-
-	.deck-fullscreen-overlay {
-		height: 34px;
-		padding-top: 16px;
-	}
-
-	.toggle-fullscreen {
-		margin: auto;
-		width: 18px;
-		height: 18px;
-		display: block;
-		background: {
-			repeat: no-repeat;
-			image: url(../img/expand.png);
-		}
-
-		@media (-webkit-min-device-pixel-ratio: 1.3), (-o-min-device-pixel-ratio: 2.6/2), (min--moz-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-			background-image: url(../img/expand-2x.png);
-			background-size: 18px auto;
-		}
-	}
-
 	.deck-status,
 	.deck-actions {
 		color: #fff;
@@ -284,34 +225,7 @@ body {
 	.hidden {
 		display: none;
 	}
-
-	&.opened {
-		.deck-actions {
-			display: block;
-			background-color: #f15b3c;
-
-			&:before {
-				content: '\f158';
-			}
-		}
-	}
 }
-
-/* larger button may be needed again when switching to image
-@media screen and (min-width: 640px) {
-	.deck-footer {
-		.deck-actions {
-			margin: 5px 0;
-			padding-left: 1px !important;
-			height: 45px !important;
-			font-size: 2.2em !important;
-			line-height: 1.3em !important;
-			font-weight: normal !important;
-			width: 45px !important;
-		}
-	}
-}
-*/
 
 .deck-container:hover .extras {
 	.deck-actions {
@@ -332,6 +246,10 @@ body {
 body.embeded {
 	.deck-footer .deck-overview {
 		display: none;
+	}
+
+	.ssi.embiggen {
+		display: inline-block;
 	}
 }
 
@@ -547,11 +465,27 @@ body.embeded {
 	}
 }
 
+.deck-container {
+	&:hover {
+		.deck-prev-link, .deck-next-link {
+			display: none;
+		}
+	}
+
+	&.shownav {
+		.deck-prev-link, .deck-next-link {
+			display: inline;
+		}
+	}
+}
+
 .deck-prev-link, .deck-next-link {
-	background: #888;
+	background: rgba(0, 0, 0, .75);
+	color: #f15b3c;
 
 	&:focus, &:hover {
-		background-color: #f15b3c;
+		background-color: #000;
+		color: #f15b3c;
 	}
 }
 

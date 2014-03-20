@@ -32,7 +32,7 @@ module.exports = function ( grunt ) {
 					'js/src/front-end-plugins.js',
 					'js/lib/jquery.touchSwipe.js',
 					'js/src/front.js',
-					'js/src/embed-code.js'
+					'js/src/footer.js'
 				],
 				dest: 'js/seoslides_front.src.js'
 			},

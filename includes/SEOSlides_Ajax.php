@@ -64,8 +64,8 @@ class SEOSlides_Ajax {
 			// Build an array containing each slide in a separate associative array
 			/** @var SEOSlides_Slide $slide */
 			foreach( $slideset->slides as $slide ) {
-				$bg_image = $slide->bg_image;
-				$bg_id = SEOSlides_Core::get_attachment_id_from_url( $bg_image );
+				$bg_image = $slide->get_bg_image();
+				$bg_id = SEOSlides_Util::get_attachment_id_from_url( $bg_image );
 				if ( false !== $bg_id ) {
 					$bg_arr = wp_get_attachment_image_src( $bg_id, 'seoslides-thumb' );
 					$bg_image = $bg_arr[0];
@@ -88,8 +88,8 @@ class SEOSlides_Ajax {
 					'status'          => $slide->status,
 				);
 
-				if ( isset( $data['bg-image'] ) && function_exists( 'jetpack_photon_url' ) ) {
-					$data['bg-image'] = jetpack_photon_url( $data['bg-image'], array(), '//' );
+				if ( isset( $data['bg_image'] ) && function_exists( 'jetpack_photon_url' ) ) {
+					$data['bg_image'] = jetpack_photon_url( $data['bg_image'], array(), '//' );
 				}
 
 				$oembed = SEOSlides_Slide::get_embed_url( $slide->oembed );
@@ -224,8 +224,6 @@ class SEOSlides_Ajax {
 				$slide_number++;
 			}
 
-			$sections .= $slideset->last_slide();
-
 			$response['success'] = true;
 			$response['sections'] = $sections;
 		}
@@ -286,8 +284,11 @@ class SEOSlides_Ajax {
 			$slide->oembed = esc_url_raw( $_POST['oembed'] );
 
 			// Background information
+			$default = get_post_meta( $slide->slideset, '_default_slide', true );
+			$default_fill = isset( $default->fill_color ) ? $default->fill_color : '#ffffff';
+
 			$fill_color = sanitize_text_field( $_POST['fill_color'] );
-			$slide->fill_color = ( $fill_color === $slide->fill_color ) ? '' : $fill_color;
+			$slide->fill_color = ( $fill_color === $default_fill ) ? '' : $fill_color;
 			$slide->bg_image = sanitize_text_field( $_POST['bg_image'] );
 
 			// Update SEO

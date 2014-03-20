@@ -147,15 +147,10 @@ class SEOSlides_Slide {
 
 		// Build out inline style
 		$style = ' style="';
-		if ( '' !== $this->bg_image && 'noimage' !== $this->bg_image ) {
-			$image = $this->bg_image;
-
-			if ( function_exists( 'jetpack_photon_url' ) ) {
-				$image = jetpack_photon_url( $this->bg_image, array(), '//' );
-			}
-
+		$image = $this->get_bg_image();
+		if ( '' !== $image && 'noimage' !== $image ) {
 			$style .= 'background-image:url(' . $image . ');';
-		} elseif ( 'noimage' === $this->bg_image ) {
+		} elseif ( 'noimage' === $image ) {
 			// Pull out the background image from the presentation if it exists.
 			// Get presentation fill color
 			$default = get_post_meta( $this->slideset, '_default_slide', true );
@@ -182,7 +177,7 @@ class SEOSlides_Slide {
 		$this->bg_image = isset( $slide_content['bg-image'] ) ? $slide_content['bg-image'] : null;
 
 
-		$image_id = SEOSlides_Core::get_attachment_id_from_url( $this->bg_image );
+		$image_id = SEOSlides_Util::get_attachment_id_from_url( $this->bg_image );
 		if ( false !== $image_id ) {
 			$image_arr = wp_get_attachment_image_src( $image_id, 'seoslides-thumb' );
 			$this->bg_thumb = $image_arr[0];
@@ -238,12 +233,13 @@ class SEOSlides_Slide {
 	/**
 	 * Build the <section> containing the slide and all of its related markup.
 	 *
-	 * @param string $class CSS class to apply to the <section>
-	 * @param bool   $echo  Flag whether to echo or return the content
+	 * @param string $class   CSS class to apply to the <section>
+	 * @param bool   $echo    Flag whether to echo or return the content
+	 * @param bool   $overlay Include slide buttons and overlay elements
 	 *
 	 * @return string|void
 	 */
-	public function render( $class = 'deck-before', $echo = false ) {
+	public function render( $class = 'deck-before', $echo = false, $overlay = true ) {
 		$section = "<section class='slide {$class}' data-id='{$this->ID}' id='{$this->slug}' {$this->style}>\r\n";
 
 		$section .= "\t<div class='slide-body'>\r\n";
@@ -289,10 +285,13 @@ class SEOSlides_Slide {
 		}
 
 		$section .= "\t</div>\r\n";
-		$section .= '<span class="slide-button"></span>';
-		$section .= '<span class="embed-button"></span>';
 
-		$section .= $this->render_embed_overlay();
+		if ( $overlay ) {
+			$section .= '<span class="slide-button"></span>';
+			$section .= '<span class="embed-button"></span>';
+
+			$section .= $this->render_embed_overlay();
+		}
 
 		$section .= "</section>";
 
@@ -363,55 +362,28 @@ class SEOSlides_Slide {
 	 * @return string Embed overlay markup
 	 */
 	public function render_embed_overlay() {
-		$tabs = array();
 		$asides = array();
-		$actions = array();
-
-		// Presenter notes tab and aside
-		if ( ! empty( $this->presenter_notes ) ) {
-			$tabs[]   = array( 'class' => 'notes-li', 'child' => 'note', 'label' => __( 'Notes', 'seoslides_translate' ) );
-			$asides[] = array( 'class' => 'note', 'content' => "<div class='note-container'>{$this->presenter_notes}</div>" );
-		}
-
-		// Script embed tab and aside
-		$tabs[]   = array( 'class' => 'embed-script-li', 'child' => 'script-embed-instructions', 'label' => __( 'Embed Script', 'seoslides_translate' ) );
-		$asides[] = array( 'class' => 'script-embed-instructions', 'content' => '<p>' . __( 'To embed this presentation from this slide, insert the script tag below where you would like the presentation to appear.', 'seoslides_translate' ) . '</p>' );
 
 		// Shortcode embed tab and aside
-		$tabs[]   = array( 'class' => 'shortcode-li', 'child' => 'wordpress-embed-instructions', 'label' => __( 'WordPress Shortcode', 'seoslides_translate' ) );
-		$asides[] = array( 'class' => 'wordpress-embed-instructions', 'content' => '<p>' . __( 'Install the <span class="pseudolink" onclick="javascript:window.open(\'http://wordpress.org/plugins/seoslides\',\'_blank\');">seoslides plugin</span> on your WordPress site. Then, to embed this presentation from this slide, copy the shortcode below into any post or page.', 'seoslides_translate' ) . '</p>' );
+		$asides['wordpress-embed-instructions'] = '<h2 class="overlay-label">' . sprintf( __( 'Embed with seoslides: %s', 'seoslides_translate' ), esc_html( $this->parent( 'title' ) ) ) . '</h2><p>' . __( 'Install the <span class="pseudolink" onclick="javascript:window.open(\'http://wordpress.org/plugins/seoslides\',\'_blank\');">seoslides plugin</span> on your WordPress site. Then, to embed this presentation from this slide, copy the shortcode below into any post or page.', 'seoslides_translate' ) . '</p>';
 
-		$slideset_link = get_post_meta( $this->slideset, '_slideset_link', true );
+		// Script embed tab and aside
+		$asides['script-embed-instructions'] =  '<h2 class="overlay-label">' . sprintf( __( 'Embed: %s', 'seoslides_translate' ), esc_html( $this->parent( 'title' ) ) ) . '</h2><p>' . __( 'To embed this presentation from this slide, insert the script tag below where you would like the presentation to appear.', 'seoslides_translate' ) . '</p>';
 
-		// Default actions
-		if ( ! empty( $slideset_link ) ) {
-			$actions[] = array( 'class' => 'overview', 'alt' => $this->parent( 'title' ), 'href' => esc_attr( $slideset_link ) );
-		}
-		$actions[] = array( 'class' => 'full-screen', 'alt' => __( 'Full screen', 'seoslides_translate' ), 'href' => '' );
+		// Presenter notes tab and aside
+		$asides['note'] = "<div class='note-container'><h2 class='overlay-label'>" . sprintf( __( 'Notes: %s', 'seoslides_translate' ),  esc_html( $this->title ) ) . "</h2>" . ( empty( $this->presenter_notes ) ? __( 'Notes are not available for this slide.', 'seoslides_translate' ) : wp_kses_post( $this->presenter_notes ) ) . "</div>";
 
-		// Filter the tabs and asides to allow plugins to hook in and modify things
-		$tabs = apply_filters( 'seoslides_embed_tabs', $tabs, $this, $this->post );
+		// Filter asides so other plugins can hook in to add their own overlays
 		$asides = apply_filters( 'seoslides_embed_asides', $asides, $this, $this->post );
-		$actions = apply_filters( 'seoslides_embed_actions', $actions, $this, $this->post );
 
 		// Build out the embed container
 		$embed = '<div class="embed-container">';
-		$embed .= '<ul class="embed-tabs">';
-		foreach( $tabs as $tab ) {
-			$class = $tab['class'] . ( $tab === $tabs[0] ? ' current default' : '' );
-			$embed .= '<li class="' . $class . '" data-child="aside.' . $tab['child'] . '">' . $tab['label'] . '</li>';
-		}
-		$embed .= '</ul>';
 
-		$embed .= '<div class="embed-actions">';
-		foreach( $actions as $action ) {
-			$embed .= '<span class="' . $action['class'] . ' action-icon" title="' . $action['alt'] . '" alt="' . $action['alt'] . '" data-href="' . $action['href'] . '">&nbsp;</span>';
-		}
-		$embed .= '</div>';
-
-		foreach( $asides as $aside ) {
-			$class =  $aside['class'] . ( $aside === $asides[0] ? ' child default' : ' child hidden' );
-			$embed .= '<aside class="' . $class . '">' . $aside['content'] . '</aside>';
+		reset( $asides );
+		$first_item = key( $asides );
+		foreach( $asides as $aside_class => $content ) {
+			$class =  $aside_class . ( $aside_class === $first_item ? ' default current' : '' );
+			$embed .= '<aside class="' . $class . '">' . $content . '</aside>';
 		}
 
 		$embed_id = SEOSlides_Module_Provider::get( 'SEOSlides Embed' )->get_embed_unique_id( $this->post->post_parent, $this->slug );
@@ -483,6 +455,29 @@ class SEOSlides_Slide {
 		}
 
 		return $this->_parent->$property;
+	}
+
+	/**
+	 * Get the background image for the slide.
+	 *
+	 * @return string
+	 */
+	public function get_bg_image() {
+		$image = $this->bg_image;
+
+		// If the image is not set, then grab it from the parent presentation.
+		if ( 'noimage' === $image ) {
+			$default = get_post_meta( $this->slideset, '_default_slide', true );
+			if ( isset( $default->bg_image ) && '' !== $default->bg_image && 'noimage' !== $default->bg_image ) {
+				$image = $default->bg_image;
+			}
+		}
+
+		if ( '' !== $image && 'noimage' !== $image && function_exists( 'jetpack_photon_url') ) {
+			$image = jetpack_photon_url( $image, array(), '//' );
+		}
+
+		return $image;
 	}
 
 	/**
