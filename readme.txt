@@ -89,6 +89,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 * New: Darken overlays for more consistent branding and UI.
 * New: If no description is provided and notes are blank, fall back on the slide title for open graph tags.
+* New: To avoid videos stealing swipes on mobile, video embeds will now present their thumbnail and a message apologizing for their unavailability on mobile.
 
 = 1.4.0 =
 

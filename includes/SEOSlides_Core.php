@@ -578,7 +578,9 @@ class SEOSlides_Core {
 			return;
 		}
 
-		wp_register_script( 'seoslides-modernizr', SEOSLIDES_URL . 'js/lib/modernizr.js', array(), '2.6.2' );
+		wp_register_script( 'seoslides-modernizr',               SEOSLIDES_URL . 'js/lib/modernizr.js',                             array(),                                                   '2.6.2' );
+		wp_register_script( 'seoslides-mobile-detect',           SEOSLIDES_URL . 'vendor/mobile-detect/mobile-detect.min.js',       array(),                                                   '0.1.1' );
+		wp_register_script( 'seoslides-mobile-detect-modernizr', SEOSLIDES_URL . 'vendor/mobile-detect/mobile-detect-modernizr.js', array( 'seoslides-modernizr', 'seoslides-mobile-detect' ), '0.1.1' );
 
 		// Get presentation theme
 		$theme_name = get_post_meta( get_the_ID(), '_slideset_theme', true );
@@ -600,7 +602,7 @@ class SEOSlides_Core {
 		$this->enqueue_mediaelement();
 
 		// Scripts
-		$this->enqueue_script( 'seoslides_front', array( 'jquery', 'seoslides-modernizr', 'wp-mediaelement', 'deck', 'deck.menu', 'deck.goto', 'deck.status', 'deck.navigation' ), true );
+		$this->enqueue_script( 'seoslides_front', array( 'jquery', 'seoslides-mobile-detect-modernizr', 'wp-mediaelement', 'deck', 'deck.menu', 'deck.goto', 'deck.status', 'deck.navigation' ), true );
 		$this->script_translations( 'seoslides_front' );
 
 		$embedID = '';

@@ -49,6 +49,14 @@ body {
       background-color: #000; }
     .slide.deck-current .seoslides_iframe_thumb {
       display: none; }
+    .slide.deck-current p.video-no-mobile {
+      display: block;
+      background: #fff;
+      color: #000;
+      text-align: center;
+      width: 100%;
+      position: absolute;
+      top: 50%; }
   .slide aside.note {
     overflow: hidden;
     color: #fff;

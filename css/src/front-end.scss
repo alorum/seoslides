@@ -80,6 +80,16 @@ body {
 		.seoslides_iframe_thumb {
 			display: none;
 		}
+
+		p.video-no-mobile {
+			display: block;
+			background: #fff;
+			color: #000;
+			text-align: center;
+			width: 100%;
+			position: absolute;
+			top: 50%;
+		}
 	}
 
 	aside.note {

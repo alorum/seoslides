@@ -4225,6 +4225,7 @@
 		document = window.document,
 		notesOverlay = document.querySelector( '.deck-notes-overlay' ),
 		$d = $( document ),
+		$html = $( 'html' ),
 		$body = $( 'body' );
 
 	CORE.isEmbeded = false;
@@ -4323,8 +4324,13 @@
 			for ( var i = 0, l = frames.length; i < l; i++ ) {
 				var frame = frames[ i ];
 
-				frame.style.width = width + 'px';
-				frame.style.height = height + 'px';
+				if ( $html.hasClass( 'mobile' ) ) {
+					frame.style.display = 'none';
+					$( frame ).siblings( 'img' ).css( 'display', 'block' );
+				} else {
+					frame.style.width = width + 'px';
+					frame.style.height = height + 'px';
+				}
 			}
 
 			// Resize notes
