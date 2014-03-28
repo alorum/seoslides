@@ -4,7 +4,7 @@ Donate link: http://alorum.com
 Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up
 Requires at least: 3.5.1
 Tested up to: 3.8.1
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,7 +85,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
-= Dev =
+= 1.4.1 =
 
 * New: Darken overlays for more consistent branding and UI.
 * New: If no description is provided and notes are blank, fall back on the slide title for open graph tags.
