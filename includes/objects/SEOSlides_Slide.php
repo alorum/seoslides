@@ -252,6 +252,9 @@ class SEOSlides_Slide {
 				$section .= "\r\r<img class=\"seoslides_iframe_thumb\" src=\"" . $thumb_url . "\" />";
 			}
 
+			$section .= "\r\r<p class=\"video-no-mobile\">" . __( 'Videos are unavailable on mobile.', 'seoslides_translate' ) . '<br />';
+			$section .= sprintf( __( 'Please <a href="%s" target="_blank">click here</a> to watch the video.', 'seoslides_translate' ), esc_attr( $this->oembed ) ) . '</p>';
+
 			if ( ! is_wp_error( $embed_url ) ) {
 				$section .= "\r\r<iframe class=\"seoslides_iframe\" src=\"" . $embed_url . "\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
 			}

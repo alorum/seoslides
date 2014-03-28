@@ -1,4 +1,4 @@
-/*! seoslides - v1.4.0
+/*! seoslides - v1.4.1
  * https://seoslides.com
  * Copyright (c) 2014 Alroum; * Licensed GPLv2+ */
 ;(function ($, window, undefined) {
@@ -4225,6 +4225,7 @@
 		document = window.document,
 		notesOverlay = document.querySelector( '.deck-notes-overlay' ),
 		$d = $( document ),
+		$html = $( 'html' ),
 		$body = $( 'body' );
 
 	CORE.isEmbeded = false;
@@ -4323,8 +4324,14 @@
 			for ( var i = 0, l = frames.length; i < l; i++ ) {
 				var frame = frames[ i ];
 
-				frame.style.width = width + 'px';
-				frame.style.height = height + 'px';
+				if ( $html.hasClass( 'mobile' ) ) {
+					frame.style.display = 'none';
+					$( frame ).siblings( 'img' ).css( 'display', 'block' );
+				} else {
+					$( frame ).siblings( 'p.video-no-mobile' ).css( 'display', 'none' );
+					frame.style.width = width + 'px';
+					frame.style.height = height + 'px';
+				}
 			}
 
 			// Resize notes
