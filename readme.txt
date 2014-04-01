@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= Dev =
+
+* New: Add slide numbers (for navigation status) to the footer bar.
+
 = 1.4.1 =
 
 * New: Darken overlays for more consistent branding and UI.

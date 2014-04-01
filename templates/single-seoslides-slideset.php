@@ -150,6 +150,9 @@ if ( '' === $slide_slug ) {
 			<span class="ssi landing" data-href="<?php echo esc_attr( $slideset_link ); ?>" title="<?php esc_attr_e( 'View Presentation Overview', 'seoslides_translate' ); ?>"></span>
 			<?php endif; ?>
 			<span class="ssi embiggen" title="<?php esc_attr_e( 'View Full-screen', 'seoslides_translate' ); ?>"></span>
+			<span class="ssi deck-status" aria-role="status">
+				<span class="deck-status-current">?</span>/<span class="deck-status-total">?</span>
+			</span>
 		</span>
 	</footer>
 

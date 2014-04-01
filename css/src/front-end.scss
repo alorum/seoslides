@@ -498,6 +498,17 @@ body.embeded {
 	}
 }
 
+footer.deck-footer {
+	.ssi.deck-status {
+		bottom: 4px;
+		right: auto;
+		font-size: 16px;
+		line-height: 16px;
+		position: relative;
+		letter-spacing: -2px;
+	}
+}
+
 // Last slide styling
 #share {
 	.slide-body {
