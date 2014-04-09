@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= DEV =
+
+* New: Add spinning load indicators to the front-end nav while slides are loading in the background.
+
 = 1.4.1 =
 
 * New: Darken overlays for more consistent branding and UI.

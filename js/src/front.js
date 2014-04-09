@@ -66,6 +66,8 @@
 					container.prepend( data.sections );
 
 					process_content();
+
+					$( '.loading' ).removeClass( 'loading' );
 				}
 			} );
 

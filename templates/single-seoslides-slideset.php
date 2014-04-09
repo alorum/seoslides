@@ -118,8 +118,8 @@ if ( '' === $slide_slug ) {
 		<?php $slide->render( 'deck-before', true ); ?>
 
 		<div class="extras">
-			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'previous', $slide ) ); ?>" class="deck-prev-link" title="<?php _e( 'Previous', 'seoslides_translate' ); ?>" rel="previous">&lsaquo;</a>
-			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'next', $slide ) ); ?>" class="deck-next-link" title="<?php _e( 'Next', 'seoslides_translate' ); ?>" rel="next">&rsaquo;</a>
+			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'previous', $slide ) ); ?>" class="loading deck-prev-link" title="<?php _e( 'Previous', 'seoslides_translate' ); ?>" rel="previous">&lsaquo;</a>
+			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'next', $slide ) ); ?>" class="loading deck-next-link" title="<?php _e( 'Next', 'seoslides_translate' ); ?>" rel="next">&rsaquo;</a>
 		</div>
 
 	</article>
