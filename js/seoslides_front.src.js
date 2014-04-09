@@ -4275,10 +4275,15 @@
 	function loadContent() {
 		process_content();
 
+		var presentation_url = $( 'link[rel=canonical]' ).attr( 'href' ),
+			allslides_url = presentation_url + 'allslides/';
+
 		// By default, the single page *only* contains the content of the current slide.  We asynchronously load the content
 		// of the entire slide deck before firing the rest of the system.
-		$.post( seoslides.ajaxurl, { 'action': 'get-slide-sections', 'slideset': seoslides.slideset } )
-			.done( function ( data ) {
+		$.ajax( {
+			'type': 'GET',
+			'url': allslides_url
+		} ).done( function ( data ) {
 				if ( true === data.success ) {
 					var container = $( '.deck-container' );
 

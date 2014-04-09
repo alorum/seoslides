@@ -88,6 +88,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 = DEV =
 
 * New: Add spinning load indicators to the front-end nav while slides are loading in the background.
+* New: Cache the entire presentation's markup in a WordPress endpoint to make it cacheable on the server.
 
 = 1.4.1 =
 

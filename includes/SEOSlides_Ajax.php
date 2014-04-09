@@ -210,25 +210,36 @@ class SEOSlides_Ajax {
 			/** @var SEOSlides_Slideset $slideset  */
 			$slideset = SEOSlides_Module_Provider::get( 'SEOSlides Core' )->get_slideset( $slideset_id );
 
-			$sections = '';
-
-			$slide_number = 1;
-			/** @var SEOSlides_Slide $slide */
-			foreach( $slideset->slides as $slide ) {
-				if ( 'publish' !== $slide->status ) {
-					continue;
-				}
-
-				$sections .= $slide->render();
-
-				$slide_number++;
-			}
-
 			$response['success'] = true;
-			$response['sections'] = $sections;
+			$response['sections'] = $this->render_slide_sections( $slideset );
 		}
 
 		wp_send_json( $response );
+	}
+
+	/**
+	 * Generate the JSON response for a given slideset.
+	 *
+	 * @param SEOSlides_Slideset $slideset
+	 *
+	 * @return string
+	 */
+	public function render_slide_sections( $slideset ) {
+		$sections = '';
+
+		$slide_number = 1;
+		/** @var SEOSlides_Slide $slide */
+		foreach( $slideset->slides as $slide ) {
+			if ( 'publish' !== $slide->status ) {
+				continue;
+			}
+
+			$sections .= $slide->render();
+
+			$slide_number++;
+		}
+
+		return $sections;
 	}
 
 	/**

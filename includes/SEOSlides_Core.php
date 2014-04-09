@@ -52,6 +52,7 @@ class SEOSlides_Core {
 		add_action( 'admin_head-post.php',                           array( $this, 'presentation_help_tabs' ) );
 		add_action( 'admin_head-edit.php',                           array( $this, 'hide_view_switcher' ), 100 );
 		add_action( 'after_setup_theme',                             array( $this, 'add_thumbnail_sizes' ) );
+		add_action( 'template_redirect',                             array( $this, 'endpoint_override' ) );
 
 		// Wire filters
 		add_filter( 'manage_seoslides-slideset_posts_columns',         array( $this, 'filter_list_table_columns' ) );
@@ -171,7 +172,11 @@ class SEOSlides_Core {
 			'show_ui'            => true,
 			'show_in_menu'       => true,
 			'query_var'          => true,
-			'rewrite'            => array( 'slug' => 'slides', 'with_front' => false ),
+			'rewrite'            => array(
+				'slug'       => 'slides',
+				'with_front' => false,
+			    'ep_mask'    => EP_PERMALINK | EP_SEOSLIDES,
+			),
 			'capability_type'    => 'post',
 			'has_archive'        => false,
 			'hierarchical'       => false,
@@ -300,8 +305,11 @@ class SEOSlides_Core {
 		add_rewrite_tag( '%seoslides-slide%', '(.+)' );
 		add_rewrite_tag( '%seoslides-first%', '([0-9])' );
 
+		add_rewrite_endpoint( 'allslides', EP_SEOSLIDES );
+
 		add_rewrite_rule( '^slides/?$',           'index.php?seoslides-first=1',                                          'top' );
-		add_rewrite_rule( '^slides/(.+)/(.+)/?$', 'index.php?seoslides-slideset=$matches[1]&seoslides-slide=$matches[2]', 'top' );
+		//add_rewrite_rule( '^slides/(.+)/(.+)/?$', 'index.php?seoslides-slideset=$matches[1]&seoslides-slide=$matches[2]', 'top' );
+		add_rewrite_rule( '^slides/(.+)/((?!allslides).+)/?$', 'index.php?seoslides-slideset=$matches[1]&seoslides-slide=$matches[2]', 'top' );
 	}
 
 	/**
@@ -362,6 +370,33 @@ class SEOSlides_Core {
 		}
 
 		return SEOSLIDES_PATH . 'templates/single-seoslides-slideset.php';
+	}
+
+	/**
+	 * Intercept a request for the entire presentation markup (the AJAX request for "allslides") and return all slides
+	 *
+	 * @global WP_Query $wp_query
+	 */
+	public function endpoint_override() {
+		global $wp_query;
+
+		// if this is not a request for all slides or a singular object then bail
+		if ( ! isset( $wp_query->query_vars['allslides'] ) || ! is_singular() ) {
+			return;
+		}
+
+		// Set our content type
+		header( 'Content-Type: application/json' );
+
+		$slideset = new SEOSlides_Slideset( get_queried_object() );
+
+		$sections = SEOSlides_Module_Provider::get( 'SEOSlides Ajax' )->render_slide_sections( $slideset );
+		$response = array(
+			'success'  => true,
+		    'sections' => $sections,
+		);
+
+		wp_send_json( $response );
 	}
 
 	/****************************************************************/

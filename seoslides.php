@@ -31,6 +31,7 @@
 define( 'SEOSLIDES_VERSION', '1.4.1' );
 define( 'SEOSLIDES_URL',     plugin_dir_url( __FILE__ ) );
 define( 'SEOSLIDES_PATH',    dirname( __FILE__ ) . '/' );
+define( 'EP_SEOSLIDES', EP_PAGES << 13 );
 if ( ! defined( 'CATALYST_URL' ) ) {
 	define( 'CATALYST_URL', 'https://seoslides.com' );
 }
