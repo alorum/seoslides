@@ -256,6 +256,7 @@ class SEOSlides_Slide {
 			$section .= sprintf( __( 'Please <a href="%s" target="_blank">click here</a> to watch the video.', 'seoslides_translate' ), esc_attr( $this->oembed ) ) . '</p>';
 
 			if ( ! is_wp_error( $embed_url ) ) {
+				$embed_url = add_query_arg( array( 'enablejsapi' => true, 'api' => true ), $embed_url );
 				$section .= "\r\r<iframe class=\"seoslides_iframe\" src=\"" . $embed_url . "\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
 			}
 		}
