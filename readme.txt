@@ -89,6 +89,8 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 * New: Add spinning load indicators to the front-end nav while slides are loading in the background.
 * New: Cache the entire presentation's markup in a WordPress endpoint to make it cacheable on the server.
+* New: Add slide numbers (for navigation status) to the footer bar.
+* New: If Google Analytics' `_gaq` tracker is available, notify the tracker that we're navigating through the slideset as we go.
 
 = 1.4.1 =
 

@@ -25,9 +25,9 @@
 	/**
 	 * Scan the current slide for any embeds and, if present, add a body class.
 	 *
-	 * @param e
-	 * @param from
-	 * @param to
+	 * @param {Event}  e
+	 * @param {Number} from
+	 * @param {Number} to
 	 */
 	function scanEmbeds( e, from, to ) {
 		window.setTimeout( function() {
@@ -39,7 +39,14 @@
 		}, 10 );
 	}
 
-	function process_content() {
+	/**
+	 * Process slide content upon navigation.
+	 *
+	 * @param {Event}  e
+	 * @param {Number} from
+	 * @param {Number} to
+	 */
+	function process_content( e, from, to ) {
 		$.deck( '.slide' );
 
 		CORE.resizeCanvas();
@@ -49,6 +56,26 @@
 
 			CORE.processPlugins( $( '.slide-body > div', $this ) );
 		} );
+	}
+
+	/**
+	 * If Google Analytics tracking is installed, fire a pageview event.
+	 *
+	 * @global {Object} _gaq
+	 *
+	 * @param {Event}  e
+	 * @param {Number} from
+	 * @param {Number} to
+	 */
+	function google_track( e, from, to ) {
+		if ( undefined === window._gaq ) {
+			return;
+		}
+
+		var location = window.location.pathname;
+
+		// Track the pageview
+		window._gaq.push( ['_trackPageView', location ] );
 	}
 
 	function loadContent() {
@@ -85,7 +112,9 @@
 			}
 		} );
 
-		$d.on( 'deck.change', scanEmbeds );
+		// Set up jQuery events
+		$d.on( 'deck.change', google_track );
+		$d.on( 'deck.change', scanEmbeds   );
 	}
 
 	/**
@@ -138,6 +167,7 @@
 		preventFragmentScroll: true
 	} );
 
+	// Set up events
 	CORE.Events.addAction( 'debounced.canvas.resize', resize_elements );
 
 	// Let's run things
