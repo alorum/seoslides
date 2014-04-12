@@ -257,6 +257,7 @@ class SEOSlides_Slide {
 
 			if ( ! is_wp_error( $embed_url ) ) {
 				$embed_url = add_query_arg( array( 'enablejsapi' => true, 'api' => true ), $embed_url );
+				$embed_url = str_replace( '//player.vimeo.com', 'https://player.vimeo.com', $embed_url );
 				$section .= "\r\r<iframe class=\"seoslides_iframe\" src=\"" . $embed_url . "\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
 			}
 		}

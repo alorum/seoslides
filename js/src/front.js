@@ -1,4 +1,4 @@
-/*global jQuery, seoslides, YT */
+/*global jQuery, seoslides, YT, $f */
 (function ( $, window, undefined ) {
 	var CORE = window.SEO_Slides,
 		document = window.document,
@@ -6,7 +6,8 @@
 		$d = $( document ),
 		$html = $( 'html' ),
 		$body = $( 'body' ),
-		youtube_players = [];
+		youtube_players = [],
+		vimeo_players = [];
 
 	CORE.isEmbeded = false;
 	if ( window.self !== window.top ) {
@@ -24,39 +25,6 @@
 	}
 
 	/**
-	 * Build a YouTube onReady polyfill method.
-	 */
-	var youtube_ready = (function () {
-		var onReady_funcs = [], api_isReady = false;
-		/* @param func function     Function to execute on ready
-		 * @param func Boolean      If true, all qeued functions are executed
-		 * @param b_before Boolean  If true, the func will added to the first position in the queue*/
-		return function ( func, b_before ) {
-			if ( func === true ) {
-				api_isReady = true;
-				while ( onReady_funcs.length ) {
-					// Removes the first func from the array, and execute func
-					onReady_funcs.shift()();
-				}
-			} else if ( typeof func === "function" ) {
-				if ( api_isReady ) {
-					func();
-				}
-				else {
-					onReady_funcs[b_before ? "unshift" : "push"]( func );
-				}
-			}
-		};
-	})();
-
-	/**
-	 * Make sure we fire the YouTube ready event when we're actually ready.
-	 */
-	window.onYouTubePlayerAPIReady = function() {
-		youtube_ready( true );
-	};
-
-	/**
 	 * Scan the current slide for any embeds and, if present, add a body class.
 	 *
 	 * @param {Event}  e
@@ -69,25 +37,14 @@
 				$body.addClass( 'has-embed' );
 
 				// Process YouTube players and add them to an array.
-				var players = $( 'iframe[src*="youtube.com"]' );
+				$( 'iframe[src*="youtube.com"]' ).each( function( i, el ) {
+					youtube_players.push( el );
+				} );
 
-				if ( players.length > 0 ) {
-					// Load YouTube API.
-					if ( null === document.getElementById( 'youtube-script' ) ) {
-						var tag = document.createElement( 'script' );
-						tag.id = 'youtube-script';
-						tag.src = "//www.youtube.com/player_api";
-						var firstScriptTag = document.getElementsByTagName( 'script' )[0];
-						firstScriptTag.parentNode.insertBefore( tag, firstScriptTag );
-					}
-
-					youtube_ready( function () {
-						players.each( function ( i, el ) {
-							youtube_players.push( new YT.Player( el ) );
-
-						} );
-					} );
-				}
+				// Process Vimeo players and add them to an array.
+				$( 'iframe[src*="vimeo.com"]' ).each( function( i, el ) {
+					vimeo_players.push( el );
+				} );
 			} else {
 				$body.removeClass( 'has-embed' );
 			}
@@ -141,22 +98,23 @@
 	 * @param {Number} to
 	 */
 	function kill_videos( e, from, to ) {
+		var youtube_command = window.JSON.stringify( { event: 'command', func: 'pauseVideo' } ),
+			vimeo_command = window.JSON.stringify( { method: 'pause' } );
+
 		$.each( youtube_players, function( i, player ) {
-			if ( undefined !== player.pauseVideo && undefined !== player.getPlayerState ) {
-				switch( player.getPlayerState() ) {
-					case 1: // Playing
-					case 3: // Buffering
-						player.pauseVideo();
-						break;
-					case -1: // Unstarted
-					case 0:  // Ended
-					case 2:  // Paused
-					case 5:  // Cued
-						break;
-					default:
-						break;
-				}
+			if ( null === player.contentWindow ) {
+				return;
 			}
+
+			player.contentWindow.postMessage( youtube_command, 'https://www.youtube.com' );
+		} );
+
+		$.each( vimeo_players, function( i, player ) {
+			if ( null === player.contentWindow ) {
+				return;
+			}
+
+			player.contentWindow.postMessage( vimeo_command, 'https://player.vimeo.com' );
 		} );
 	}
 

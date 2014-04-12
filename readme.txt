@@ -92,6 +92,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 * New: Add slide numbers (for navigation status) to the footer bar.
 * New: If Google Analytics' `_gaq` tracker is available, notify the tracker that we're navigating through the slideset as we go.
 * Fix: YouTube videos now pause upon navigating to the next slide.
+* Fix: Vimeo videos now pause upon navigating to the next slide.
 
 = 1.4.1 =
 
