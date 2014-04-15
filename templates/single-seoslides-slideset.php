@@ -118,8 +118,8 @@ if ( '' === $slide_slug ) {
 		<?php $slide->render( 'deck-before', true ); ?>
 
 		<div class="extras">
-			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'previous', $slide ) ); ?>" class="loading deck-prev-link" title="<?php _e( 'Previous', 'seoslides_translate' ); ?>" rel="previous">&lsaquo;</a>
-			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'next', $slide ) ); ?>" class="loading deck-next-link" title="<?php _e( 'Next', 'seoslides_translate' ); ?>" rel="next">&rsaquo;</a>
+			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'previous', $slide ) ); ?>" class="deck-prev-link" title="<?php _e( 'Previous', 'seoslides_translate' ); ?>" rel="previous">&lsaquo;</a>
+			<a href="<?php echo esc_url( SEOSlides_Util::slide_nav_link( 'next', $slide ) ); ?>" class="deck-next-link" title="<?php _e( 'Next', 'seoslides_translate' ); ?>" rel="next">&rsaquo;</a>
 		</div>
 
 	</article>
@@ -155,6 +155,18 @@ if ( '' === $slide_slug ) {
 			</span>
 		</span>
 	</footer>
+
+	<div id="loading-interstitial">
+		<div class="loading-overlay"></div>
+		<div class="loading-modal">
+			<?php esc_html_e( 'Loading', 'seoslides_translate' ); ?>
+			<div class="spinner">
+				<div class="bounce1"></div>
+				<div class="bounce2"></div>
+				<div class="bounce3"></div>
+			</div>
+		</div>
+	</div>
 
 	<?php wp_footer(); ?>
 

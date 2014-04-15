@@ -139,7 +139,10 @@
 
 					process_content();
 
-					$( '.loading' ).removeClass( 'loading' );
+					var interstitial = document.getElementById( 'loading-interstitial' );
+					$( interstitial ).fadeOut( 300, function() {
+						interstitial.parentNode.removeChild( interstitial );
+					} );
 				}
 			} );
 
