@@ -217,8 +217,10 @@ class SEOSlides_Converter {
 					?>
 					<p><?php _e( '<strong>Please Note</strong>: Your free license key is good for 3 pdf conversions. After that, <a href="http://seoslides.com/pro" target="_new">upgrade to PRO</a> for unlimited uploads and other benefits.', 'seoslides_translate' ); ?></p>
 				<?php endif; ?>
-
-				<form enctype="multipart/form-data" id="import-upload-form" method="post" class="wp-upload-form" action="<?php echo $this->api_root; ?>/wp-admin/admin-post.php">
+				<?php $redirect_url = admin_url( 'edit.php?post_type=seoslides-slideset&page=seoslides_import&step=1' ); ?>
+				<?php $api_url = $this->api_root . '/wp-admin/admin-post.php'; ?>
+				<?php $api_url = add_query_arg( array( 'seoslides-redirect' => urlencode( $redirect_url ), 'action' => 'pdf-import' ), $api_url ); ?>
+				<form enctype="multipart/form-data" id="import-upload-form" method="post" class="wp-upload-form" action="<?php echo esc_url( $api_url ); ?>">
 
 					<p>
 						<label for="email-notification"><?php _e( 'Email:', 'seoslides_translate' ); ?></label>
@@ -233,10 +235,10 @@ class SEOSlides_Converter {
 					</p>
 
 					<p>
-						<label for="upload"><?php _e( 'PDF file:', 'seoslides_translate' ); ?></label>
+						<label for="upload"><?php _e( 'PDF file (64MB maximum):', 'seoslides_translate' ); ?></label>
 						<input type="file" id="upload" name="import" size="25"<?php echo $upload_enabled ? '' : ' disabled="disabled"'; ?> />
 						<input id="seoslides-api_key" name="seoslides-api_key" type="hidden" value="<?php echo esc_attr( $api_key ); ?>" />
-						<input id="seoslides-redirect" name="seoslides-redirect" type="hidden" value="<?php echo esc_attr( admin_url( 'edit.php?post_type=seoslides-slideset&page=seoslides_import&step=1' ) ); ?>" />
+						<input id="seoslides-redirect" name="seoslides-redirect" type="hidden" value="<?php echo esc_attr( $redirect_url ); ?>" />
 						<input id="seoslides-client_domain" name="seoslides-client_domain" type="hidden" value="<?php echo esc_attr( $domain ); ?>" />
 						<input id="action" name="action" type="hidden" value="pdf-import" />
 					</p>

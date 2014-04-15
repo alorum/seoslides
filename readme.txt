@@ -94,6 +94,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 * Fix: YouTube videos now pause upon navigating to the next slide.
 * Fix: Vimeo videos now pause upon navigating to the next slide.
 * Fix: Hide navigation on mobile since it's not quite functional anyway.
+* Fix: Better handling for imports larger than the max 64MB filesize.
 
 = 1.4.1 =
 
