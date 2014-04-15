@@ -93,6 +93,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 * New: If Google Analytics' `_gaq` tracker is available, notify the tracker that we're navigating through the slideset as we go.
 * Fix: YouTube videos now pause upon navigating to the next slide.
 * Fix: Vimeo videos now pause upon navigating to the next slide.
+* Fix: Hide navigation on mobile since it's not quite functional anyway.
 
 = 1.4.1 =
 

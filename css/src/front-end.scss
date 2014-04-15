@@ -252,6 +252,14 @@ footer.deck-footer {
 	}
 }
 
+// Hide controls (footer and navigation) when on a mobile phone.
+html.phone {
+	.extras,
+	footer {
+		display: none;
+	}
+}
+
 body.embeded {
 	.deck-footer .deck-overview {
 		display: none;

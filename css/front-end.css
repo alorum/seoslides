@@ -162,6 +162,10 @@ footer.deck-footer {
 .fullscreen .deck-footer {
   display: none; }
 
+html.phone .extras,
+html.phone footer {
+  display: none; }
+
 body.embeded .deck-footer .deck-overview {
   display: none; }
 body.embeded .ssi.embiggen {
