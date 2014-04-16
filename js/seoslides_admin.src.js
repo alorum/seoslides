@@ -5280,7 +5280,7 @@
 
 		bucket.style.backgroundColor = data.fill_color;
 
-		if ( undefined !== data.bg_image && null !== data.bg_image && '' !== data.bg_image.trim() ) {
+		if ( undefined !== data.bg_image && null !== data.bg_image && '' !== data.bg_image.trim() && 'noimage' !== data.bg_image.trim() ) {
 			document.getElementById( 'modal_seoslides_image_src' ).value = data.bg_image;
 			var picker = document.getElementById( 'modal_seoslides_image_picker' );
 			picker.value = I18N.remove_media;

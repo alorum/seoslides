@@ -97,6 +97,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 * Fix: Hide navigation on mobile since it's not quite functional anyway.
 * Fix: Better handling for imports larger than the max 64MB filesize.
 * Fix: Update TinyMCE code to be compatible with WordPress 3.9.
+* Fix: Patch a bug incorrectly forcing editors to remove media despite no media being present.
 
 = 1.4.1 =
 
