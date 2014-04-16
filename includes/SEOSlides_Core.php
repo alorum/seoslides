@@ -573,6 +573,11 @@ class SEOSlides_Core {
 
 			wp_enqueue_style( 'seoslides-admin-slides', SEOSLIDES_URL . '/css/admin-styles-slides.css', array(), SEOSLIDES_VERSION, 'all' );
 		}
+
+		if ( 'post' === $current_screen->post_type ) {
+			wp_enqueue_script( 'wpdialogs' );
+			wp_enqueue_style( 'wp-jquery-ui-dialog' );
+		}
 		wp_enqueue_style( 'seoslides-bucket', SEOSLIDES_URL . '/js/lib/canvas/css/bucket.css', array(), SEOSLIDES_VERSION, 'all' );
 		wp_enqueue_style( 'seoslides-admin', SEOSLIDES_URL . '/css/admin-styles.css', array(), SEOSLIDES_VERSION, 'all' );
 	}
