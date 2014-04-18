@@ -1314,6 +1314,7 @@
 		var options = {
 			'data':   {
 				'action':   'new-slide',
+				'title':    $( document.getElementById( 'titlewrap' ) ).find( 'input[name="post_title"]' ).val(),
 				'_nonce':   INTERNALS.create_nonce,
 				'slideset': INTERNALS.slideset
 			}

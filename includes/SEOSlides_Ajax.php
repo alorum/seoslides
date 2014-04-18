@@ -410,8 +410,21 @@ class SEOSlides_Ajax {
 		$slideset = new SEOSlides_Slideset( $slideset_id );
 		$defaults = $slideset->default_slide();
 
+		$position = count( $slideset->slides );
+
+		if ( isset( $_POST['title'] ) ) {
+			$title = sanitize_text_field( $_POST['title'] );
+
+			// Use a non-textdomained translation for Auto Draft so we grab the core version for comparison.
+			if ( empty( $title ) ) {
+				$title = $slideset->title;
+			}
+		} else {
+			$title = $slideset->title;
+		}
+
 		$content = array(
-			'title'    => $defaults->title,
+			'title'    => $title . ' - ' . ( $position + 1 ),
 			'content'  => '',
 			'image'    => '',
 			'bg-image' => 'noimage',
@@ -422,7 +435,7 @@ class SEOSlides_Ajax {
 			array(
 			     'post_parent'  => $slideset_id,
 			     'post_type'    => 'seoslides-slide',
-			     'menu_order'   => count( $slideset->slides ), // Insert at the end of the presentation
+			     'menu_order'   => $position, // Insert at the end of the presentation
 			     'post_status'  => 'publish',
 			     'post_content' => serialize( $content )
 			)
