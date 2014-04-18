@@ -46,6 +46,8 @@ class SEOSlides_Shortcode {
 			'title'        => '',
 			'site_src'     => false,
 			'site_title'   => false,
+		    'height'       => false,
+		    'width'        => false,
 		), $attr );
 
 		$id         = $attributes['embed_id'];
@@ -69,13 +71,20 @@ class SEOSlides_Shortcode {
 			$presentation_site
 		);
 
-		$format = '<script id="%1$s" type="text/javascript" src="%2$s"></script>';
+		if ( false !== $attributes['height'] && false !== $attributes['width'] ) {
+			$format = '<script id="%1$s" type="text/javascript" src="%2$s" data-height="%4$s" data-width="%5$s"></script>';
+		} else {
+			$format = '<script id="%1$s" type="text/javascript" src="%2$s"></script>';
+		}
+
 		$format .= '<span id="seoslides-embed-%1$s">%3$s</span>';
 		$output = sprintf(
 			$format,
 			esc_attr( $id ),
 			esc_url( $script_src ),
-			$text
+			$text,
+			esc_attr( $attributes['height'] ),
+			esc_attr( $attributes['width'] )
 		);
 		return $output;
 	}

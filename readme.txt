@@ -3,8 +3,8 @@ Contributors: alorum, 10up
 Donate link: http://alorum.com
 Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up
 Requires at least: 3.5.1
-Tested up to: 3.8.1
-Stable tag: 1.4.1
+Tested up to: 3.9
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,21 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 1. Publish to seoslid.es & Control Your Backlinks
 
 == Changelog ==
+
+= 1.5.0 =
+
+* New: Add a loading indicator to the front-end nav while slides are loading in the background.
+* New: Cache the entire presentation's markup in a WordPress endpoint to make it cacheable on the server.
+* New: Add slide numbers (for navigation status) to the footer bar.
+* New: If Google Analytics' `_gaq` tracker is available, notify the tracker that we're navigating through the slideset as we go.
+* New: Enable setting the height/width of the embed using shortcode parameters.
+* Fix: YouTube videos now pause upon navigating to the next slide.
+* Fix: Vimeo videos now pause upon navigating to the next slide.
+* Fix: Hide navigation on mobile since it's not quite functional anyway.
+* Fix: Better handling for imports larger than the max 64MB filesize.
+* Fix: Update TinyMCE code to be compatible with WordPress 3.9.
+* Fix: Patch a bug incorrectly forcing editors to remove media despite no media being present.
+* Fix: Slide titles now automatically descend from the presentation title.
 
 = 1.4.1 =
 

@@ -150,8 +150,23 @@ if ( '' === $slide_slug ) {
 			<span class="ssi landing" data-href="<?php echo esc_attr( $slideset_link ); ?>" title="<?php esc_attr_e( 'View Presentation Overview', 'seoslides_translate' ); ?>"></span>
 			<?php endif; ?>
 			<span class="ssi embiggen" title="<?php esc_attr_e( 'View Full-screen', 'seoslides_translate' ); ?>"></span>
+			<span class="ssi deck-status" aria-role="status">
+				<span class="deck-status-current">?</span>/<span class="deck-status-total">?</span>
+			</span>
 		</span>
 	</footer>
+
+	<div id="loading-interstitial">
+		<div class="loading-overlay"></div>
+		<div class="loading-modal">
+			<?php esc_html_e( 'Loading', 'seoslides_translate' ); ?>
+			<div class="spinner">
+				<div class="bounce1"></div>
+				<div class="bounce2"></div>
+				<div class="bounce3"></div>
+			</div>
+		</div>
+	</div>
 
 	<?php wp_footer(); ?>
 

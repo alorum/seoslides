@@ -1,4 +1,4 @@
-/*! seoslides - v1.4.1
+/*! seoslides - v1.5.0
  * https://seoslides.com
  * Copyright (c) 2014 Alroum; * Licensed GPLv2+ */
 window.SEOSlides = window.SEOSlides || {};
@@ -116,8 +116,15 @@ SEOSlides.DOM = SEOSlides.DOM || new (function(){
 		Embed.prototype.set_frame_attributes = function () {
 			this.frame.id = this.id + '-embed';
 			this.frame.src = this.url;
-			this.frame.style.width = '100%';
-			this.frame.style.height = Math.ceil( this.frame.offsetWidth / 16 * 9 ) + 'px';
+
+			if ( this.script.hasAttribute( 'data-height' ) && this.script.hasAttribute( 'data-width' ) ) {
+				this.frame.style.width = window.parseInt( this.script.getAttribute( 'data-width' ), 10 ) + 'px';
+				this.frame.style.height = window.parseInt( this.script.getAttribute( 'data-height' ), 10 ) + 'px';
+			} else {
+				this.frame.style.width = '100%';
+				this.frame.style.height = Math.ceil( this.frame.offsetWidth / 16 * 9 ) + 'px';
+			}
+
 			this.frame.style.border = 0 + 'px';
 			this.computedWidth = Math.ceil( this.frame.offsetWidth / 16 * 9 );
 			this.frame.frameborder = '0';

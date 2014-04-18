@@ -1,4 +1,4 @@
-/*! seoslides - v1.4.1
+/*! seoslides - v1.5.0
  * https://seoslides.com
  * Copyright (c) 2014 Alroum; * Licensed GPLv2+ */
 ;(function ($, window, undefined) {
@@ -4226,7 +4226,9 @@
 		notesOverlay = document.querySelector( '.deck-notes-overlay' ),
 		$d = $( document ),
 		$html = $( 'html' ),
-		$body = $( 'body' );
+		$body = $( 'body' ),
+		youtube_players = [],
+		vimeo_players = [];
 
 	CORE.isEmbeded = false;
 	if ( window.self !== window.top ) {
@@ -4246,21 +4248,38 @@
 	/**
 	 * Scan the current slide for any embeds and, if present, add a body class.
 	 *
-	 * @param e
-	 * @param from
-	 * @param to
+	 * @param {Event}  e
+	 * @param {Number} from
+	 * @param {Number} to
 	 */
 	function scanEmbeds( e, from, to ) {
 		window.setTimeout( function() {
 			if ( 0 !== $d.find( '.deck-current' ).find( '.seoslides_iframe' ).length ) {
 				$body.addClass( 'has-embed' );
+
+				// Process YouTube players and add them to an array.
+				$( 'iframe[src*="youtube.com"]' ).each( function( i, el ) {
+					youtube_players.push( el );
+				} );
+
+				// Process Vimeo players and add them to an array.
+				$( 'iframe[src*="vimeo.com"]' ).each( function( i, el ) {
+					vimeo_players.push( el );
+				} );
 			} else {
 				$body.removeClass( 'has-embed' );
 			}
 		}, 10 );
 	}
 
-	function process_content() {
+	/**
+	 * Process slide content upon navigation.
+	 *
+	 * @param {Event}  e
+	 * @param {Number} from
+	 * @param {Number} to
+	 */
+	function process_content( e, from, to ) {
 		$.deck( '.slide' );
 
 		CORE.resizeCanvas();
@@ -4272,13 +4291,66 @@
 		} );
 	}
 
+	/**
+	 * If Google Analytics tracking is installed, fire a pageview event.
+	 *
+	 * @global {Object} _gaq
+	 *
+	 * @param {Event}  e
+	 * @param {Number} from
+	 * @param {Number} to
+	 */
+	function google_track( e, from, to ) {
+		if ( undefined === window._gaq ) {
+			return;
+		}
+
+		var location = window.location.pathname;
+
+		// Track the pageview
+		window._gaq.push( ['_trackPageView', location ] );
+	}
+
+	/**
+	 * Stop all playing videos.
+	 *
+	 * @param {Event}  e
+	 * @param {Number} from
+	 * @param {Number} to
+	 */
+	function kill_videos( e, from, to ) {
+		var youtube_command = window.JSON.stringify( { event: 'command', func: 'pauseVideo' } ),
+			vimeo_command = window.JSON.stringify( { method: 'pause' } );
+
+		$.each( youtube_players, function( i, player ) {
+			if ( null === player.contentWindow ) {
+				return;
+			}
+
+			player.contentWindow.postMessage( youtube_command, 'https://www.youtube.com' );
+		} );
+
+		$.each( vimeo_players, function( i, player ) {
+			if ( null === player.contentWindow ) {
+				return;
+			}
+
+			player.contentWindow.postMessage( vimeo_command, 'https://player.vimeo.com' );
+		} );
+	}
+
 	function loadContent() {
 		process_content();
 
+		var presentation_url = $( 'link[rel=canonical]' ).attr( 'href' ),
+			allslides_url = presentation_url + 'allslides/';
+
 		// By default, the single page *only* contains the content of the current slide.  We asynchronously load the content
 		// of the entire slide deck before firing the rest of the system.
-		$.post( seoslides.ajaxurl, { 'action': 'get-slide-sections', 'slideset': seoslides.slideset } )
-			.done( function ( data ) {
+		$.ajax( {
+			'type': 'GET',
+			'url': allslides_url
+		} ).done( function ( data ) {
 				if ( true === data.success ) {
 					var container = $( '.deck-container' );
 
@@ -4287,6 +4359,11 @@
 					container.prepend( data.sections );
 
 					process_content();
+
+					var interstitial = document.getElementById( 'loading-interstitial' );
+					$( interstitial ).fadeOut( 300, function() {
+						interstitial.parentNode.removeChild( interstitial );
+					} );
 				}
 			} );
 
@@ -4299,7 +4376,10 @@
 			}
 		} );
 
-		$d.on( 'deck.change', scanEmbeds );
+		// Set up jQuery events
+		$d.on( 'deck.change', google_track );
+		$d.on( 'deck.change', scanEmbeds   );
+		$d.on( 'deck.change', kill_videos );
 	}
 
 	/**
@@ -4352,6 +4432,7 @@
 		preventFragmentScroll: true
 	} );
 
+	// Set up events
 	CORE.Events.addAction( 'debounced.canvas.resize', resize_elements );
 
 	// Let's run things
