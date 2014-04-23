@@ -102,6 +102,9 @@ class SEOSlides_Core {
 
 				// Add new options that didn't exist in legacy systems
 				add_option( 'seoslides_hideimports', 'yes', '', 'no' );
+
+				// Flush permalinks to make sure our new rules take effect
+				flush_rewrite_rules();
 				break;
 			case false:
 				// Plugin not previously installed.
