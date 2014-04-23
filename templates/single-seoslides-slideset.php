@@ -101,8 +101,9 @@ if ( '' === $slide_slug ) {
 <?php endif; ?>
 
 	<?php wp_head(); ?>
-	<?php if ( has_action( 'wp_head', 'rel_canonical' ) ) : ?>
-		<?php rel_canonical(); ?>
+	
+	<?php if ( ! has_action( 'wp_head', 'rel_canonical' ) ) : ?>
+	<?php rel_canonical(); ?>
 	<?php endif; ?>
 
 	<!--[if IE 8]>
