@@ -85,6 +85,11 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= DEV =
+
+* Fix: Make sure themes/plugins can't remove rel=canonical (this will break the slide fetching mechanism).
+* Fix: Auto-flush permalinks upon upgrade.
+
 = 1.5.0 =
 
 * New: Add a loading indicator to the front-end nav while slides are loading in the background.
