@@ -4,7 +4,7 @@ Donate link: http://alorum.com
 Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up
 Requires at least: 3.5.1
 Tested up to: 3.9
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,7 +85,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
-= DEV =
+= 1.5.0 =
 
 * Fix: Make sure themes/plugins can't remove rel=canonical (this will break the slide fetching mechanism).
 * Fix: Auto-flush permalinks upon upgrade.
@@ -103,6 +103,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 * Fix: Better handling for imports larger than the max 64MB filesize.
 * Fix: Update TinyMCE code to be compatible with WordPress 3.9.
 * Fix: Patch a bug incorrectly forcing editors to remove media despite no media being present.
+* Fix: Slide titles now automatically descend from the presentation title.
 
 = 1.4.1 =
 
