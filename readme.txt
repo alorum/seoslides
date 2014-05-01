@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= DEV =
+
+* Fix: More flexible upgrade routine (prevent newer versions from skipping upgrades).
+
 = 1.5.1 =
 
 * Fix: Make sure themes/plugins can't remove rel=canonical (this will break the slide fetching mechanism).
