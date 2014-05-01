@@ -112,7 +112,7 @@ class SEOSlides_Core {
 			add_option( 'seoslides_hideimports', 'yes', '', 'no' );
 
 			// Flush permalinks to make sure our new rules take effect
-			flush_rewrite_rules();
+			add_action( 'init', 'flush_rewrite_rules' );
 
 			return;
 		}
