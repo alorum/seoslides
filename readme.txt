@@ -88,6 +88,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 = DEV =
 
 * Fix: More flexible upgrade routine (prevent newer versions from skipping upgrades).
+* Fix: Make sure the "no transition" transition works for presentations.
 
 = 1.5.1 =
 
