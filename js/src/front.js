@@ -179,18 +179,11 @@
 				height = $node.height();
 
 			// Resize iframes
-			var frames = document.querySelectorAll( '.seoslides_iframe' );
-			for ( var i = 0, l = frames.length; i < l; i++ ) {
-				var frame = frames[ i ];
+			var images = document.querySelectorAll( '.seoslides_iframe_thumb' );
+			for ( var i = 0, l = images.length; i < l; i++ ) {
+				var image = images[ i ];
 
-				if ( $html.hasClass( 'mobile' ) ) {
-					frame.style.display = 'none';
-					$( frame ).siblings( 'img' ).css( 'display', 'block' );
-				} else {
-					$( frame ).siblings( 'p.video-no-mobile' ).css( 'display', 'none' );
-					frame.style.width = width + 'px';
-					frame.style.height = height + 'px';
-				}
+				$( image ).siblings( 'p.video-no-mobile' ).css( 'display', 'none' );
 			}
 
 			// Resize notes
