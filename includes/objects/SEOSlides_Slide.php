@@ -242,24 +242,21 @@ class SEOSlides_Slide {
 	public function render( $class = 'deck-before', $echo = false, $overlay = true ) {
 		$section = "<section class='slide {$class}' data-id='{$this->ID}' id='{$this->slug}' {$this->style}>\r\n";
 
-		$section .= "\t<div class='slide-body'>\r\n";
+		$section .= "<div class='slide-body'>";
 
 		if ( ! empty( $this->oembed ) ) {
 			$embed_url = self::get_embed_url( $this->oembed );
+			$embed_url = add_query_arg( array( 'enablejsapi' => true, 'api' => true, 'autoplay' => true ), $embed_url );
+			$embed_url = str_replace( '//player.vimeo.com', 'https://player.vimeo.com', $embed_url );
 			$thumb_url = self::get_embed_thumbnail( $this->oembed );
 
 			if ( ! is_wp_error( $thumb_url ) ) {
-				$section .= "\r\r<img class=\"seoslides_iframe_thumb\" src=\"" . $thumb_url . "\" />";
+				$section .= "<span class=\"seoslides_iframe_play\" data-embed=\"" . esc_attr( $embed_url ) . "\"></span>";
+				$section .= "<img class=\"seoslides_iframe_thumb\" src=\"" . esc_url( $thumb_url ) . "\" />";
 			}
 
-			$section .= "\r\r<p class=\"video-no-mobile\">" . __( 'Videos are unavailable on mobile.', 'seoslides_translate' ) . '<br />';
+			$section .= "<p class=\"video-no-mobile\">" . __( 'Videos are unavailable on mobile.', 'seoslides_translate' ) . '<br />';
 			$section .= sprintf( __( 'Please <a href="%s" target="_blank">click here</a> to watch the video.', 'seoslides_translate' ), esc_attr( $this->oembed ) ) . '</p>';
-
-			if ( ! is_wp_error( $embed_url ) ) {
-				$embed_url = add_query_arg( array( 'enablejsapi' => true, 'api' => true ), $embed_url );
-				$embed_url = str_replace( '//player.vimeo.com', 'https://player.vimeo.com', $embed_url );
-				$section .= "\r\r<iframe class=\"seoslides_iframe\" src=\"" . $embed_url . "\" frameborder=\"0\" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>";
-			}
 		}
 
 		if ( count ( $this->objects ) > 0 ) {
@@ -289,7 +286,7 @@ class SEOSlides_Slide {
 			}
 		}
 
-		$section .= "\t</div>\r\n";
+		$section .= "</div>";
 
 		if ( $overlay ) {
 			$section .= '<span class="slide-button"></span>';
@@ -512,8 +509,7 @@ class SEOSlides_Slide {
 
 		$cache_key = '_seoslides_oembed_' . wp_hash( $raw_url );
 
-		$data = get_transient( $cache_key );
-		if ( false === $data ) {
+		if ( false === ( $data = get_transient( $cache_key ) ) ) {
 			require_once( ABSPATH . WPINC . '/class-oembed.php' );
 			$oembed = _wp_oembed_get_object();
 			$provider = $oembed->discover( $raw_url );
@@ -523,7 +519,7 @@ class SEOSlides_Slide {
 				return new WP_Error( 'badurl', __( 'Invalid ombed url.', 'seoslides_translate' ) );
 			}
 
-			set_transient( $cache_key, $data, 24 * 60 * 60 );
+			set_transient( $cache_key, $data );
 		}
 
 		$html = $data->html;
@@ -548,8 +544,7 @@ class SEOSlides_Slide {
 
 		$cache_key = '_seoslides_oembed_' . wp_hash( $raw_url );
 
-		$data = get_transient( $cache_key );
-		if ( false === $data ) {
+		if ( false === ( $data = get_transient( $cache_key ) ) ) {
 			require_once( ABSPATH . WPINC . '/class-oembed.php' );
 			$oembed = _wp_oembed_get_object();
 			$provider = $oembed->discover( $raw_url );
@@ -559,7 +554,7 @@ class SEOSlides_Slide {
 				return new WP_Error( 'badurl', __( 'Invalid ombed url.', 'seoslides_translate' ) );
 			}
 
-			set_transient( $cache_key, $data, 24 * 60 * 60 );
+			set_transient( $cache_key, $data );
 		}
 
 		return $data->thumbnail_url;
