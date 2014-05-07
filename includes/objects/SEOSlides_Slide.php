@@ -246,7 +246,7 @@ class SEOSlides_Slide {
 
 		if ( ! empty( $this->oembed ) ) {
 			$embed_url = self::get_embed_url( $this->oembed );
-			$embed_url = add_query_arg( array( 'enablejsapi' => true, 'api' => true ), $embed_url );
+			$embed_url = add_query_arg( array( 'enablejsapi' => true, 'api' => true, 'autoplay' => true ), $embed_url );
 			$embed_url = str_replace( '//player.vimeo.com', 'https://player.vimeo.com', $embed_url );
 			$thumb_url = self::get_embed_thumbnail( $this->oembed );
 

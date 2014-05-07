@@ -4246,33 +4246,6 @@
 	}
 
 	/**
-	 * Scan the current slide for any embeds and, if present, add a body class.
-	 *
-	 * @param {Event}  e
-	 * @param {Number} from
-	 * @param {Number} to
-	 */
-	function scanEmbeds( e, from, to ) {
-		window.setTimeout( function() {
-			if ( 0 !== $d.find( '.deck-current' ).find( '.seoslides_iframe' ).length ) {
-				$body.addClass( 'has-embed' );
-
-				// Process YouTube players and add them to an array.
-				$( 'iframe[src*="youtube.com"]' ).each( function( i, el ) {
-					youtube_players.push( el );
-				} );
-
-				// Process Vimeo players and add them to an array.
-				$( 'iframe[src*="vimeo.com"]' ).each( function( i, el ) {
-					vimeo_players.push( el );
-				} );
-			} else {
-				$body.removeClass( 'has-embed' );
-			}
-		}, 10 );
-	}
-
-	/**
 	 * Process slide content upon navigation.
 	 *
 	 * @param {Event}  e
@@ -4319,23 +4292,15 @@
 	 * @param {Number} to
 	 */
 	function kill_videos( e, from, to ) {
-		var youtube_command = window.JSON.stringify( { event: 'command', func: 'pauseVideo' } ),
-			vimeo_command = window.JSON.stringify( { method: 'pause' } );
 
-		$.each( youtube_players, function( i, player ) {
+		var command = window.JSON.stringify( { event: 'command', func: 'pauseVideo', method: 'pause' } );
+
+		$( '.seoslides-iframe-video' ).each( function( i, player ) {
 			if ( null === player.contentWindow ) {
 				return;
 			}
 
-			player.contentWindow.postMessage( youtube_command, 'https://www.youtube.com' );
-		} );
-
-		$.each( vimeo_players, function( i, player ) {
-			if ( null === player.contentWindow ) {
-				return;
-			}
-
-			player.contentWindow.postMessage( vimeo_command, 'https://player.vimeo.com' );
+			player.contentWindow.postMessage( command, 'https://www.youtube.com' );
 		} );
 	}
 
@@ -4378,7 +4343,6 @@
 
 		// Set up jQuery events
 		$d.on( 'deck.change', google_track );
-		$d.on( 'deck.change', scanEmbeds   );
 		$d.on( 'deck.change', kill_videos );
 	}
 
@@ -4415,6 +4379,58 @@
 		}
 	}
 
+	/**
+	 * Play a video in a modal overlay
+	 *
+	 * @param {Event} event
+	 */
+	function play_video( event ) {
+		var $this = $( this ),
+			close_video,
+			video = this.getAttribute( 'data-embed' ),
+			content = document.createElement( 'iframe' );
+
+		content.width = '100%';
+		content.height = '100%';
+		content.src = video;
+		content.className = 'seoslides-iframe-video';
+
+		var overlay = CORE.createElement( 'div', {
+			'appendTo': document.body
+		} );
+		overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000;z-index: 159900;';
+
+		var $overlay = $( overlay );
+		$overlay.css( 'opacity', 0.7 ).on( 'click', close_video );
+
+		var modal = CORE.createElement( 'div', {
+			'appendTo': document.body
+		} );
+		modal.style.cssText = 'position: fixed; top: 30px; left: 30px; right: 30px; bottom: 30px; background-color: #fff; z-index: 160000;';
+
+		var closer = CORE.createElement( 'a', {
+			'attr':     [
+				['class', 'seoslides-iframe-close'],
+				['href', '#']
+			],
+			'appendTo': modal
+		} );
+		$( closer ).on( 'click', function ( e ) { e.preventDefault(); close_video(); } );
+
+		var closeSpan = CORE.createElement( 'span', {
+			'appendTo': closer
+		} );
+
+		close_video = function() {
+			$( modal ).remove();
+			$overlay.remove();
+		};
+
+		modal.appendChild( content );
+
+		$d.on( 'deck.change', close_video );
+	}
+
 	// Set up DeckJS Defaults
 	$.extend( true, $.deck.defaults, {
 		selectors: {
@@ -4427,6 +4443,7 @@
 
 	// Set up events
 	CORE.Events.addAction( 'debounced.canvas.resize', resize_elements );
+	$d.on( 'click', '.seoslides_iframe_play', play_video );
 
 	// Let's run things
 	loadContent();
