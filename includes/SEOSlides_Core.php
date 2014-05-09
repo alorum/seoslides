@@ -85,41 +85,36 @@ class SEOSlides_Core {
 	public function install() {
 		$installed = get_option( 'seoslides_version' );
 
-		switch( $installed ) {
-			case '1.2':
-			case '1.1.1':
-			case '1.1':
-			case '1.0.5':
-			case '1.0.4':
-			case '1.0.3':
-			case '1.0.2':
-			case '1.0.1':
-			case '1.0':
-			case '0.1.0':
-				// Upgrade the option
-				delete_option( 'seoslides_version' );
-				add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
+		// Not previously installed
+		if ( false === $installed ) {
+			add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
+			add_option( 'seoslides_logo', 'seoslides', '', 'no' );
+			add_option( 'seoslides_logo_url', 'https://seoslides.com', '', 'no' );
+			add_option( 'seoslides_logo_title', 'seoslides', '', 'no' );
+			add_option( 'seoslides_logo_enabled', 'no', '', 'no' );
+			add_option( 'seoslides_hideimports', 'yes', '', 'no' );
 
-				// Add new options that didn't exist in legacy systems
-				add_option( 'seoslides_hideimports', 'yes', '', 'no' );
+			// Remove default content filter and inject our template presenatation
+			remove_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
+			$this->insert_default_presentation();
+			add_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
 
-				// Flush permalinks to make sure our new rules take effect
-				flush_rewrite_rules();
-				break;
-			case false:
-				// Plugin not previously installed.
-				add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
-				add_option( 'seoslides_logo', 'seoslides', '', 'no' );
-				add_option( 'seoslides_logo_url', 'https://seoslides.com', '', 'no' );
-				add_option( 'seoslides_logo_title', 'seoslides', '', 'no' );
-				add_option( 'seoslides_logo_enabled', 'no', '', 'no' );
-				add_option( 'seoslides_hideimports', 'yes', '', 'no' );
+			return;
+		}
 
-				// Remove default content filter and inject our template presenatation
-				remove_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
-				$this->insert_default_presentation();
-				add_filter( 'default_content', array( $this, 'default_content' ), 10, 2 );
-				break;
+		// Generic upgrade
+		if ( version_compare( SEOSLIDES_VERSION, $installed, '>' ) ) {
+			// Upgrade the option
+			delete_option( 'seoslides_version' );
+			add_option( 'seoslides_version', SEOSLIDES_VERSION, '', 'no' );
+
+			// Add new options that didn't exist in legacy systems
+			add_option( 'seoslides_hideimports', 'yes', '', 'no' );
+
+			// Flush permalinks to make sure our new rules take effect
+			add_action( 'init', 'flush_rewrite_rules' );
+
+			return;
 		}
 	}
 
@@ -292,6 +287,7 @@ class SEOSlides_Core {
 		wp_register_style( 'deck.theme.neon',            SEOSLIDES_URL . 'vendor/deck/themes/style/neon.css',           array( 'deck' ), '1.1.0', 'screen' );
 		wp_register_style( 'deck.theme.swiss',           SEOSLIDES_URL . 'vendor/deck/themes/style/swiss.css',          array( 'deck' ), '1.1.0', 'screen' );
 		wp_register_style( 'deck.theme.web20',           SEOSLIDES_URL . 'vendor/deck/themes/style/web-2.0.css',        array( 'deck' ), '1.1.0', 'screen' );
+		wp_register_style( 'deck.transition.none',       SEOSLIDES_URL . 'css/deck.no-transition.css',                  array( 'deck' ), '1.1.0', 'screen' );
 		wp_register_style( 'deck.transition.fade',       SEOSLIDES_URL . 'vendor/deck/transition/fade.css',             array( 'deck' ), '1.1.0', 'screen' );
 		wp_register_style( 'deck.transition.horizontal', SEOSLIDES_URL . 'vendor/deck/transition/horizontal-slide.css', array( 'deck' ), '1.1.0', 'screen' );
 		wp_register_style( 'deck.transition.vertical',   SEOSLIDES_URL . 'vendor/deck/transition/vertical-slide.css',   array( 'deck' ), '1.1.0', 'screen' );
@@ -1823,7 +1819,7 @@ class SEOSlides_Core {
 		$themes['swiss-none'] = array(
 			'name'       => __( 'No Transition', 'seoslides_translate' ),
 			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/swiss.css',
-			'transition' => null,
+			'transition' => SEOSLIDES_URL . 'css/deck.no-transition.css',
 		);
 
 		return apply_filters( 'seoslides_frontend_themes', $themes );
@@ -1867,7 +1863,7 @@ class SEOSlides_Core {
 		$themes['neon-none']       = array(
 			'name'       => __( 'Neon - No Transition', 'seoslides_translate' ),
 			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/neon.css',
-			'transition' => null,
+			'transition' => SEOSLIDES_URL . 'css/deck.no-transition.css',
 		);
 
 		// Swiss styled theme
@@ -1892,7 +1888,7 @@ class SEOSlides_Core {
 		$themes['none-none']       = array(
 			'name'       => __( 'No Theme - No Transition', 'seoslides_translate' ),
 			'theme'      => null,
-			'transition' => null,
+			'transition' => SEOSLIDES_URL . 'css/deck.no-transition.css',
 		);
 
 		// Web 2.0 styled theme
@@ -1914,7 +1910,7 @@ class SEOSlides_Core {
 		$themes['web-none']       = array(
 			'name'       => __( 'Web 2.0 - No Transition', 'seoslides_translate' ),
 			'theme'      => SEOSLIDES_URL . 'vendor/deck/themes/style/web-2.0.css',
-			'transition' => null,
+			'transition' => SEOSLIDES_URL . 'css/deck.no-transition.css',
 		);
 
 		return $themes;
