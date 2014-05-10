@@ -138,24 +138,22 @@ body {
 	position: absolute;
 	top: -15px;
 	right: -15px;
-	width: 28px;
+	width: 30px;
 	height: 30px;
 	z-index: 1000;
-	background-color: #fff;
+	color: #f15b3c;
+	background-color: #000;
+	font-size: 30px;
 	border-radius: 15px;
-	padding-right: 2px;
-	@include opacity(0.75);
+	@include opacity(0.7);
+	font-family: "dashicons";
+
+	&:before {
+		content: "\f153";
+	}
 
 	&:hover {
 		@include opacity(1);
-	}
-
-	span {
-		display: block;
-		margin: 8px auto 0;
-		width: 15px;
-		height: 15px;
-		background-image: url(../img/modal-close.png);
 	}
 }
 
