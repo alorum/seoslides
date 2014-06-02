@@ -551,6 +551,7 @@ class SEOSlides_Core {
 					'delete_nonce'     => wp_create_nonce( 'seoslides_delete' ),
 					'trash_nonce'      => wp_create_nonce( 'seoslides_trash' ),
 					'restore_nonce'    => wp_create_nonce( 'seoslides_restore' ),
+					'media_nonce'      => wp_create_nonce( 'seoslides-media' ),
 					'menu_order_nonce' => wp_create_nonce( 'seoslides_order' ),
 					'thickbox_noimage' => esc_url( admin_url( 'images/no.png' ) ),
 					'thickbox_spinner' => esc_url( admin_url( 'images/wpspin_light.gif' ) ),

@@ -1621,7 +1621,7 @@
 
 	function ModalContainer() {
 		// Container for the media modal created to add from the gallery
-		var modal = undefined;
+		var modal;
 
 		/**
 		 * Ensure the modal exists - if not, create it.
@@ -1669,13 +1669,13 @@
 		function _wrapModalCallback( callback ) {
 			return function() {
 				callback( modal.state().get( 'selection' ).toJSON() );
-			}
+			};
 		}
 
 		return {
 			open: openModal,
 			addCallback: addModalCallback
-		}
+		};
 	}
 
 	$( document.getElementById( 'add-from-media' ) ).on( 'click', function ( e ) {
@@ -1683,6 +1683,33 @@
 
 		var modal_container = new ModalContainer();
 
+		// After the images are added, we'll build an array of image IDs and POST them back
+		// to WordPress for slide generation.
+		modal_container.addCallback( function( elements ) {
+			var element_ids = [];
+
+			$.map( elements, function( item ) {
+				element_ids.push( item.id );
+			} );
+
+			var options = {
+				'data':   {
+					'action':   'create-media-slides',
+					'slides':   element_ids,
+					'_nonce':   INTERNALS.media_nonce,
+					'slideset': INTERNALS.slideset
+				}
+			};
+
+			CORE.ajax( options ).done( function( data ) {
+				for( var i = 0; i < data.length; i++ ) {
+					var slide = data[ i ],
+						slide_id = slide.id;
+
+					CORE.Events.doAction( 'seoslides.slideAdded', slide_id );
+				}
+			} );
+		} );
 		modal_container.open();
 	} );
 
