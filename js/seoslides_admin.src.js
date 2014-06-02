@@ -5506,6 +5506,74 @@
 		} );
 	}
 	$( document.getElementById( 'use_in_post' ) ).on( 'click', use_in_post );
+
+	function ModalContainer() {
+		// Container for the media modal created to add from the gallery
+		var modal = undefined;
+
+		/**
+		 * Ensure the modal exists - if not, create it.
+		 *
+		 * @private
+		 */
+		function _ensureModal() {
+			if ( undefined === modal ) {
+				modal = window.wp.media( {
+					title: I18N.modal_title,
+					button: {
+						text: I18N.modal_button
+					},
+					multiple: 'add'
+				} );
+			}
+		}
+
+		/**
+		 * Open the modal
+		 */
+		function openModal() {
+			_ensureModal();
+			modal.open();
+		}
+
+		/**
+		 * Add a callback to the modal for selection purposes.
+		 *
+		 * @param {Function} callback
+		 */
+		function addModalCallback( callback ) {
+			_ensureModal();
+			modal.on( 'select', _wrapModalCallback( callback ) );
+		}
+
+		/**
+		 * Wrap a callback function.
+		 *
+		 * @param {Function} callback
+		 *
+		 * @returns {Function}
+		 * @private
+		 */
+		function _wrapModalCallback( callback ) {
+			return function() {
+				callback( modal.state().get( 'selection' ).toJSON() );
+			}
+		}
+
+		return {
+			open: openModal,
+			addCallback: addModalCallback
+		}
+	}
+
+	$( document.getElementById( 'add-from-media' ) ).on( 'click', function ( e ) {
+		e.preventDefault();
+
+		var modal_container = new ModalContainer();
+		
+		modal_container.open();
+	} );
+
 })( this, jQuery );
 /* Load links with a class of .popup in small window. Dimensions hardcoded for now. Parameterize later if needed. */
 ( function( window, $, undefined ) {

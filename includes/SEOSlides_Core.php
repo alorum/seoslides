@@ -475,6 +475,8 @@ class SEOSlides_Core {
 			'insert_link'         => __( 'Save Backlink', 'seoslides_translate' ),
 			'link_title'          => __( 'Insert/Edit Embed Backlink', 'seoslides_translate' ),
 			'close_modal_conf'    => __( 'You have unsaved changes on this slide. Are you sure you wish to close the window?', 'seoslides_translate' ),
+		    'modal_title'         => __( 'Insert Slides from the Media Gallery', 'seoslides_translate' ),
+		    'modal_button'        => __( 'Insert', 'seoslides_translate' ),
 		);
 
 		wp_localize_script( $handle, 'seoslides_i18n', $strings );
@@ -526,6 +528,7 @@ class SEOSlides_Core {
 				wp_enqueue_script( 'wp-color-picker' );
 				wp_enqueue_style( 'wp-color-picker' );
 				wp_enqueue_style( 'wp-jquery-ui-dialog' );
+				wp_enqueue_media();
 
 				// Thickbox for selecting background images
 				wp_enqueue_script( 'media-upload' );
