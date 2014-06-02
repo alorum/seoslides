@@ -318,6 +318,7 @@ class SEOSlides_Meta {
 			</table>
 		</div>
 		<a class="button" href="" id="add-slide"><span class="slideset-add-button-icon"></span><?php _e( 'Add Slide', 'seoslides_translate' ); ?></a>
+		<a class="button" href="" id="add-from-media"><span class="dashicons dashicons-images-alt2 slideset-add-from-media"></span><?php _e( 'Add Existing Image', 'seoslides_translate' ); ?></a>
 		<a class="button" href="" id="toggle-trash"><span class="slideset-toggle-trash-icon"></span><?php _e( 'Show Trashed Slides', 'seoslides_translate' ); ?></a>
 	</div>
 		<?php
