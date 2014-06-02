@@ -5505,7 +5505,6 @@
 			window.location.href = redirect;
 		} );
 	}
-	$( document.getElementById( 'use_in_post' ) ).on( 'click', use_in_post );
 
 	function ModalContainer() {
 		// Container for the media modal created to add from the gallery
@@ -5617,6 +5616,7 @@
 		modal_container.open();
 	} );
 
+	$( 'a[data-action=use_in_post]' ).on( 'click', use_in_post );
 })( this, jQuery );
 /* Load links with a class of .popup in small window. Dimensions hardcoded for now. Parameterize later if needed. */
 ( function( window, $, undefined ) {

@@ -1146,7 +1146,7 @@ class SEOSlides_Core {
 	public function presentation_messages( $messages = array() ) {
 		global $post, $post_ID;
 
-		$use_in_post = ' ' . sprintf( __( 'Use presentatation <a data-nonce="%s" data-presentation="%s" id="%s" href="%s">in a new post</a>.', 'seoslides_translate' ), wp_create_nonce( 'use_in_post' ), $post_ID, 'use_in_post', esc_url( get_permalink( $post_ID ) . '#use_in_post' ) );
+		$use_in_post = ' ' . sprintf( __( 'Use presentatation <a data-nonce="%s" data-presentation="%s" data-action="%s" href="%s">in a new post</a>.', 'seoslides_translate' ), wp_create_nonce( 'use_in_post' ), $post_ID, 'use_in_post', esc_url( get_permalink( $post_ID ) . '#use_in_post' ) );
 
 		$messages['seoslides-slideset'] = array(
 			0  => '', // Unused. Messages start at index 1.

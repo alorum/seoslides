@@ -88,6 +88,7 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 = DEV =
 
 * New: Allow bulk creation of slides from existing (or uploaded) images in the media gallery.
+* New: Add a button to allow easy embedding of presentations directly from the presentation editor.
 
 = 1.5.2 =
 
