@@ -5595,6 +5595,8 @@
 						slide_id = slide.id;
 
 					CORE.Events.doAction( 'seoslides.slideAdded', slide_id );
+
+					refreshSlideRow( slide_id );
 				}
 			} );
 		} );
