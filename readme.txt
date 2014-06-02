@@ -85,6 +85,10 @@ You'll find the FAQ on [https://seoslides.com/faq/](https://seoslides.com/faq/).
 
 == Changelog ==
 
+= DEV =
+
+* New: Allow bulk creation of slides from existing (or uploaded) images in the media gallery.
+
 = 1.5.2 =
 
 * Update: Play embedded videos in a modal so we don't kill navigation. Clicking a close button will stop the video.
