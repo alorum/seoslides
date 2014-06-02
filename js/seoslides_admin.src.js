@@ -5521,9 +5521,11 @@
 				modal = window.wp.media( {
 					title: I18N.modal_title,
 					button: {
-						text: I18N.modal_button
+						text: I18N.modal_button,
+						close: false
 					},
-					multiple: 'add'
+					multiple: 'add',
+					freeze: true
 				} );
 			}
 		}
@@ -5534,6 +5536,13 @@
 		function openModal() {
 			_ensureModal();
 			modal.open();
+		}
+
+		/**
+		 * Close the modal
+		 */
+		function closeModal() {
+			modal.close();
 		}
 
 		/**
@@ -5562,6 +5571,7 @@
 
 		return {
 			open: openModal,
+			close: closeModal,
 			addCallback: addModalCallback
 		};
 	}
@@ -5569,7 +5579,7 @@
 	$( document.getElementById( 'add-from-media' ) ).on( 'click', function ( e ) {
 		e.preventDefault();
 
-		var modal_container = new ModalContainer();
+		var modal_container = window.modal_container = new ModalContainer();
 
 		// After the images are added, we'll build an array of image IDs and POST them back
 		// to WordPress for slide generation.
@@ -5590,14 +5600,18 @@
 			};
 
 			CORE.ajax( options ).done( function( data ) {
+				var deferreds = [];
+
 				for( var i = 0; i < data.length; i++ ) {
 					var slide = data[ i ],
 						slide_id = slide.id;
 
 					CORE.Events.doAction( 'seoslides.slideAdded', slide_id );
 
-					refreshSlideRow( slide_id );
+					deferreds.push( refreshSlideRow( slide_id ) );
 				}
+
+				$.when.apply( null, deferreds ).done( modal_container.close );
 			} );
 		} );
 		modal_container.open();
