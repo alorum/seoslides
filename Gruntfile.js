@@ -294,6 +294,17 @@ module.exports = function ( grunt ) {
 				src: ['**/*'],
 				dest: 'seoslides-whitelabel/'
 			}
+		},
+		pot: {
+			options: {
+				text_domain: 'seoslides_translate',
+				dest: 'languages/',
+				keywords: ['_','gettext','gettext_noop','__','_e','__ngettext','_n','__ngettext_noop','_n_noop','_x','_nx','_nx_noop','_ex','esc_attr__','esc_attr_e','esc_attr_x','esc_html__','esc_html_e','esc_html_x']
+			},
+			files: {
+				src: ['**/*.php'],
+				expand: true
+			}
 		}
 	} );
 
@@ -306,6 +317,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-contrib-compress' );
+	grunt.loadNpmTasks('grunt-pot');
 
 	// Default task.
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass'] );
@@ -313,6 +325,9 @@ module.exports = function ( grunt ) {
 	// Build task
 	grunt.registerTask( 'compress:side', ['compress:whitelabel'] );
 	grunt.registerTask( 'build', ['default', 'clean:main', 'clean:modules', 'clean:side', 'copy:main', 'copy:modules', 'copy:side', 'compress:main', 'compress:side'] );
+
+	// Localize tast
+	grunt.registerTask( 'localize', ['pot'] );
 
 	grunt.util.linefeed = '\n';
 
