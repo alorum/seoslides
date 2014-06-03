@@ -299,10 +299,17 @@ module.exports = function ( grunt ) {
 			options: {
 				text_domain: 'seoslides_translate',
 				dest: 'lang/',
+				package_name: 'seoslides',
+				omit_header: true,
 				keywords: ['_','gettext','gettext_noop','__','_e','__ngettext','_n','__ngettext_noop','_n_noop','_x','_nx','_nx_noop','_ex','esc_attr__','esc_attr_e','esc_attr_x','esc_html__','esc_html_e','esc_html_x']
 			},
 			files: {
-				src: ['**/*.php'],
+				src: [
+					'**/*.php',
+				    '!release/**',
+				    '!vendor/**',
+				    '!node_modules/**'
+				],
 				expand: true
 			}
 		}
