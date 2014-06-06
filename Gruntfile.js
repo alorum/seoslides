@@ -312,6 +312,13 @@ module.exports = function ( grunt ) {
 				],
 				expand: true
 			}
+		},
+		wp_readme_to_markdown: {
+			readme: {
+				files: {
+					'readme.md': 'readme.txt'
+				}
+			}
 		}
 	} );
 
@@ -324,7 +331,8 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-contrib-compress' );
-	grunt.loadNpmTasks('grunt-pot');
+	grunt.loadNpmTasks( 'grunt-pot' );
+	grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
 
 	// Default task.
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass'] );
@@ -333,8 +341,9 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'compress:side', ['compress:whitelabel'] );
 	grunt.registerTask( 'build', ['default', 'clean:main', 'clean:modules', 'clean:side', 'copy:main', 'copy:modules', 'copy:side', 'compress:main', 'compress:side'] );
 
-	// Localize tast
+	// Pre-commit tasks
 	grunt.registerTask( 'localize', ['pot'] );
+	grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
 	grunt.util.linefeed = '\n';
 
