@@ -86,25 +86,25 @@ You'll also find more FAQs on [https://seoslides.com/faq/](https://seoslides.com
 ## Screenshots ##
 
 ### 1. Full Screen Presentations with HTML or Full Screen Background Images ###
-![Full Screen Presentations with HTML or Full Screen Background Images](http://s.wordpress.org/extend/plugins/seoslides/screenshot-1.png)
+![Full Screen Presentations with HTML or Full Screen Background Images](http://ps.w.org/seoslides/assets/screenshot-1.jpg)
 
 ### 2. Full Screen Movies Work Too ###
-![Full Screen Movies Work Too](http://s.wordpress.org/extend/plugins/seoslides/screenshot-2.png)
+![Full Screen Movies Work Too](http://ps.w.org/seoslides/assets/screenshot-2.png)
 
 ### 3. Notes Available for Every Slide ###
-![Notes Available for Every Slide](http://s.wordpress.org/extend/plugins/seoslides/screenshot-3.png)
+![Notes Available for Every Slide](http://ps.w.org/seoslides/assets/screenshot-3.png)
 
 ### 4. WordPress First Canvas Based Editor ###
-![WordPress First Canvas Based Editor](http://s.wordpress.org/extend/plugins/seoslides/screenshot-4.png)
+![WordPress First Canvas Based Editor](http://ps.w.org/seoslides/assets/screenshot-4.png)
 
 ### 5. Notes Editor ###
-![Notes Editor](http://s.wordpress.org/extend/plugins/seoslides/screenshot-5.png)
+![Notes Editor](http://ps.w.org/seoslides/assets/screenshot-5.png)
 
 ### 6. Presentation Manager ###
-![Presentation Manager](http://s.wordpress.org/extend/plugins/seoslides/screenshot-6.png)
+![Presentation Manager](http://ps.w.org/seoslides/assets/screenshot-6.png)
 
 ### 7. Publish to seoslid.es & Control Your Backlinks ###
-![Publish to seoslid.es & Control Your Backlinks](http://s.wordpress.org/extend/plugins/seoslides/screenshot-7.png)
+![Publish to seoslid.es & Control Your Backlinks](http://ps.w.org/seoslides/assets/screenshot-7.png)
 
 
 ## Changelog ##
