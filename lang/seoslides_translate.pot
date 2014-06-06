@@ -1206,11 +1206,11 @@ msgid "Add Slide"
 msgstr ""
 
 #: includes/SEOSlides_Meta.php:322
-msgid "Insert Existing Media"
+msgid "Add Image Slide(s)"
 msgstr ""
 
 #: includes/SEOSlides_Meta.php:342
-msgid "Use Presentatation"
+msgid "Post Presentation"
 msgstr ""
 
 #: includes/SEOSlides_Module_Provider.php:137
