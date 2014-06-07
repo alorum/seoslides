@@ -27,6 +27,7 @@ class SEOSlides_Meta {
 		add_action( 'edit_form_after_editor', array( $this, 'slide_list_metabox' ) );
 
 		// Wire filters
+		add_filter( 'get_sample_permalink_html', array( $this, 'presentation_button' ), 10, 2 );
 	}
 
 	/**
@@ -318,8 +319,31 @@ class SEOSlides_Meta {
 			</table>
 		</div>
 		<a class="button" href="" id="add-slide"><span class="slideset-add-button-icon"></span><?php _e( 'Add Slide', 'seoslides_translate' ); ?></a>
+		<a class="button" href="" id="add-from-media"><span class="dashicons dashicons-images-alt2 slideset-add-from-media"></span><?php _e( 'Add Image Slide(s)', 'seoslides_translate' ); ?></a>
 		<a class="button" href="" id="toggle-trash"><span class="slideset-toggle-trash-icon"></span><?php _e( 'Show Trashed Slides', 'seoslides_translate' ); ?></a>
 	</div>
 		<?php
+	}
+
+	/**
+	 * Render the "Use Presentation" button.
+	 *
+	 * @param string $return
+	 * @param int    $id
+	 *
+	 * @return string
+	 */
+	public function presentation_button( $return, $id ) {
+		if ( 'seoslides-slideset' !== get_post_type( $id ) ) {
+			return $return;
+		}
+
+		if ( 'publish' === get_post_status( $id ) ) {
+			$return .= "<span id='use-presentation-btn'><a data-nonce=" . wp_create_nonce( 'use_in_post' ) . " data-presentation=" . esc_attr( $id ) . " data-action='use_in_post' href='" . esc_url( get_permalink( $id ) . '#use_in_post' ) . "' class='button button-small'>" . __( 'Post Presentation', 'seoslides_translate' ) . "</a></span>\n";
+		} else {
+			$return = preg_replace( '/<span id=\'view-post-btn\'.+<\/span>/', '', $return );
+		}
+
+		return $return;
 	}
 }

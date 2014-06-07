@@ -475,6 +475,8 @@ class SEOSlides_Core {
 			'insert_link'         => __( 'Save Backlink', 'seoslides_translate' ),
 			'link_title'          => __( 'Insert/Edit Embed Backlink', 'seoslides_translate' ),
 			'close_modal_conf'    => __( 'You have unsaved changes on this slide. Are you sure you wish to close the window?', 'seoslides_translate' ),
+		    'modal_title'         => __( 'Insert Slides from the Media Gallery', 'seoslides_translate' ),
+		    'modal_button'        => __( 'Insert', 'seoslides_translate' ),
 		);
 
 		wp_localize_script( $handle, 'seoslides_i18n', $strings );
@@ -526,6 +528,7 @@ class SEOSlides_Core {
 				wp_enqueue_script( 'wp-color-picker' );
 				wp_enqueue_style( 'wp-color-picker' );
 				wp_enqueue_style( 'wp-jquery-ui-dialog' );
+				wp_enqueue_media();
 
 				// Thickbox for selecting background images
 				wp_enqueue_script( 'media-upload' );
@@ -548,6 +551,7 @@ class SEOSlides_Core {
 					'delete_nonce'     => wp_create_nonce( 'seoslides_delete' ),
 					'trash_nonce'      => wp_create_nonce( 'seoslides_trash' ),
 					'restore_nonce'    => wp_create_nonce( 'seoslides_restore' ),
+					'media_nonce'      => wp_create_nonce( 'seoslides-media' ),
 					'menu_order_nonce' => wp_create_nonce( 'seoslides_order' ),
 					'thickbox_noimage' => esc_url( admin_url( 'images/no.png' ) ),
 					'thickbox_spinner' => esc_url( admin_url( 'images/wpspin_light.gif' ) ),
@@ -1142,7 +1146,7 @@ class SEOSlides_Core {
 	public function presentation_messages( $messages = array() ) {
 		global $post, $post_ID;
 
-		$use_in_post = ' ' . sprintf( __( 'Use presentatation <a data-nonce="%s" data-presentation="%s" id="%s" href="%s">in a new post</a>.', 'seoslides_translate' ), wp_create_nonce( 'use_in_post' ), $post_ID, 'use_in_post', esc_url( get_permalink( $post_ID ) . '#use_in_post' ) );
+		$use_in_post = ' ' . sprintf( __( 'Use presentatation <a data-nonce="%s" data-presentation="%s" data-action="%s" href="%s">in a new post</a>.', 'seoslides_translate' ), wp_create_nonce( 'use_in_post' ), $post_ID, 'use_in_post', esc_url( get_permalink( $post_ID ) . '#use_in_post' ) );
 
 		$messages['seoslides-slideset'] = array(
 			0  => '', // Unused. Messages start at index 1.

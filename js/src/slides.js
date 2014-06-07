@@ -1617,5 +1617,116 @@
 			window.location.href = redirect;
 		} );
 	}
-	$( document.getElementById( 'use_in_post' ) ).on( 'click', use_in_post );
+
+	function ModalContainer() {
+		// Container for the media modal created to add from the gallery
+		var modal;
+
+		/**
+		 * Ensure the modal exists - if not, create it.
+		 *
+		 * @private
+		 */
+		function _ensureModal() {
+			if ( undefined === modal ) {
+				modal = window.wp.media( {
+					title: I18N.modal_title,
+					button: {
+						text: I18N.modal_button,
+						close: false
+					},
+					multiple: 'add',
+					freeze: true
+				} );
+			}
+		}
+
+		/**
+		 * Open the modal
+		 */
+		function openModal() {
+			_ensureModal();
+			modal.open();
+		}
+
+		/**
+		 * Close the modal
+		 */
+		function closeModal() {
+			modal.close();
+		}
+
+		/**
+		 * Add a callback to the modal for selection purposes.
+		 *
+		 * @param {Function} callback
+		 */
+		function addModalCallback( callback ) {
+			_ensureModal();
+			modal.on( 'select', _wrapModalCallback( callback ) );
+		}
+
+		/**
+		 * Wrap a callback function.
+		 *
+		 * @param {Function} callback
+		 *
+		 * @returns {Function}
+		 * @private
+		 */
+		function _wrapModalCallback( callback ) {
+			return function() {
+				callback( modal.state().get( 'selection' ).toJSON() );
+			};
+		}
+
+		return {
+			open: openModal,
+			close: closeModal,
+			addCallback: addModalCallback
+		};
+	}
+
+	$( document.getElementById( 'add-from-media' ) ).on( 'click', function ( e ) {
+		e.preventDefault();
+
+		var modal_container = window.modal_container = new ModalContainer();
+
+		// After the images are added, we'll build an array of image IDs and POST them back
+		// to WordPress for slide generation.
+		modal_container.addCallback( function( elements ) {
+			var element_ids = [];
+
+			$.map( elements, function( item ) {
+				element_ids.push( item.id );
+			} );
+
+			var options = {
+				'data':   {
+					'action':   'create-media-slides',
+					'slides':   element_ids,
+					'_nonce':   INTERNALS.media_nonce,
+					'slideset': INTERNALS.slideset
+				}
+			};
+
+			CORE.ajax( options ).done( function( data ) {
+				var deferreds = [];
+
+				for( var i = 0; i < data.length; i++ ) {
+					var slide = data[ i ],
+						slide_id = slide.id;
+
+					CORE.Events.doAction( 'seoslides.slideAdded', slide_id );
+
+					deferreds.push( refreshSlideRow( slide_id ) );
+				}
+
+				$.when.apply( null, deferreds ).done( modal_container.close );
+			} );
+		} );
+		modal_container.open();
+	} );
+
+	$( 'a[data-action=use_in_post]' ).on( 'click', use_in_post );
 })( this, jQuery );

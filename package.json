@@ -1,10 +1,14 @@
 {
   "name": "seoslides",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "author": {
     "name": "Alorum",
     "email": "sales@alorum.com",
     "url": "http://alorum.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:alorum/seoslides.git"
   },
   "licenses": [
     {
@@ -20,15 +24,17 @@
   },
   "devDependencies": {
     "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-compress": "~0.5.2",
+    "grunt-contrib-concat": "~0.1.3",
+    "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-nodeunit": "~0.1.2",
-    "grunt-contrib-uglify": "~0.2.0",
-    "grunt-contrib-concat": "~0.1.3",
     "grunt-contrib-sass": "~0.5.0",
+    "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-watch": "~0.3.1",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-compress": "~0.5.2"
+    "grunt-pot": "~0.1.2",
+    "grunt-wp-readme-to-markdown": "^0.8.0"
   },
   "keywords": []
 }
