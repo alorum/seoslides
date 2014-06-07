@@ -306,9 +306,9 @@ module.exports = function ( grunt ) {
 			files: {
 				src: [
 					'**/*.php',
-				    '!release/**',
-				    '!vendor/**',
-				    '!node_modules/**'
+					'!release/**',
+					'!vendor/**',
+					'!node_modules/**'
 				],
 				expand: true
 			}
