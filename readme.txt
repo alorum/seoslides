@@ -95,6 +95,10 @@ You'll also find more FAQs on [https://seoslides.com/faq/](https://seoslides.com
 
 == Changelog ==
 
+= DEV =
+
+* Fix: Make sure canonical URLs have a trailing slash before appending anything for building dynamic paths.
+
 = 1.6.0 =
 
 * New: Allow bulk creation of slides from existing (or uploaded) images in the media gallery.
