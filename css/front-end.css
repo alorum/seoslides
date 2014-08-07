@@ -366,6 +366,7 @@ body.embeded .ssi.embiggen {
 
   40% {
     -webkit-transform: scale(1); } }
+
 @keyframes bouncedelay {
   0%, 80%, 100% {
     transform: scale(0);
@@ -374,6 +375,7 @@ body.embeded .ssi.embiggen {
   40% {
     transform: scale(1);
     -webkit-transform: scale(1); } }
+
 /*********************************************************************/
 /*                         Deck JS Overrides                         */
 /*********************************************************************/

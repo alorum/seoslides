@@ -1,4 +1,4 @@
-/*! seoslides - v1.6.0
+/*! seoslides - v1.6.1
  * https://seoslides.com
  * Copyright (c) 2014 Alroum; * Licensed GPLv2+ */
 ;(function ($, window, undefined) {
@@ -4308,7 +4308,14 @@
 		process_content();
 
 		var presentation_url = $( 'link[rel=canonical]' ).attr( 'href' ),
+			lastChar = presentation_url.substr( -1 ),
+			allslides_url;
+
+		if ( '/' === lastChar ) {
 			allslides_url = presentation_url + 'allslides/';
+		} else {
+			allslides_url = presentation_url + '/allslides/';
+		}
 
 		// By default, the single page *only* contains the content of the current slide.  We asynchronously load the content
 		// of the entire slide deck before firing the rest of the system.
