@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Default aspect ratio settings */
 #seoslides-list {
   margin-top: 20px;
@@ -189,7 +190,7 @@
   content: '\2022\00A0\00A0'; }
 .slide ol > li:before {
   counter-increment: list;
-  content: counter(list) ".\00A0"; }
+  content: counter(list) ". "; }
 .slide pre {
   margin: 0 0 50px;
   counter-reset: code;
@@ -854,3 +855,5 @@ body.flaticons .slideset-toggle-trash-icon {
     display: inline; }
   #seo-analysis-page .seoslides_slideset_referrer_count.collapsed .below-the-fold, #seo-analysis-page .seoslides_slideset_terms_count.collapsed .below-the-fold {
     display: none; }
+
+/*# sourceMappingURL=admin-styles-slides.css.map */

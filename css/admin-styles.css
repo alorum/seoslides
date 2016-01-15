@@ -76,12 +76,12 @@ body.flaticons .tb-close-icon {
   -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.4) inset;
   -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.4) inset;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.4) inset;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(white), to(#bbbbbb));
-  background-image: -moz-linear-gradient(top, white, #bbbbbb);
-  background-image: -webkit-linear-gradient(top, white, #bbbbbb);
-  background-image: -o-linear-gradient(top, white, #bbbbbb);
-  background-image: -ms-linear-gradient(top, white, #bbbbbb);
-  background-image: linear-gradient(top, white, #bbbbbb);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#bbb));
+  background-image: -moz-linear-gradient(top, #fff, #bbb);
+  background-image: -webkit-linear-gradient(top, #fff, #bbb);
+  background-image: -o-linear-gradient(top, #fff, #bbb);
+  background-image: -ms-linear-gradient(top, #fff, #bbb);
+  background-image: linear-gradient(top, #fff, #bbb);
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0,startColorstr='#ffffffff',endColorstr='#ffbbbbbb'); }
 .seoslides-modal .cke_toolbar_separator {
   display: none; }
@@ -280,3 +280,5 @@ input.seoslides_link {
   #api_key_indicator.unset:before {
     color: red;
     content: '\f158'; }
+
+/*# sourceMappingURL=admin-styles.css.map */
