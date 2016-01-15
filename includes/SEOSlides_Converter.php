@@ -1,7 +1,7 @@
 <?php
 /**
  * Module Name: SEOSlides Converter
- * Activation:  core
+ * Activation:  disabled
  * Description: Allow converting PDF presentation exports to SEOSlides presentations.
  * Version:     0.1
  * Author:      10up

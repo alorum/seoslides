@@ -1,7 +1,7 @@
 <?php
 /**
  * Module Name: SEOSlides Multiplier
- * Activation:  hidden
+ * Activation:  disabled
  * Description: Functionality to handle pushing content to the SEOSlides remote.
  * Version:     0.3
  * Author:      10up
