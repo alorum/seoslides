@@ -1200,7 +1200,7 @@ class SEOSlides_Core {
 		);
 
 		return;
-		// The blow code added links to a Premium Upgrade option and Hosted Support.
+		// The below code added links to a Premium Upgrade option and Hosted Support.
 
 		if ( $this->get_subscription_level() < 20 ) {
 			global $submenu;
