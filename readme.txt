@@ -1,16 +1,18 @@
 ﻿=== seoslides ===
 Contributors: alorum, 10up
 Donate link: http://alorum.com
-Tags: presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up, wordpress seo, image, images, video, text, quotes, leads, youtube, vimeo, slideshare, content, back link, backlink, backlinks, social, social media, facebook, twitter
+Tags: adopt-me, presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up, wordpress seo, image, images, video, text, quotes, leads, youtube, vimeo, slideshare, content, back link, backlink, backlinks, social, social media, facebook, twitter
 Requires at least: 3.5.1
 Tested up to: 3.9.1
-Stable tag: 1.6.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Add embeddable, social content to WordPress
 
 == Description ==
+
+**seoslides is no longer under active development and is looking for a new home.**
 
 WordPress content is now social!
 
@@ -95,9 +97,9 @@ You'll also find more FAQs on [https://seoslides.com/faq/](https://seoslides.com
 
 == Changelog ==
 
-= DEV =
+= 1.7.0 =
 
-* Fix: Make sure canonical URLs have a trailing slash before appending anything for building dynamic paths.
+* New: Mark the plugin as available for adoption
 
 = 1.6.0 =
 

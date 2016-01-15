@@ -1199,6 +1199,9 @@ class SEOSlides_Core {
 			array( $this, 'menu' )
 		);
 
+		return;
+		// The below code added links to a Premium Upgrade option and Hosted Support.
+
 		if ( $this->get_subscription_level() < 20 ) {
 			global $submenu;
 
@@ -1226,7 +1229,8 @@ class SEOSlides_Core {
 
 		settings_errors( 'seoslides' );
 
-		if ( $this->get_subscription_level() < 20 ) : ?>
+		// This notice was used to display an Upgrade nag and encourage premium subscriptions on the Settings page
+		if ( false && $this->get_subscription_level() < 20 ) : ?>
 			<div class="updated">
 				<p><?php _e( 'You can use a free license key for 3 imports. Upgrade to the <a href="https://seoslides.com/pro">pro version</a> for unlimited imports during the beta.', 'seoslides_translate' ); ?></p>
 			</div>
@@ -1248,7 +1252,7 @@ class SEOSlides_Core {
 
 					<?php do_action( 'seoslides_settings_form_top_rows' ); ?>
 
-					<tr valign="top">
+					<!--tr valign="top">
 						<th scope="row">
 							<label for="api_key"><?php _e( 'License Key', 'seoslides_translate' ); ?></label>
 						</th>
@@ -1257,16 +1261,16 @@ class SEOSlides_Core {
 							<span id="api_key_indicator" class="<?php echo empty( $api_key ) ? 'unset' : 'valid'; ?>"></span>
 							<p class="description"><?php _e( "Don't have a license key? Click <a href=\"https://seoslides.com/free\" class=\"popup\">here</a>.", 'seoslides_translate' ); ?></p>
 						</td>
-					</tr>
+					</tr-->
 
-					<tr valign="top">
+					<!--tr valign="top">
 						<th scope="row">
 							<label for="product_key"><?php _e( 'Product Key (optional)', 'seoslides_translate' ); ?></label>
 						</th>
 						<td>
 							<input name="product_key" type="text" id="product_key" value="<?php echo esc_attr( $product_key ); ?>" class="regular-text" />
 						</td>
-					</tr>
+					</tr-->
 
 					<tr valign="top">
 						<th scope="row">
