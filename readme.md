@@ -1,7 +1,7 @@
 # seoslides #
 **Contributors:** alorum, 10up  
 **Donate link:** http://alorum.com  
-**Tags:** presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up, wordpress seo, image, images, video, text, quotes, leads, youtube, vimeo, slideshare, content, back link, backlink, backlinks, social, social media, facebook, twitter  
+**Tags:** adopt-me, presentation, seoslides, seo slides, seo, slide, slides, slide deck, search engine optimization, search engine, slideshow, bing, canonical, description, google, keywords, meta, meta description, meta keywords, wordpress seo, yahoo, alorum, 10up, wordpress seo, image, images, video, text, quotes, leads, youtube, vimeo, slideshare, content, back link, backlink, backlinks, social, social media, facebook, twitter  
 **Requires at least:** 3.5.1  
 **Tested up to:** 3.9.1  
 **Stable tag:** 1.7.0
@@ -11,6 +11,8 @@
 Add embeddable, social content to WordPress
 
 ## Description ##
+
+**seoslides is no longer under active development and is looking for a new home.**
 
 WordPress content is now social!
 
